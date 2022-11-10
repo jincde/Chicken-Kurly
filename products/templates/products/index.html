@@ -4,20 +4,14 @@
 <div id="carouselExampleInterval" style="max-width:1900px; margin:0 auto 0;" class="carousel slide"
   data-bs-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="10000">
-      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt=".."
-        style="object-fit: cover;">
+    <div class="carousel-item active" data-bs-interval="5000">
+      <img src="{% static 'images/carousel1.jpg' %}" class="d-block w-100" alt="..">
     </div>
-    <div class="carousel-item active" data-bs-interval="10000">
-      <img src="{% static 'images/notion.jpg' %}" class="d-block w-100" alt=".." style="object-fit: cover;">
+    <div class="carousel-item" data-bs-interval="5000">
+      <img src="{% static 'images/carousel2.jpg' %}" class="d-block w-100" alt="..">
     </div>
-    <div class="carousel-item" data-bs-interval="2000">
-      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt=".."
-        style="object-fit: cover;">
-    </div>
-    <div class="carousel-item">
-      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt=".."
-        style="object-fit: cover;">
+    <div class=" carousel-item" data-bs-interval="5000">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -95,5 +89,7 @@
     </div>
   </div>
 
+  {% if request.user.is_superuser == 1 %}  
   <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
+  {% endif %}
   {% endblock %}

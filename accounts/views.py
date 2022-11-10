@@ -7,6 +7,8 @@ from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from products.models import Cart, Ddib
+
 
 
 # Create your views here.
@@ -14,7 +16,9 @@ def signup(request):
     if request.method == "POST":
         forms = SignupForm(request.POST, request.FILES)
         if forms.is_valid():
-            forms.save()
+            user = forms.save()
+            Cart.objects.create(user=user)
+            Ddib.objects.create(user=user)
             return redirect("articles:index")
     else:
         forms = SignupForm()
@@ -26,7 +30,7 @@ def signup(request):
 
 def index(request):
     members = get_user_model().objects.all()
-    return render(request, "accounts/index,html")
+    return render(request, "accounts/index.html")
 
 
 def login(request):

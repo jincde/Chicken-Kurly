@@ -44,7 +44,7 @@
           <input type="submit" value="장바구니" name="cart">
         </form>
 
-        <form action="" method="POST">
+        <form action="{% url 'products:ddib' product.pk %}" method="POST">
           {% csrf_token %}
           <input type="submit" value="찜" name="ddib">
         </form>
