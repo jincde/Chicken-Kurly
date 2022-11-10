@@ -1,17 +1,92 @@
 {% extends 'base.html' %}
 {% block content %}
+<div id="carouselExampleInterval" style="max-width:1900px; margin:0 auto 0;" class="carousel slide"
+  data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="10000">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
+    </div>
+    <div class="carousel-item" data-bs-interval="2000">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
+    </div>
+    <div class="carousel-item">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
 
-  {% for product in products %}
-    {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-    <a href="">
-      <img src="{{ product.image_set.all.0.image.url }}" alt="" width="300px">
-      
-      <p>{{ product.product_name }}</p>
-      <p>{{ product.price }}</p>
-      <p>{{ product.brand }}</p>
-      <p>{{ product.category }}</p>
-    </a>
+<hr>
+<div class="container d-flex justify-content-center align-items-center" style="max-width: 1070px; height: 88px">
+  <ul class="d-flex justify-content-between category-list p-0 m-0"
+    style="max-width: 800px;list-style: none; font-weight: 700;">
+    <li>카테고리&nbsp</li>
+    <li>닭가슴살&nbsp</li>
+    <li>만두&nbsp</li>
+    <li>샐러드&nbsp</li>
+    <li>치킨&nbsp</li>
+    <li>소스&nbsp</li>
+  </ul>
+</div>
+
+{% for product in products %}
+{% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
+  <a href="">
+    <img src="{{ product.image_set.all.0.image.url }}" alt="" width="300px">
+
+    <p>{{ product.product_name }}</p>
+    <p>{{ product.price }}</p>
+    <p>{{ product.brand }}</p>
+    <p>{{ product.category }}</p>
+  </a>
   {% endfor %}
 
+  <!-- 얇은 광고 배너1 -->
+  <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
+    <img src="https://dummyimage.com/1070x140/d9d9d9/000000&text=AD+1">
+  </div>
+
+  <!-- 많이 구매된 순 -->
+  <div class="container d-flex justify-content-center align-items-center"
+    style="max-width:1070px; height: 590px; font-weight: 600; padding: 40px 0;">많이
+    구매된 상품 순 4개씩
+  </div>
+
+  <!-- 조회수 순 -->
+  <div class="container d-flex justify-content-center align-items-center"
+    style="max-width:1070px; height: 590px; font-weight: 600; padding: 40px 0;">많이 조회된 상품 순 4개씩
+  </div>
+
+  <!-- 얇은 광고 배너2 -->
+  <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
+    <img src="https://dummyimage.com/1070x140/d9d9d9/000000&text=AD+1">
+  </div>
+
+  <!-- 인스타그램 크롤링 -->
+  <div class="container d-flex flex-column justify-content-center align-items-center"
+    style="max-width:1070px; height: 450px; font-weight: 600; padding: 40px 0;">
+    <p>인스타그램 크롤링 6개씩</p>
+    <p class="text-muted">사진크기는 정사각형 object-fit: cover?</p>
+    <div style="min-width: 1070px; max-width: 1070px; height: 175px;">
+      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+    </div>
+    <div class="d-flex flex-column align-items-center" style="margin-top: 40px;">
+      <p class="m-0" style="color:rgb(153, 153, 153)">더 많은 고객후기가 궁금하다면?</p>
+      <p class="m-0" style="color:rgb(51, 51, 51); font-weight: 500;">@chickenkurly_regram #치킨컬리</p>
+    </div>
+  </div>
+
   <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
-{% endblock %}
+  {% endblock %}
