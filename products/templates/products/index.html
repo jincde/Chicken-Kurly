@@ -88,5 +88,7 @@
     </div>
   </div>
 
+  {% if request.user.is_superuser == 1 %}  
   <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
+  {% endif %}
   {% endblock %}
