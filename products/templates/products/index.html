@@ -2,14 +2,13 @@
 {% block content %}
 
   {% for product in products %}
-    {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-    <a href="">
+    <a href="{% url 'products:detail' product.pk %}">
       <img src="{{ product.image_set.all.0.image.url }}" alt="" width="300px">
       
-      <p>{{ product.product_name }}</p>
-      <p>{{ product.price }}</p>
-      <p>{{ product.brand }}</p>
-      <p>{{ product.category }}</p>
+      <p>상품명 {{ product.product_name }}</p>
+      <p>가격 {{ product.price }}원</p>
+      <p>브랜드명 {{ product.brand }}</p>
+      <p>카테고리 {{ product.category }}</p>
     </a>
   {% endfor %}
 

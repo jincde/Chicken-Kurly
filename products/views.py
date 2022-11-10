@@ -53,3 +53,44 @@ def create(request):
     
     else:
         return redirect('products:index')    # admin 아니면 index로 리다이렉트
+
+def detail(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
+    product.hit += 1
+    product.save()
+
+    # 유저 회원가입 시 생성되도록
+    cart = Cart.objects.get(user=request.user)
+    ddib = Ddib.objects.get(user=request.user)
+
+    cart_item = CartItem.objects.get(pk=cart.pk)
+    ddib_item = DdibItem.objects.get(pk=ddib.pk)
+    
+    # 구매 수량 입력 후 장바구니 or 찜
+    if request.method == 'POST':
+        product_buy_form = ProductBuyForm(request.POST)
+
+        if product_buy_form.is_valid():
+            form = product_buy_form.save()
+            # 찜 / 장바구니
+            # <input type="submit" name="ddib">
+            if 'ddib' in request.POST:
+                ddib.product = product
+                ddib.save()
+                # ddib = request.GET.get('ddib')
+            elif 'cart' in request.POST:
+                cart.product = product
+                cart.quantity = form.quantity
+                cart.save()
+
+    else:
+       product_buy_form = ProductBuyForm()
+    
+    context = {
+        'product': product,
+        'image_cnt': product.image_set.count(),
+        'product_buy_form': product_buy_form,
+    }
+
+    return render(request, 'products/detail.html', context)

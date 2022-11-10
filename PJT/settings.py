@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'widget_tweaks',
     'django.contrib.admin',
+    'mathfilters',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
