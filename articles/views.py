@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import ArticleForm
 from .models import Article
+from django.core.paginator import Paginator  
 
 # Create your views here.
 
@@ -9,8 +10,15 @@ def index(request):
 
     articles = Article.objects.order_by('-pk')
 
+    page = request.GET.get('page', '1')
+    paginator = Paginator(articles, 5)
+    paginated_articles = paginator.get_page(page)
+    max_index = len(paginator.page_range)
+
     context = {
-        'articles': articles,
+        "articles": articles,
+        "paginated_articles": paginated_articles,
+        "max_index": max_index,
     }
 
     return render(request, 'articles/index.html', context)

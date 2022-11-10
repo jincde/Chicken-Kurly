@@ -7,7 +7,7 @@
     <a class='btn btn-primary btn-sm' href="{% url 'articles:create' %}"> 글쓰기</a>
   </div>
 
-  {% for article in articles %}
+  {% for article in paginated_articles %}
       <div class="card mx-auto mb-3" style="max-width: 610px;">
         <div class="row g-0">
           <!-- 카드 이미지 -->
@@ -68,6 +68,52 @@
         </div>
       </div>
   {% endfor %}
+
+  <!-- 페이지네이션 -->
+  {% if paginated_articles %}
+  <ul class="pagination justify-content-center">
+    <!-- 첫 페이지 -->
+    {% if paginated_articles.has_previous %}
+      <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+      <li class="page-item">
+        <a class="page-link" tabindex="-1" href="?page=1">&#60;</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" href="#">&#60;</a>
+      </li>
+    {% endif %}
+
+    <!-- 페이지리스트 -->
+    <!-- //페이지 범위를 하나씩 리턴 -->
+    {% for page_number in paginated_articles.paginator.page_range %}
+      {% if page_number >= paginated_articles.number|add:-2 and page_number <= paginated_articles.number|add:2 %}
+          <!-- // 현재 페이지일 때는 active -->
+          {% if page_number == paginated_articles.number %}
+            <li class="page-item active" aria-current="page">
+              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+          {% else %}
+            <li class="page-item text-color-warning">
+              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+          {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <!-- 다음페이지 -->
+    {% if paginated_articles.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ max_index }}">&#62;</a>
+      </li>
+    {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" href="#">&#62;</a>
+      </li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
 
 
 {% endblock content %}

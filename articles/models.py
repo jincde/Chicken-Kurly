@@ -1,6 +1,6 @@
 from django.db import models
 from imagekit.models import ProcessedImageField
-from imagekit.processors import Thumbnail
+from imagekit.processors import Thumbnail, ResizeToFill
 
 # Create your models here.
 
@@ -13,7 +13,7 @@ class Article(models.Model):
     image = ProcessedImageField(
         upload_to="images/",
         blank=True,
-        processors=[Thumbnail(400, 300)],
-        format="JPEG",
-        options={"quality": 80},
+        processors=[ResizeToFill(400, 300)],  
+        format="JPEG", 
+        options={"quality": 80},  #
     )
