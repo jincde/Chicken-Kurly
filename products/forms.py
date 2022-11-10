@@ -11,7 +11,7 @@ class ProductForm(ModelForm):
 class ProductBuyForm(ModelForm):
     class Meta:
         model = Product
-        fields = ['buy_count']
+        fields = ['quantity']
         
 # ClearableFileInput으로 여러 장의 image를 입력 받을 수 있음
 class ImageForm(ModelForm):
