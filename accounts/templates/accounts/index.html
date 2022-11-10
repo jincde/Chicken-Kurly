@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+
+  <div class="d-flex justify-content-center">
+    <div class="card text-center" style="width: 500px; height: 400px;">
+      <div class="card-body">
+        <p class="card-text">
+          {% if user.is_authenticated %}
+          {% else %}
+            <p class="mt-5">회원이신가요?</p>
+            <a class="btn btn-primary w-100" href="{% url "accounts:login" %}">로그인</a>
+          {% endif %}
+          <p class="mt-5">아직 회원이 아니신가요?</p>
+          <a class="btn btn-primary w-100 mb-5" href="{% url 'accounts:index' %}">회원가입</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
