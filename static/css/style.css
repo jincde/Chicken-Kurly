@@ -19,3 +19,12 @@ label:focus,
   display: grid;
   grid-template-columns: 25fr 50fr 25fr;
 }
+
+.non_a {
+  text-decoration: none;
+  color: black;
+}
+
+.non_a:hover {
+  color: #5e0080;
+}
