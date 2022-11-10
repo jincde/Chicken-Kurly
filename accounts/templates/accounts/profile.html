@@ -2,3 +2,41 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-4 p-3">
+        {% if person.image %}
+          <img src="{{ person.image.url }}" alt="">
+        {% else %}
+          <img src="" alt="">
+        {% endif %}
+      </div>
+      <div class="col p-3">
+        <div class="d-flex">
+          <h2 class="fw-bold">{{ person }}
+            <span class="fs-5 ms-3 fw-light">팔로잉:
+              {{ person.followings.count }}
+              |
+
+            </span><span class="fs-5 fw-light">팔로워:
+              {{ person.followers.count }}
+            </span>
+          </h2>
+          {% if request.user.is_authenticated %}
+            <p class="ms-5">
+              <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="팔로우" class="btn btn-outline-primary">
+              </form>
+            </p>
+          {% endif %}
+        </div>
+        <hr>
+        <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
