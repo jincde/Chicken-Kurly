@@ -1,16 +1,23 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <div id="carouselExampleInterval" style="max-width:1900px; margin:0 auto 0;" class="carousel slide"
   data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="10000">
-      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt=".."
+        style="object-fit: cover;">
+    </div>
+    <div class="carousel-item active" data-bs-interval="10000">
+      <img src="{% static 'images/notion.jpg' %}" class="d-block w-100" alt=".." style="object-fit: cover;">
     </div>
     <div class="carousel-item" data-bs-interval="2000">
-      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt=".."
+        style="object-fit: cover;">
     </div>
     <div class="carousel-item">
-      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt="..">
+      <img src="https://dummyimage.com/1900x370/e3dfe3/fff.jpg" class="d-block w-100" alt=".."
+        style="object-fit: cover;">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
