@@ -4,10 +4,10 @@
 {% bootstrap_javascript %}
 
 {% block content %}
-  <form action="{% url "accounts:login" %}" method="POST">
+  <form action="{% url "accounts:login" %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form forms %}
-    {% bootstrap_button content="로그인" button_type_"submit" button_class="btn-outline-primary w-100" %}
+    <input type="submit" class="btn btn-outline-primary" value="로그인">
   </form>
 
 {% endblock content %}

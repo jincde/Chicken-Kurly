@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -45,12 +46,13 @@ def logout(request):
     return redirect("accounts:index")
 
 
+@login_required
 def update(request):
     if request.method == "POST":
         forms = CustomUserChangeForm(request.POST, instance=request.user)
         if forms.is_valid():
             forms.save()
-            return redirect("accounts:detail", request.user.pk)
+            return redirect("accounts:profile", request.user.pk)
     else:
         forms = CustomUserChangeForm(instance=request.user)
     context = {
@@ -59,12 +61,13 @@ def update(request):
     return render(request, "accounts/update.html", context)
 
 
+@login_required
 def change_password(request):
     if request.method == "POST":
         forms = PasswordChangeForm(request.user, request.POST)
         if forms.is_valid():
             forms.save()
-            return redirect("accounts:detail")
+            return redirect("accounts:profile")
     else:
         forms = PasswordChangeForm(request.user)
     context = {
@@ -82,12 +85,13 @@ def profile(request, user_pk):
     return render(request, "accounts/detail.html", context)
 
 
+@login_required
 def profile_update(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect("accounts:detail", request.user.pk)
+            return redirect("accounts:profile", request.user.pk)
     else:
         form = ProfileForm(instance=request.user)
     return render(
@@ -99,6 +103,7 @@ def profile_update(request):
     )
 
 
+@login_required
 def follow(request, user_pk):
     person = get_user_model().objects.get(pk=user_pk)
     if person != request.user:
@@ -111,6 +116,7 @@ def follow(request, user_pk):
         return HttpResponseForbidden()
 
 
+@login_required
 def delete(request):
     request.user.delete()
     auth_logout(request)
