@@ -1,7 +1,6 @@
-{% extends "base.html" %}
-
-    
+{% extends 'base.html' %}
 {% block content %}
+
   {% for product in products %}
     {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
     <a href="">
