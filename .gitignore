@@ -1,6 +1,6 @@
 # 마이그레이션 파일 충돌 방지
 migrations/
-images/
+img/
 
 ### VisualStudioCode ###
 .vscode/*
