@@ -15,5 +15,11 @@ class Article(models.Model):
         blank=True,
         processors=[ResizeToFill(400, 300)],  
         format="JPEG", 
-        options={"quality": 80},  #
+        options={"quality": 80},
     )
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
