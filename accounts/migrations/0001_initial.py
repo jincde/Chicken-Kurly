@@ -47,11 +47,4 @@ class Migration(migrations.Migration):
                 ('image', imagekit.models.fields.ProcessedImageField(blank=True, upload_to='')),
             ],
         ),
-        migrations.CreateModel(
-            name='Purchase',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', imagekit.models.fields.ProcessedImageField(blank=True, upload_to='images/')),
-            ],
-        ),
-    ]
+        
