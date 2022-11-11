@@ -50,6 +50,10 @@ class Inquiry(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def status(self):
+        return self._meta.model.status
+
 # 문의 답변
 class Reply(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
