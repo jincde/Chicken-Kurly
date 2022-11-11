@@ -75,4 +75,4 @@ class Review(models.Model):
 # 상품 후기 이미지
 class ReviewImage(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    review_img = models.ImageField('사진등록', upload_to='img/')
+    review_img = models.ImageField('사진등록', upload_to='img/', blank=True, null=True) # 리뷰 이미지 생략 가능하도록
