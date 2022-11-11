@@ -17,17 +17,12 @@ def index(request):
     paginated_articles = paginator.get_page(page)
     max_index = len(paginator.page_range)
 
-    c_paginator = Paginator(comments, 3)
-    paginated_comments = c_paginator.get_page(page)
-    c_max_index = len(c_paginator.page_range)
 
     context = {
         "articles": articles,
         "paginated_articles": paginated_articles,
         "max_index": max_index,
         "comments": comments,
-        "paginated_comments": paginated_comments,
-        "c_max_index": c_max_index,
     }
 
     return render(request, 'articles/index.html', context)
@@ -51,7 +46,15 @@ def create(request):
 
 def detail(request, pk):
 
-    return render(request, "articles/detail.html")
+    article = Article.objects.get(pk=pk)
+    comments = Comment.objects.filter(article=article)
+
+    context = {
+        'article': article,
+        'comments': comments,
+    }
+
+    return render(request, "articles/detail.html", context)
 
 @login_required
 def delete(request, pk):
@@ -81,7 +84,7 @@ def update(request, pk):
 
 
 @login_required
-def c_create(request, pk):
+def c_create(request,pk):
 
     comment = request.POST.get("comment")
     article = Article.objects.get(pk=pk)
@@ -90,15 +93,15 @@ def c_create(request, pk):
     if comment != "":
         Comment.objects.create(content=comment, article=article, user=request.user)
 
-    return redirect("articles:index")
+    return redirect("articles:detail", pk)
 
 @login_required
-def c_delete(request, pk):
+def c_delete(request, c_pk, a_pk):
 
-    comment = Comment.objects.get(pk=pk)
+    comment = Comment.objects.get(pk=c_pk)
     comment.delete()
 
-    return redirect("articles:index")
+    return redirect("articles:detail", a_pk)
 
 @login_required
 def like(request, pk):

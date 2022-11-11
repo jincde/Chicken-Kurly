@@ -29,71 +29,21 @@
               </div>
               <h4>
                 <!-- 카드 타이틀 -->
-                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ article.pk }}" style="
-                min-height: 1.5rem;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                word-break: break-word;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical">{{ article.title }}</a>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal{{ article.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-3" id="exampleModalLabel">{{ article.title }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body fs-6">
-                        {{ article.content }}
-                      </div>
-
-                      
-                      <hr>
-                      <!-- 댓글창 -->
-                      {% for comment in comments %}
-                        {% if article.pk == comment.article.pk %}
-                          <div class='mx-2' sytle='margin: -2px;'>
-                            <span class='fs-6 fw-bold'>{{ comment.user }}</span><span class='fs-6 opacity-75'>  {{ comment.created_at }}</span>
-                            <p class='fs-6 opacity-75'>{{ comment.content }}
-                              <span>
-                                <a href="{% url 'articles:c_delete' comment.pk %}">
-                                  <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-                                    <i class="bi bi-x"></i>
-                                  </span>
-                                </a>
-                              </span>
-                            </p>                            
-                          </div>
-                         
-                        {% endif %}
-                      {% endfor %}
-
-                      <!-- 댓글 입력 폼 -->
-                      <form action="{% url 'articles:c_create' article.pk  %}" method="POST" name="comment">
-                        {% csrf_token %}
-                        <div class="d-flex justify-content-evenly fs-6">
-                          <div>
-                            <input style="width: 45rem; border: 1px solid; padding: 0.3rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" maxlength ="90"required>
-                          </div>
-                          <div>
-                            <button class="btn btn-primary btn-sm " type="submit">등록</button>
-                          </div>
-                      </div>
-                      </form>
-
-                      <!-- 모달창 푸터 -->
-                      <div class="modal-footer my-3">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </h4>
+                <a
+                 href="
+                 {% url 'articles:detail' article.pk %}"
+                 style="
+                  min-height: 1.5rem;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  word-break: break-word;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 1;
+                   -webkit-box-orient: vertical">
+                   {{ article.title }}</a>
               <!-- 글작성자, 작성시간 -->
               <p class="fs-6">
-                {{ article.user }}  |  {{ article.created_at }}  |
+                <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a>  |  {{ article.created_at }}  |
               </p>
               <hr>
               <!-- 글 내용 요약 -->
