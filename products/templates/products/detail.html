@@ -4,51 +4,58 @@
 {% load widget_tweaks %}
 
 {% block content %}
-  <div class="container my-5">
-    {% if request.user.is_superuser == 1 %}  
-      <a href="{% url 'products:update' product.pk %}" class="btn btn-primary">상품 정보 수정</a>
-    {% endif %}
-    
-    <div class="row mb-5">
-      <div class="col">
-        <!-- carousel 사진 영역 -->
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-          <div class="carousel-indicators">
-            {% for image in product.image_set.all %}
-              <!-- 사진 인덱싱 위해 mathfilters 설치해야 함 -->
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter|sub:1|mod:image_cnt }}" class="{% if forloop.counter == 1 %} active {% endif %}" aria-current="true" aria-label="Slide {{ forloop.counter|mod:image_cnt }}"></button>
-            {% endfor %}
-          </div>
-          <div class="carousel-inner">
-            {% for image in product.image_set.all %}
-              <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style="height: 340px">
-                <img src="{{ image.image.url }}" class="d-block h-100 mx-auto" alt="{{ image.image }}">
-              </div>
-            {% endfor %}
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-      
-      <div class="col">
-        <p>상품명 {{ product.product_name }}</p>
-        <p>가격 {{ product.price }}원</p>
-        <p>브랜드명 {{ product.brand }}</p>
-        <p>카테고리 {{ product.category }}</p>
+<div class="container my-5" style="width: 1070px;">
+  {% if request.user.is_superuser == 1 %}
+  <a href="{% url 'products:update' product.pk %}" class="btn btn-primary">상품 정보 수정</a>
+  {% endif %}
 
-        {% if request.user.is_authenticated %}
-          <form action="" method="POST">
-            {% csrf_token %}
-            {% bootstrap_form product_buy_form %}
-            <input type="submit" value="장바구니" name="cart">
-          </form>
+  <div class="row">
+    <div class="col">
+      <!-- carousel 사진 영역 -->
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-indicators">
+          {% for image in product.image_set.all %}
+          <!-- 사진 인덱싱 위해 mathfilters 설치해야 함 -->
+          <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="{{ forloop.counter|sub:1|mod:image_cnt }}"
+            class="{% if forloop.counter == 1 %} active {% endif %}" aria-current="true"
+            aria-label="Slide {{ forloop.counter|mod:image_cnt }}"></button>
+          {% endfor %}
+        </div>
+        <div class="carousel-inner">
+          {% for image in product.image_set.all %}
+          <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style="height: 340px">
+            <img src="{{ image.image.url }}" class="d-block h-100 mx-auto" alt="{{ image.image }}">
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="col">
+      <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
+      <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
+      <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
+      <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
+        <span style="font-size: 18px;">원</span>
+      </p>
+
+      {% if request.user.is_authenticated %}
+      <form action="" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form product_buy_form %}
+        <input type="submit" value="장바구니" name="cart">
+      </form>
 
           <form action="{% url 'products:ddib' product.pk %}" method="POST">
             {% csrf_token %}
@@ -191,4 +198,9 @@
       </table>
     </div>
   </div>
+
+  <div class="row">
+
+  </div>
+</div>
 {% endblock content %}
