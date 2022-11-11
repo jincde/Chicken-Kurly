@@ -59,3 +59,13 @@ label:focus,
   right: 10px;
   bottom: 120px;
 }
+
+.swiper {
+  width: 1070px;
+  height: 435px;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
