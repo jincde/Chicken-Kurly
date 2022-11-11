@@ -52,8 +52,9 @@ class Inquiry(models.Model):
 
 # 문의 답변
 class Reply(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    inquiry = models.ForeignKey(Inquiry, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
+    inquiry = models.OneToOneField(Inquiry, on_delete=models.CASCADE)
+    # title = models.CharField(max_length=50)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
