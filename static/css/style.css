@@ -28,3 +28,7 @@ label:focus,
 .non_a:hover {
   color: #5e0080;
 }
+
+.signup-input:focus {
+  outline: 1px sollid #5e0080;
+}
