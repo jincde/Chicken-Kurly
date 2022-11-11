@@ -50,6 +50,10 @@ class Inquiry(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def status(self):
+        return self._meta.model.status
+
 # 문의 답변
 class Reply(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -71,4 +75,4 @@ class Review(models.Model):
 # 상품 후기 이미지
 class ReviewImage(models.Model):
     review = models.ForeignKey(Review, on_delete=models.CASCADE)
-    review_img = models.ImageField('사진등록', upload_to='img/')
+    review_img = models.ImageField('사진등록', upload_to='img/', blank=True, null=True) # 리뷰 이미지 생략 가능하도록
