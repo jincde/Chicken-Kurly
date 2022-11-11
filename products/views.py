@@ -7,7 +7,7 @@ from .forms import *
 # Create your views here.
 def index(request):
     products = Product.objects.order_by('-pk')
-    review = Review.objects.order_by('-review_pk')
+    review = Review.objects.order_by('-pk')
 
     context = {
         'products': products,
