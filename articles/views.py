@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import ArticleForm
 from .models import Article, Comment
-from django.core.paginator import Paginator  
+from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required  
 
 # Create your views here.
 
@@ -16,6 +17,7 @@ def index(request):
     paginated_articles = paginator.get_page(page)
     max_index = len(paginator.page_range)
 
+
     context = {
         "articles": articles,
         "paginated_articles": paginated_articles,
@@ -25,12 +27,15 @@ def index(request):
 
     return render(request, 'articles/index.html', context)
 
+@login_required
 def create(request):
 
     if request.method == "POST":
         article_form = ArticleForm(request.POST, request.FILES)
         if article_form.is_valid():
-            article_form.save()
+            article = article_form.save(commit=False)
+            article.user = request.user
+            article.save()
             return redirect("articles:index")
     else:
         article_form = ArticleForm()
@@ -41,9 +46,17 @@ def create(request):
 
 def detail(request, pk):
 
-    return render(request, "articles/detail.html")
+    article = Article.objects.get(pk=pk)
+    comments = Comment.objects.filter(article=article)
 
+    context = {
+        'article': article,
+        'comments': comments,
+    }
 
+    return render(request, "articles/detail.html", context)
+
+@login_required
 def delete(request, pk):
 
     article = Article.objects.get(pk=pk)
@@ -52,7 +65,7 @@ def delete(request, pk):
 
     return redirect("articles:index")
 
-
+@login_required
 def update(request, pk):
 
     article = Article.objects.get(pk=pk)
@@ -70,21 +83,36 @@ def update(request, pk):
     return render(request, "articles/update.html", context)
 
 
-
-def c_create(request, pk):
+@login_required
+def c_create(request,pk):
 
     comment = request.POST.get("comment")
     article = Article.objects.get(pk=pk)
 
+
     if comment != "":
-        Comment.objects.create(content=comment, article=article)
+        Comment.objects.create(content=comment, article=article, user=request.user)
 
-    return redirect("articles:index")
+    return redirect("articles:detail", pk)
 
+@login_required
+def c_delete(request, c_pk, a_pk):
 
-def c_delete(request, pk):
-
-    comment = Comment.objects.get(pk=pk)
+    comment = Comment.objects.get(pk=c_pk)
     comment.delete()
 
-    return redirect("articles:index")
+    return redirect("articles:detail", a_pk)
+
+@login_required
+def like(request, pk):
+
+    article = Article.objects.get(pk=pk)
+
+    if request.user in article.like_users.all():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+
+    return redirect('articles:index')
+
+    

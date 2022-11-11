@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
@@ -7,9 +7,11 @@ from .forms import *
 # Create your views here.
 def index(request):
     products = Product.objects.order_by('-pk')
+    review = Review.objects.order_by('-review_pk')
 
     context = {
         'products': products,
+        'review':review
         # 'image_cnt': products.image_set.count(), # index 페이지에서 carousel로 보여줄 때 사용
     }
 
@@ -56,6 +58,10 @@ def create(request):
 
 def detail(request, product_pk):
     product = Product.objects.get(pk=product_pk)
+    inquiry_form = InquiryForm()
+    reply_form = ReplyForm()
+    inquiries = product.inquiry_set.all()
+
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
     product.save()
@@ -81,6 +87,9 @@ def detail(request, product_pk):
         'product': product,
         'image_cnt': product.image_set.count(),
         'product_buy_form': product_buy_form,
+        'inquiry_form': inquiry_form,
+        'reply_form': reply_form,
+        'inquiries': inquiries,
     }
 
     return render(request, 'products/detail.html', context)
@@ -139,4 +148,74 @@ def ddib(request, product_pk):
 
     DdibItem.objects.create(ddib=ddib, product=product)
     
+    return redirect('products:detail', product_pk)
+
+@login_required
+def review_create(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        # form에 review_image 폼 추가
+        review_image_form = ReviewImageForm(request.POST, request.FILES)
+        tmp_img = request.FILES.getlist('review_img')
+                
+        # 상품 정보에 대한 폼과 이미지 폼이 유효하면
+        if review_form.is_valid() and review_image_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.product = product
+
+            if tmp_img:
+                for img in tmp_img:
+                    img_instance = ReviewImage(review=review, review_img=img)
+                    review.save()
+                    img_instance.save()
+
+            review.save()
+            messages.success(request, '후기 등록이 완료되었습니다.')
+            return redirect('products:detail', product_pk)
+    else:
+        review_form = ReviewForm()
+        review_image_form = ReviewImageForm()
+                
+    context = {
+        'review_form': review_form,
+        'review_image_form': review_image_form,
+    }
+
+    return render(request, 'products/review.html', context)
+       
+# 상품 문의 등록
+@login_required
+def create_inquiry(request, product_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry_form = InquiryForm(request.POST)    # POST 아닌 건 detail에
+
+    if inquiry_form.is_valid():
+        inquiry = inquiry_form.save(commit=False)
+        inquiry.user = request.user
+        inquiry.product = product
+        inquiry.save()
+
+    # 나중에 비동기?
+
+    return redirect('products:detail', product_pk)
+
+
+@login_required
+def create_reply(request, product_pk, inquiry_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
+    reply_form = ReplyForm(request.POST)    # POST 아닌 건 detail에
+
+    if request.user.is_superuser == 1:
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.user = request.user
+            reply.inquiry = inquiry
+            reply.product = product
+            reply.save()
+
+    # 나중에 비동기
+
     return redirect('products:detail', product_pk)

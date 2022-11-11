@@ -8,6 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
+from .models import Purchase
 
 
 
@@ -56,6 +57,7 @@ def update(request):
         forms = CustomUserChangeForm(request.POST, instance=request.user)
         if forms.is_valid():
             forms.save()
+            
             return redirect("accounts:profile", request.user.pk)
     else:
         forms = CustomUserChangeForm(instance=request.user)
@@ -86,7 +88,7 @@ def profile(request, user_pk):
     context = {
         "person": person,
     }
-    return render(request, "accounts/detail.html", context)
+    return render(request, "accounts/profile.html", context)
 
 
 @login_required
@@ -125,3 +127,12 @@ def delete(request):
     request.user.delete()
     auth_logout(request)
     return redirect("accounts:login")
+
+
+
+def purchase_list(request, pk):
+    purchases = Purchase.objects.get(pk=pk)
+    context = {
+        'purchases': purchases
+    }
+    return render(request, 'accounts/profile.html', context)

@@ -3,40 +3,134 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block content %}
-  <div class="container">
+  <div class="container d-flex justify-content-center">
     <div class="row">
       <div class="col-4 p-3">
         {% if person.image %}
           <img src="{{ person.image.url }}" alt="">
         {% else %}
-          <img src="" alt="">
+          <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
         {% endif %}
       </div>
-      <div class="col p-3">
-        <div class="d-flex">
-          <h2 class="fw-bold">{{ person }}
-            <span class="fs-5 ms-3 fw-light">팔로잉:
+      <div class="col-4 p-3 mx-auto my-auto w-50">
+        <div class="row">
+          <h2 class="fs-3 fw-bold">{{ person }}</h2>
+          <div class="d-flex">
+            <span class="fs-6 fw-light">팔로잉:
               {{ person.followings.count }}
-              |
 
-            </span><span class="fs-5 fw-light">팔로워:
+            </span>
+            <span class="fs-6 fw-light mx-3">팔로워:
               {{ person.followers.count }}
             </span>
-          </h2>
-          {% if request.user.is_authenticated %}
-            <p class="ms-5">
-              <form action="{% url 'accounts:follow' person.pk %}" method="POST">
-                {% csrf_token %}
-                <input type="submit" value="팔로우" class="btn btn-outline-primary">
-              </form>
-            </p>
-          {% endif %}
+          </div>
         </div>
-        <hr>
-        <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
-
       </div>
     </div>
   </div>
+  <!-- 회원정보 수정-->
+  <div class="d-flex justify-content-center">
+    <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
+    {% if request.user.is_authenticated %}
+      <p class="ms-3">
+        <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+          {% csrf_token %}
+          <input type="submit" value="팔로우" class="btn btn-outline-primary btn-sm">
+        </form>
+      </p>
+    {% endif %}
+  </div>
+
+  <!-- 구매한 식품 <p>{{ purchases.user }}님이 구매하신 식품</p> <div class="row row-cols-4 g-3"> <div class="col"> <div class="card h-100"> {% if purchases.image %} <img src="{{ purchases.image.url }}" class="card-img-top" alt="..."> {% else %} <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="상품대체용"> {% endif %}-->
+  <!-- 상품 정보 <div class="card-body"> {% for purchase in purchases %} <h5 class="card-title">{{ purchase.id }}</h5> <p class="card-text">{{ purchase.product }}</p> {% endfor %} </div> </div> </div> -->
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-domestic" role="tabpanel" aria-labelledby="pills-domestic-tab" tabindex="0">
+      <div class="row row-cols-4 g-3">
+        {% for purchase in purchases %}
+          <div class="col mt-3" style="position:relative">
+            <a href="">
+              {% for img in purchases.image.all %}
+                {% if forloop.first %}
+                  <img src="{{ img.image.url }}" alt="" class="img-fluid">
+                {% endif %}
+              {% endfor %}
+              <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">{{ domestic.location }}</span>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="tab-pane fade" id="pills-overseas" role="tabpanel" aria-labelledby="pills-overseas-tab" tabindex="0">
+      <div class="row row-cols-4 g-3">
+        {% for purchase in purchases %}
+          <div class="col mt-3" style="position:relative">
+            <a href="">
+              {% for img in purchases.image.all %}
+                {% if forloop.first %}
+                  <img src="{{ img.image.url }}" alt="" class="img-fluid">
+                {% endif %}
+              {% endfor %}
+              <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">{{ oversea.location }}</span>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-domestic" role="tabpanel" aria-labelledby="pills-domestic-tab" tabindex="0">
+      <div class="row row-cols-4 g-3">
+        <div class="col mt-3" style="position:relative">
+          <div href="">
+            <img src="" alt="" class="img-fluid">
+            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+          </a>
+        </div>
+        <div class="col mt-3" style="position:relative">
+          <a href="">
+            <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="" class="img-fluid">
+            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+          </a>
+        </div>
+        <div class="col mt-3" style="position:relative">
+          <a href="">
+            <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="" class="img-fluid">
+            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+          </a>
+        </div>
+        <div class="col mt-3" style="position:relative">
+          <a href="">
+            <img src="https://dummyimage.com/70x80/7a17d6/fff">product</span>
+        </a>
+      </div>
+      <div class="col mt-3" style="position:relative">
+        <a href="">
+          <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="" class="img-fluid">
+          <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+        </a>
+      </div>
+      <div class="col mt-3" style="position:relative">
+        <a href="">
+          <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="" class="img-fluid">
+          <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+        </a>
+      </div>
+      <div class="col mt-3" style="position:relative">
+        <a href="">
+          <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="" class="img-fluid">
+          <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+        </a>
+      </div>
+      <div class="col mt-3" style="position:relative">
+        <a href="">
+          <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="" class="img-fluid">
+          <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 2px black; font-weight:bold; font-size:100%; position:absolute; left:50%; bottom:0%; transform:translate(-50%, -50%);">Product</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 찜한 식품 -->
 
 {% endblock content %}
