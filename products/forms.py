@@ -36,6 +36,7 @@ class ReviewImageForm(ModelForm):
         fields = ['review_img']
         widgets = {
             'review_img': ClearableFileInput(attrs={'multiple': True})
+        }
 
 # 상품 문의 form
 class InquiryForm(ModelForm):

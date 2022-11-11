@@ -7,8 +7,7 @@ from .forms import *
 # Create your views here.
 def index(request):
     products = Product.objects.order_by('-pk')
-    review = Review.objects.order_by('-review_pk')
-
+    review = Review.objects.order_by('-pk')
     context = {
         'products': products,
         'review':review
@@ -61,7 +60,7 @@ def detail(request, product_pk):
     inquiry_form = InquiryForm()
     reply_form = ReplyForm()
     inquiries = product.inquiry_set.all()
-    replies = product.reply_set.all()
+    reviews = product.review_set.all() 
 
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
@@ -91,7 +90,7 @@ def detail(request, product_pk):
         'inquiry_form': inquiry_form,
         'reply_form': reply_form,
         'inquiries': inquiries,
-        'replies': replies,
+        'reviews': reviews,
     }
 
     return render(request, 'products/detail.html', context)
@@ -152,6 +151,7 @@ def ddib(request, product_pk):
     
     return redirect('products:detail', product_pk)
 
+# 후기 작성
 @login_required
 def review_create(request, product_pk):
     product = Product.objects.get(pk=product_pk)
@@ -161,7 +161,7 @@ def review_create(request, product_pk):
         review_image_form = ReviewImageForm(request.POST, request.FILES)
         tmp_img = request.FILES.getlist('review_img')
                 
-        # 상품 정보에 대한 폼과 이미지 폼이 유효하면
+        # 리뷰 작성에 대한 폼과 이미지 폼이 유효하면
         if review_form.is_valid() and review_image_form.is_valid():
             review = review_form.save(commit=False)
             review.user = request.user
@@ -174,7 +174,7 @@ def review_create(request, product_pk):
                     img_instance.save()
 
             review.save()
-            messages.success(request, '후기 등록이 완료되었습니다.')
+            messages.success(request, '후기가 정상적으로 수정되었습니다..')
             return redirect('products:detail', product_pk)
     else:
         review_form = ReviewForm()
@@ -182,10 +182,63 @@ def review_create(request, product_pk):
                 
     context = {
         'review_form': review_form,
-        'review_image_form': review_image_form,
+        'review_image_form': review_image_form
     }
 
     return render(request, 'products/review.html', context)
+
+# 후기 수정
+@login_required
+def review_update(request, product_pk, review_pk):
+    product = Product.objects.get(pk=product_pk)
+    review_images = ReviewImage.objects.filter(product_id=product_pk)
+
+    review = get_object_or_404(Review, pk=review_pk)
+    if request.user == review.user:
+        if request.method == 'POST':
+            review_form = ReviewForm(request.POST, instance=review)
+            # form에 review_image 폼 추가
+            review_image_form = ReviewImageForm(request.POST, request.FILES)
+            tmp_img = request.FILES.getlist('review_img')
+                    
+            for img in review_images:
+                if img:
+                    img.delete()
+
+            # 리뷰 작성에 대한 폼과 이미지 폼이 유효하면
+            if review_form.is_valid() and review_image_form.is_valid():
+                review = review_form.save(commit=False)
+
+                review.user = request.user
+                review.product = product
+
+                if tmp_img:
+                    for img in tmp_img:
+                        img_instance = ReviewImage(review=review, review_img=img)
+                        review.save()
+                        img_instance.save()
+
+                review.save()
+                messages.success(request, '후기 등록이 완료되었습니다.')
+                # 후기 목록이 포함된 상품 상세 보기 페이지로
+                return redirect('products:detail', product_pk, review_pk)
+        else:
+            review_form = ReviewForm(instance=review)
+            if review_images:
+                review_image_form = ReviewImageForm(instance=review_images[0])
+            else:
+                review_image_form = ReviewImageForm()
+            
+        context = {
+            'review_form': review_form,
+            'review_image_form': review_image_form,
+        }
+
+        return render(request, 'products/review.html', context)
+    
+    else:
+        return redirect('products:detail', product_pk, review_pk) 
+
        
 # 상품 문의 등록
 @login_required

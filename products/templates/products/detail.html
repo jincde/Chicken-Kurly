@@ -65,23 +65,22 @@
         <form action="{% url 'products:review_create' product.pk %}" method="POST">
           {% csrf_token %}
           <input type="submit" value="후기 작성" name="review">
-      </form>
+        </form>
       {% endif %}
         <h5 class='fw-bold'>후기 </h5>
+        {% for review in reviews %}
+          <p>{{ review.user }}</p>
+          <p>{{ review.product.product_name }}</p>
+          <p>{{ review.content }}</p>
+          <p>{{ review.created_at }} 작성</p>
+        {% endfor %}
+      {% comment %} 후기 수정 {% endcomment %}
       </div>
     </div>
     
     <!-- 상품 문의 등록 버튼 & 모달 -->
     <div class="row">
       <div class='mx-auto' style='width: 440px;'>
-      {% if request.user.is_authenticated %}
-        <form action="{% url 'products:review_create' product.pk %}" method="POST">
-          {% csrf_token %}
-          <input type="submit" value="후기 작성" name="review">
-      </form>
-      {% endif %}
-        <h5 class='fw-bold'>후기 </h5>
-      </div>
       <div class="text-end">
         <button type="button" class="btn btn-primary w-auto" data-bs-toggle="modal" data-bs-target="#inquiry">문의하기</button>
       </div>
@@ -91,7 +90,7 @@
         <div class="modal fade" id="inquiry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header"></div>
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
