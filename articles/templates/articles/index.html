@@ -21,10 +21,10 @@
           <div class="col-md-8">
             <div class="card-body">
               <div class='text-end fs-5' style="margin: -7px;">
-                {% if request.user in article.like_users.all %}
-                <a href="{% url 'articles:like' article.pk %}" style='text-decoration: none;'><i class="bi bi-heart-fill" style="color: red;">{{ article.like_users.count}}</i></a>
+                {% if article.user in article.like_users.all %}
+                  <i id='like-btn' data-article-id="{{ article.pk }}" class="bi-heart-fill" style="color: red;" ><span class="fs-6" id='like-count'>{{ article.like_users.count}}</span></i></a>
                 {% else %}
-                <a href="{% url 'articles:like' article.pk %}" style='text-decoration: none;'><i class="bi bi-heart" style="color: red;">{{ article.like_users.count}}</i></a>
+                  <i id='like-btn' data-article-id="{{ article.pk }}" class="bi-heart" style="color: red;" ><span class="fs-6" id='like-count'>{{ article.like_users.count}}</span></i></a>
                 {% endif %}
               </div>
               <h4>
@@ -113,4 +113,29 @@
   {% endif %}
 
 
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const likeBtn = document.querySelector('#like-btn')
+  
+    likeBtn.addEventListener('click', function (event){
+      console.log(event.target.dataset)
+      axios({
+        method: 'get',
+        url: `like/${event.target.dataset.articleId}/`
+      })
+      .then(response => {
+        if (response.data.isLiked === true){
+          event.target.classList.add('bi-heart-fill')
+          event.target.classList.remove('bi-heart')
+        } else {
+          event.target.classList.add('bi-heart')
+          event.target.classList.remove('bi-heart-fill')
+        } 
+        const likeCount = document.querySelector('#like-count')
+        likeCount.innerText = response.data.likeCount
+
+      })
+    })
+
+</script>
 {% endblock content %}

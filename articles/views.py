@@ -3,6 +3,7 @@ from .forms import ArticleForm
 from .models import Article, Comment
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required  
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -110,9 +111,13 @@ def like(request, pk):
 
     if request.user in article.like_users.all():
         article.like_users.remove(request.user)
+        is_liked = False
     else:
         article.like_users.add(request.user)
+        is_liked = True
 
-    return redirect('articles:index')
+    context = {"isLiked": is_liked, "likeCount": article.like_users.count()}
+
+    return JsonResponse(context)
 
     
