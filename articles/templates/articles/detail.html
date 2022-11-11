@@ -1,7 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class='container'>
   <h1 class='text-center'>Detail</h1><hr>
-
+  {{ article.title }}
+  <hr>
+  {{ article.content }}
+  {% if article.image %}
+  <div class="my-4 mx-2 text-center">
+    <img class="rounded me-3" style="width: 20rem; height: 20rem" src="{{ article.image.url }}" alt="image">
+  </div>
+  {% endif %}
+  <hr>
+  <!-- 댓글창 -->
+  {% if comments %}
+    {% for comment in comments %}
+    <div class='mx-2' sytle='margin: -2px;'>
+      <span class='fs-6 fw-bold'>{{ comment.user }}</span><span class='fs-6 opacity-75'>  {{ comment.created_at }}</span>
+      <p class='fs-6 opacity-75'>{{ comment.content }}
+        <span>
+          <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+            <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+              <i class="bi bi-x"></i>
+            </span>
+              </a>
+            </span>
+          </p>                            
+        </div>                        
+      {% endfor %}
+    {% else %}
+        <h4 class='text-center'>댓글이 없습니다 ㅠㅠ</h4>
+    {% endif %}
+    <!-- 댓글 입력 폼 -->
+    <form action="{% url 'articles:c_create' article.pk %}" method="POST" name="comment">
+      {% csrf_token %}
+        <div style="display: inline-block;">
+          <input style="width: 40rem; border: 0.8px solid; padding: 0.3rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" required>
+        </div>
+        <div style="display: inline-block;">
+          <button class="btn btn-primary btn-sm mb-1 ms-1" type="submit">등록</button>
+        </div>
+    </div>
+    </form>
+  </div>
 {% endblock content %}
