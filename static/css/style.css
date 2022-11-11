@@ -1,3 +1,7 @@
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
 textarea:hover,
 input:hover,
 textarea:active,
@@ -27,4 +31,31 @@ label:focus,
 
 .non_a:hover {
   color: #5e0080;
+}
+
+.signup-input:focus {
+  outline: 1px sollid #5e0080 !important;
+}
+
+.productcard {
+  width: 249px;
+  position: relative;
+}
+
+.product-img img {
+  transition: all 0.3s linear;
+}
+
+.product-img:hover img {
+  transform: scale(1.05);
+}
+
+.product-img {
+  overflow: hidden;
+}
+
+.cart-icon {
+  position: absolute;
+  right: 10px;
+  bottom: 120px;
 }
