@@ -7,7 +7,7 @@ from .forms import *
 # Create your views here.
 def index(request):
     products = Product.objects.order_by('-pk')
-    review = Review.objects.order_by('-review_pk')
+    review = Review.objects.order_by('-pk')
 
     context = {
         'products': products,
@@ -60,7 +60,7 @@ def detail(request, product_pk):
     product = Product.objects.get(pk=product_pk)
     inquiry_form = InquiryForm()
     reply_form = ReplyForm()
-    inquiries = product.inquiry_set.all()
+    inquiries = product.inquiry_set.order_by('-pk')
 
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
@@ -71,13 +71,12 @@ def detail(request, product_pk):
     if request.user.is_authenticated:
         cart = Cart.objects.get(user=request.user)
     
-    # 구매 수량 입력 후 장바구니
     if request.method == 'POST':
-        product_buy_form = ProductBuyForm(request.POST)
-
-        if product_buy_form.is_valid():
-            form = product_buy_form.save()
-            if 'cart' in request.POST:
+        # 구매 수량 입력 후 장바구니
+        if 'cart' in request.POST:
+            product_buy_form = ProductBuyForm(request.POST)
+            if product_buy_form.is_valid():
+                form = product_buy_form.save()
                 CartItem.objects.create(cart=cart, product=product, quantity=form.quantity)
 
     else:
@@ -201,6 +200,27 @@ def create_inquiry(request, product_pk):
 
     return redirect('products:detail', product_pk)
 
+
+# 상품 문의 수정
+@login_required
+def update_inquiry(request, product_pk, inquiry_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
+
+    if request.method == 'POST':
+        inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
+        if inquiry_form.is_valid():
+            inquiry = inquiry_form.save(commit=False)
+            inquiry.user = request.user
+            inquiry.product = product
+            inquiry.save()
+
+    else:
+        inquiry_form = InquiryForm(instance=inquiry)
+
+    # 나중에 비동기?
+
+    return redirect('products:detail', product_pk)
 
 @login_required
 def create_reply(request, product_pk, inquiry_pk):
