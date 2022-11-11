@@ -16,6 +16,8 @@
 
   <!-- bootstrap icon -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
   <title>치킨컬리</title>
 </head>
 
@@ -40,7 +42,8 @@
   </section>
   <nav class="navbar navbar-expand-lg bg-light" style="height: 63px" style="background-color: white;">
     <div class="container nav-grid" style="max-width: 1050px">
-      <a class="navbar-brand" href="#"><img src="{% static 'images/logo.png' %}" width="100%" height="42"></a>
+      <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo.png' %}" width="100%"
+          height="42"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
