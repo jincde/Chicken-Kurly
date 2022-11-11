@@ -37,59 +37,70 @@
   </ul>
 </div>
 
-{% for product in products %}
-{% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-  <a href="{% url 'products:detail' product.pk %}">
-    <img src="{{ product.image_set.all.0.image.url }}" alt="" width="300px">
-
-    <p>{{ product.product_name }}</p>
-    <p>{{ product.price }}</p>
-    <p>{{ product.brand }}</p>
-    <p>{{ product.category }}</p>
-  </a>
+<div class="container d-flex justify-content-between" style="width: 1070px; height: 435px;">
+  {% for product in products %}
+  <div class="productcard" style="border: 0px solid black; color: rgb(51, 51, 51);">
+    {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
+      <div class="product-img" style="">
+        <img src="{{ product.image_set.all.0.image.url }}" alt="" width="249px" height="329px"
+          style="object-fit: cover">
+      </div>
+      <div class="cart-icon" style=""><i class="bi bi-cart p-2"
+          style="background-color: #684252c2; color: white; border-radius: 50%;"></i></div>
+      <div style="padding: 12px 10px 0 0">
+        <div class="d-flex justify-content-between">
+          <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
+            style="color: #FA622F; font-weight: 800;">{{ product.category }}</span>
+        </div>
+        <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
+        <p class="m-0" style="font-weight: 800;">{{ product.price }} 원</p>
+      </div>
+  </div>
   {% endfor %}
+  
+</div>
 
-  <!-- 얇은 광고 배너1 -->
-  <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
-    <img src="https://dummyimage.com/1070x140/d9d9d9/000000&text=AD+1">
+<!-- 얇은 광고 배너1 -->
+<div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
+  <img src="https://dummyimage.com/1070x140/d9d9d9/000000&text=AD+1">
+</div>
+
+<!-- 많이 구매된 순 -->
+<div class="container d-flex justify-content-center align-items-center"
+  style="max-width:1070px; height: 590px; font-weight: 600; padding: 40px 0;">많이
+  구매된 상품 순 4개씩
+</div>
+
+<!-- 조회수 순 -->
+<div class="container d-flex justify-content-center align-items-center"
+  style="max-width:1070px; height: 590px; font-weight: 600; padding: 40px 0;">많이 조회된 상품 순 4개씩
+</div>
+
+<!-- 얇은 광고 배너2 -->
+<div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
+  <img src="https://dummyimage.com/1070x140/d9d9d9/000000&text=AD+1">
+</div>
+
+<!-- 인스타그램 크롤링 -->
+<div class="container d-flex flex-column justify-content-center align-items-center"
+  style="max-width:1070px; height: 450px; font-weight: 600; padding: 40px 0;">
+  <p>인스타그램 크롤링 6개씩</p>
+  <p class="text-muted">사진크기는 정사각형 object-fit: cover?</p>
+  <div style="min-width: 1070px; max-width: 1070px; height: 175px;">
+    <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+    <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+    <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+    <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+    <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
+    <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
   </div>
-
-  <!-- 많이 구매된 순 -->
-  <div class="container d-flex justify-content-center align-items-center"
-    style="max-width:1070px; height: 590px; font-weight: 600; padding: 40px 0;">많이
-    구매된 상품 순 4개씩
+  <div class="d-flex flex-column align-items-center" style="margin-top: 40px;">
+    <p class="m-0" style="color:rgb(153, 153, 153)">더 많은 고객후기가 궁금하다면?</p>
+    <p class="m-0" style="color:rgb(51, 51, 51); font-weight: 500;">@chickenkurly_regram #치킨컬리</p>
   </div>
+</div>
 
-  <!-- 조회수 순 -->
-  <div class="container d-flex justify-content-center align-items-center"
-    style="max-width:1070px; height: 590px; font-weight: 600; padding: 40px 0;">많이 조회된 상품 순 4개씩
-  </div>
-
-  <!-- 얇은 광고 배너2 -->
-  <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
-    <img src="https://dummyimage.com/1070x140/d9d9d9/000000&text=AD+1">
-  </div>
-
-  <!-- 인스타그램 크롤링 -->
-  <div class="container d-flex flex-column justify-content-center align-items-center"
-    style="max-width:1070px; height: 450px; font-weight: 600; padding: 40px 0;">
-    <p>인스타그램 크롤링 6개씩</p>
-    <p class="text-muted">사진크기는 정사각형 object-fit: cover?</p>
-    <div style="min-width: 1070px; max-width: 1070px; height: 175px;">
-      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
-      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
-      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
-      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
-      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
-      <div class="d-inline"><img src="https://dummyimage.com/175x175/d9d9d9/000000"></div>
-    </div>
-    <div class="d-flex flex-column align-items-center" style="margin-top: 40px;">
-      <p class="m-0" style="color:rgb(153, 153, 153)">더 많은 고객후기가 궁금하다면?</p>
-      <p class="m-0" style="color:rgb(51, 51, 51); font-weight: 500;">@chickenkurly_regram #치킨컬리</p>
-    </div>
-  </div>
-
-  {% if request.user.is_superuser == 1 %}  
-    <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
-  {% endif %}
+{% if request.user.is_superuser == 1 %}
+<a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
+{% endif %}
 {% endblock %}

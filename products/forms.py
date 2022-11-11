@@ -1,5 +1,6 @@
 from django.forms import ModelForm, ClearableFileInput
-from .models import Product, Image, Review, ReviewImage
+from .models import *
+
 
 # admin이 판매상품 정보를 등록할 때의 form
 class ProductForm(ModelForm):
@@ -22,6 +23,7 @@ class ImageForm(ModelForm):
             'image': ClearableFileInput(attrs={'multiple': True})
         }
 
+# 후기 작성 폼
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
@@ -34,4 +36,22 @@ class ReviewImageForm(ModelForm):
         fields = ['review_img']
         widgets = {
             'review_img': ClearableFileInput(attrs={'multiple': True})
+
+# 상품 문의 form
+class InquiryForm(ModelForm):
+    class Meta:
+        model = Inquiry
+        fields = ['title', 'content']
+        labels = {
+            'title': '제목',
+            'content': '내용',
+        }
+
+# 상품 문의에 대한 답변 form
+class ReplyForm(ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['content']
+        labels = {
+            'content': '내용',
         }

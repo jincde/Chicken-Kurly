@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
@@ -58,6 +58,11 @@ def create(request):
 
 def detail(request, product_pk):
     product = Product.objects.get(pk=product_pk)
+    inquiry_form = InquiryForm()
+    reply_form = ReplyForm()
+    inquiries = product.inquiry_set.all()
+    replies = product.reply_set.all()
+
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
     product.save()
@@ -83,6 +88,10 @@ def detail(request, product_pk):
         'product': product,
         'image_cnt': product.image_set.count(),
         'product_buy_form': product_buy_form,
+        'inquiry_form': inquiry_form,
+        'reply_form': reply_form,
+        'inquiries': inquiries,
+        'replies': replies,
     }
 
     return render(request, 'products/detail.html', context)
@@ -178,3 +187,37 @@ def review_create(request, product_pk):
 
     return render(request, 'products/review.html', context)
        
+# 상품 문의 등록
+@login_required
+def create_inquiry(request, product_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry_form = InquiryForm(request.POST)    # POST 아닌 건 detail에
+
+    if inquiry_form.is_valid():
+        inquiry = inquiry_form.save(commit=False)
+        inquiry.user = request.user
+        inquiry.product = product
+        inquiry.save()
+
+    # 나중에 비동기?
+
+    return redirect('products:detail', product_pk)
+
+
+@login_required
+def create_reply(request, product_pk, inquiry_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
+    reply_form = ReplyForm(request.POST)    # POST 아닌 건 detail에
+
+    if request.user.is_superuser == 1:
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.user = request.user
+            reply.inquiry = inquiry
+            reply.product = product
+            reply.save()
+
+    # 나중에 비동기
+
+    return redirect('products:detail', product_pk)
