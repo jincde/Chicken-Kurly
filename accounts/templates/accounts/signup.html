@@ -18,7 +18,7 @@
         </div>
         <div>
           <input class="btn"
-            style="margin-left: 8px; width: 120px; height: 46px; border: 1px solid #5e0080; color: #5e0080;"
+            style="margin-left: 8px; width: 120px; height: 46px; border: 2px solid #5e0080; color: #5e0080;"
             value="중복확인">
         </div>
       </div>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <h6 class="my-3" style="width:123px; color: rgb(51, 51, 51); font-size:14px;">비밀번호 확인</h6>
+        <h6 class="my-3" style="width: 123px; color: rgb(51, 51, 51); font-size: 14px;">비밀번호 확인</h6>
         <div class="my-3">
           <input type="password" style="width:333px; height: 46px;" name="password2" autocomplete="new-password"
             class="signup-input form-control" placeholder="비밀번호를 한 번 더 입력해주세요" required="" id="id_password2">
@@ -44,27 +44,21 @@
         </div>
         <div>
           <input class="btn"
-            style="width: 120px; height: 46px; border: 1px solid #5e0080; color: #5e0080; margin-left: 8px;"
+            style="width: 120px; height: 46px; border: 2px solid #5e0080; color: #5e0080; margin-left: 8px;"
             value="주소검색">
         </div>
       </div>
-      <input type="submit" class="btn py-2 form-control fw-bold" style="background-color: #5e0080; color: white"
-        value="회원가입완료">
+      <div class="d-flex justify-content-center my-3">
+        <input type="submit" class="btn py-2 px-5 fw-bold"
+          style="border-radius:0px; width:220px; height:56px; background-color: #5e0080; color: white" value="회원가입">
+      </div>
     </form>
   </div>
   <hr>
-  <div class="d-flex justify-content-center">
-    <p style="color: rgba(194, 200, 204, 1)">이미 회원이라면? <a class="text-decoration-none" style="color:#5e0080"
-        href="{% url 'accounts:login' %}">로그인</a></p>
+  <div class="d-flex justify-content-center align-items-center">
+    <p class='mb-0' style="color: rgba(194, 200, 204, 1)">이미 회원이라면? <a class="text-decoration-none"
+        style="color:#5e0080" href="{% url 'accounts:login' %}">로그인</a></p>
   </div>
 </section>
 
-{% endblock content %}
-
-
-<input type="text" name="username" maxlength="150" autofocus="" class="form-control" placeholder="사용자 이름" required=""
-  id="id_username">
-<input type="password" name="password1" autocomplete="new-password" class="form-control" placeholder="비밀번호" required=""
-  id="id_password1">
-<input type="password" name="password2" autocomplete="new-password" class="form-control" placeholder="비밀번호 확인"
-  required="" id="id_password2">
+{% endblock %}
