@@ -4,9 +4,29 @@
 {% bootstrap_javascript %}
 
 {% block content %}
-  <form action="{% url "accounts:login" %}" method="POST" enctype="multipart/form-data">
+<section class="" style="width: 330px; margin: 50px auto 50px;">
+  <h2 class="d-flex justify-content-center my-5">로그인</h2>
+
+  <form class="mb-3" action="{% url 'accounts:login' %}" method="POST" enctype="multipart/form-data"
+    style="border-top: 2px solid rgb(51, 51, 51); font-size:14px;">
     {% csrf_token %}
-    {% bootstrap_form forms %}
-    <input type="submit" class="btn btn-outline-primary" value="로그인">
+    <div class="my-3">
+      <input type="text" style="height: 46px; border: 1.5px solid rgb(221, 221, 222);" name="username" autofocus=""
+        autocapitalize="none" autocomplete="username" maxlength="150" class="form-control" placeholder="아이디를 입력해주세요"
+        required="" id="id_username">
+    </div>
+    <div class="my-3">
+      <input type="password" style="height: 46px; border: 1.5px solid rgb(221, 221, 222);" name="password"
+        autocomplete="current-password" class="form-control" placeholder="비밀번호를 입력해주세요" required="" id="id_password">
+    </div>
+    <div class="d-flex justify-content-end">
+      <p class="text-decoration-none" style="font-size: 12px; color: rgb(51, 51, 51)"><a class="non_a">아이디 찾기</a>
+        | <a class="non_a">비밀번호 찾기</a></p>
+    </div>
+    <input type="submit" class="btn py-2 form-control fw-bold" style="background-color: #5e0080; color: white"
+      value="로그인">
   </form>
-{% endblock content %}
+  <input class="btn py-2 form-control fw-bold" style="border:2px solid #5e0080;background-color: white; color: #5e0080"
+    value="회원가입">
+</section>
+{% endblock %}

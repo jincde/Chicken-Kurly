@@ -30,5 +30,5 @@ label:focus,
 }
 
 .signup-input:focus {
-  outline: 1px sollid #5e0080;
+  outline: 1px sollid #5e0080 !important;
 }
