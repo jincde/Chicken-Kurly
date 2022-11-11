@@ -26,7 +26,7 @@
     <input type="submit" class="btn py-2 form-control fw-bold" style="background-color: #5e0080; color: white"
       value="로그인">
   </form>
-  <input class="btn py-2 form-control fw-bold" style="border:2px solid #5e0080;background-color: white; color: #5e0080"
-    value="회원가입">
+  <a href="{% url 'accounts:signup' %}"> <input class="btn py-2 form-control fw-bold"
+      style="border:2px solid #5e0080;background-color: white; color: #5e0080" value="회원가입"></a>
 </section>
 {% endblock %}
