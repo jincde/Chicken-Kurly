@@ -7,9 +7,11 @@ from .forms import *
 # Create your views here.
 def index(request):
     products = Product.objects.order_by('-pk')
+    review = Review.objects.order_by('-review_pk')
 
     context = {
         'products': products,
+        'review':review
         # 'image_cnt': products.image_set.count(), # index 페이지에서 carousel로 보여줄 때 사용
     }
 
@@ -140,3 +142,39 @@ def ddib(request, product_pk):
     DdibItem.objects.create(ddib=ddib, product=product)
     
     return redirect('products:detail', product_pk)
+
+@login_required
+def review_create(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        # form에 review_image 폼 추가
+        review_image_form = ReviewImageForm(request.POST, request.FILES)
+        tmp_img = request.FILES.getlist('review_img')
+                
+        # 상품 정보에 대한 폼과 이미지 폼이 유효하면
+        if review_form.is_valid() and review_image_form.is_valid():
+            review = review_form.save(commit=False)
+            review.user = request.user
+            review.product = product
+
+            if tmp_img:
+                for img in tmp_img:
+                    img_instance = ReviewImage(review=review, review_img=img)
+                    review.save()
+                    img_instance.save()
+
+            review.save()
+            messages.success(request, '후기 등록이 완료되었습니다.')
+            return redirect('products:detail', product_pk)
+    else:
+        review_form = ReviewForm()
+        review_image_form = ReviewImageForm()
+                
+    context = {
+        'review_form': review_form,
+        'review_image_form': review_image_form,
+    }
+
+    return render(request, 'products/review.html', context)
+       

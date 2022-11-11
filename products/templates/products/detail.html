@@ -58,7 +58,15 @@
     </div>
 
     <div class="row">
-      
+      <div class='mx-auto' style='width: 440px;'>
+      {% if request.user.is_authenticated %}
+        <form action="{% url 'products:review_create' product.pk %}" method="POST">
+          {% csrf_token %}
+          <input type="submit" value="후기 작성" name="review">
+      </form>
+      {% endif %}
+        <h5 class='fw-bold'>후기 </h5>
+      </div>
     </div>
   </div>
 {% endblock content %}
