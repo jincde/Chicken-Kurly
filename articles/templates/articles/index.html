@@ -20,9 +20,12 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <div class='text-end'>
-                <a href="{% url 'articles:update' article.pk %}" style="text-decoration: none;"><span class='text-primary opacity-75'>수정</span></a>
-                <a href="{% url 'articles:delete' article.pk %}" style="text-decoration: none;"><span class='text-danger opacity-75'>삭제</span></a>
+              <div class='text-end fs-5' style="margin: -7px;">
+                {% if request.user in article.like_users.all %}
+                <a href="{% url 'articles:like' article.pk %}" style='text-decoration: none;'><i class="bi bi-heart-fill" style="color: red;">{{ article.like_users.count}}</i></a>
+                {% else %}
+                <a href="{% url 'articles:like' article.pk %}" style='text-decoration: none;'><i class="bi bi-heart" style="color: red;">{{ article.like_users.count}}</i></a>
+                {% endif %}
               </div>
               <h4>
                 <!-- 카드 타이틀 -->
@@ -36,7 +39,7 @@
                 -webkit-box-orient: vertical">{{ article.title }}</a>
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModal{{ article.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h1 class="modal-title fs-3" id="exampleModalLabel">{{ article.title }}</h1>
@@ -45,27 +48,25 @@
                       <div class="modal-body fs-6">
                         {{ article.content }}
                       </div>
-                      <div class="text-center">
-                      {% if article.image %}
-                        <img src="{{ article.image.url }}" class="img-fluid rounded-start" alt="{{ article.image }}" style="max-width: 500px;">
-                      {% else %}
-                        <img src="https://dummyimage.com/200x215/000/fff" class="img-fluid rounded-start" alt="img">
-                      {% endif %}
-                      </div>
+
+                      
                       <hr>
                       <!-- 댓글창 -->
                       {% for comment in comments %}
                         {% if article.pk == comment.article.pk %}
-                          <p class='fs-6'>|  작성자   |  {{ comment.created_at }}</p>
-                          <p class='fs-6'>>|  {{ comment.content }}
-                            <span>
-                              <a href="{% url 'articles:c_delete' comment.pk %}">
-                                <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-                                  <i class="bi bi-x"></i>
-                                </span>
-                              </a>
-                            </span>                            
-                          </p>
+                          <div class='mx-2' sytle='margin: -2px;'>
+                            <span class='fs-6 fw-bold'>{{ comment.user }}</span><span class='fs-6 opacity-75'>  {{ comment.created_at }}</span>
+                            <p class='fs-6 opacity-75'>{{ comment.content }}
+                              <span>
+                                <a href="{% url 'articles:c_delete' comment.pk %}">
+                                  <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                                    <i class="bi bi-x"></i>
+                                  </span>
+                                </a>
+                              </span>
+                            </p>                            
+                          </div>
+                         
                         {% endif %}
                       {% endfor %}
 
@@ -74,13 +75,14 @@
                         {% csrf_token %}
                         <div class="d-flex justify-content-evenly fs-6">
                           <div>
-                            <input style="width: 27rem; border: 1px solid; padding: 0.3rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" required>
+                            <input style="width: 45rem; border: 1px solid; padding: 0.3rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" maxlength ="90"required>
                           </div>
                           <div>
                             <button class="btn btn-primary btn-sm " type="submit">등록</button>
                           </div>
                       </div>
                       </form>
+
                       <!-- 모달창 푸터 -->
                       <div class="modal-footer my-3">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -91,70 +93,74 @@
               </h4>
               <!-- 글작성자, 작성시간 -->
               <p class="fs-6">
-                글작성자  |  {{ article.created_at }}  |
+                {{ article.user }}  |  {{ article.created_at }}  |
               </p>
               <hr>
+              <!-- 글 내용 요약 -->
               <p style="
-              min-height: 3rem;
+              min-height: 1rem;
               text-overflow: ellipsis;
               overflow: hidden;
               word-break: break-word;
               display: -webkit-box;
-              -webkit-line-clamp: 2;
+              -webkit-line-clamp: 1;
               -webkit-box-orient: vertical">
                 {{ article.content }}
-              </p>
+            </p>
+            </div>
+            <div class='text-end mx-2'>
+              <a href="{% url 'articles:update' article.pk %}" style="text-decoration: none;"><span class='text-primary opacity-75'>수정</span></a>
+              <a href="{% url 'articles:delete' article.pk %}" style="text-decoration: none;"><span class='text-danger opacity-75'>삭제</span></a>
             </div>
           </div>
         </div>
       </div>
   {% endfor %}
 
-  <!-- 페이지네이션 -->
+  <!-- 게시글 페이지네이션 -->
   {% if paginated_articles %}
-  <ul class="pagination justify-content-center">
-    <!-- 첫 페이지 -->
-    {% if paginated_articles.has_previous %}
-      <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
-      <li class="page-item">
-        <a class="page-link" tabindex="-1" href="?page=1">&#60;</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled">
-        <a class="page-link" href="#">&#60;</a>
-      </li>
-    {% endif %}
-
-    <!-- 페이지리스트 -->
-    <!-- //페이지 범위를 하나씩 리턴 -->
-    {% for page_number in paginated_articles.paginator.page_range %}
-      {% if page_number >= paginated_articles.number|add:-2 and page_number <= paginated_articles.number|add:2 %}
-          <!-- // 현재 페이지일 때는 active -->
-          {% if page_number == paginated_articles.number %}
-            <li class="page-item active" aria-current="page">
-              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-          {% else %}
-            <li class="page-item text-color-warning">
-              <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-          {% endif %}
+    <ul class="pagination justify-content-center">
+      <!-- 첫 페이지 -->
+      {% if paginated_articles.has_previous %}
+        <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+        <li class="page-item">
+          <a class="page-link" tabindex="-1" href="?page=1">&#60;</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">&#60;</a>
+        </li>
       {% endif %}
-    {% endfor %}
 
-    <!-- 다음페이지 -->
-    {% if paginated_articles.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ max_index }}">&#62;</a>
-      </li>
-    {% else %}
-      <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" href="#">&#62;</a>
-      </li>
-    {% endif %}
-  </ul>
-</div>
-{% endif %}
+      <!-- 페이지리스트 -->
+      <!-- //페이지 범위를 하나씩 리턴 -->
+      {% for page_number in paginated_articles.paginator.page_range %}
+        {% if page_number >= paginated_articles.number|add:-2 and page_number <= paginated_articles.number|add:2 %}
+            <!-- // 현재 페이지일 때는 active -->
+            {% if page_number == paginated_articles.number %}
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% else %}
+              <li class="page-item text-color-warning">
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <!-- 다음페이지 -->
+      {% if paginated_articles.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ max_index }}">&#62;</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" href="#">&#62;</a>
+        </li>
+      {% endif %}
+    </ul>
+  {% endif %}
 
 
 {% endblock content %}
