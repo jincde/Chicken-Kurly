@@ -38,6 +38,7 @@ class Profile(models.Model):
     )
 
 
+
 class Purchase(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='purchases', on_delete=models.CASCADE,)
     product = models.ForeignKey(Product, on_delete=models.CASCADE,)
@@ -54,3 +55,4 @@ class Purchase(models.Model):
         format="JPEG",
         options={"quality": 60},
     )
+

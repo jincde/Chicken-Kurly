@@ -4,25 +4,28 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U'%}">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U'%}">
 
-    <!-- bootstrap icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-    <title>치킨컬리</title>
-  </head>
+  <!-- bootstrap icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <title>치킨컬리</title>
+</head>
 
-  <style>
-    a {
-      text-decoration: none;
-    }
-  </style>
+<style>
+  a {
+    text-decoration: none;
+  }
+</style>
 
 
 <body>
@@ -39,7 +42,8 @@
   </section>
   <nav class="navbar navbar-expand-lg bg-light" style="height: 63px" style="background-color: white;">
     <div class="container nav-grid" style="max-width: 1050px">
-      <a class="navbar-brand" href="#"><img src="{% static 'images/logo.png' %}" width="100%" height="42"></a>
+      <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo.png' %}" width="100%"
+          height="42"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -54,8 +58,8 @@
           </li>
         </ul>
         <form class="d-flex align-items-center" role="search">
-          <input class="form-control me-2" type="search" placeholder="검색어를 입력해주세요." aria-label="Search"
-            style="width: 400px; height: 47px; color: #5e0080; border:1px solid #5e0080;">
+          <input class="form-control search-input me-2" type="search" placeholder="검색어를 입력해주세요." aria-label="Search"
+            style="width: 400px; height: 47px; color: #5e0080; border:2px solid #5e0080;">
         </form>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
           viewBox="0 0 16 16">
@@ -79,16 +83,32 @@
   </nav>
   {% block content %} {% endblock %}
   <footer>
-    <div class="container" style="max-width: 1070px; height: 580px; padding: 30px 0 0;">
-      <div style="border-top:1px solid #dfdfdf;">FOOTER</div>
+    <div class="container" style="max-width: 1070px; height: 580px; padding: 30px 0 0; border-top:1px solid #dfdfdf;">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h2>고객센터</h2>
+          <p>010-000-0000 | 09:00 ~ 18:00</p>
+        </div>
+        <div>
+          <p>소개 인재채용 약관 개인정보처리방침 이용안내</p>
+          <p>법인명 등록번호</p>
+          <p>주소 대표이사</p>
+          <p>입점문의 제휴문의</p>
+          <p>채용문의</p>
+          <p>팩스 010-000-0000</p>
+          <p>인스타 트위터 페이스북 카카오톡 네이버블로그</p>
+        </div>
+      </div>
     </div>
   </footer>
 
 
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
 
-    {% block script %}{% endblock %}
-  </body>
+  {% block script %}{% endblock %}
+</body>
 
 </html>
