@@ -37,6 +37,9 @@
   </ul>
 </div>
 
+<div class="container d-flex justify-content-center" style="width: 1070px;">
+  <h3 style="color: rgb(51, 51, 51)">최신 상품 판매, 이 상품은 어떤가요?</h3>
+</div>
 <div class="container d-flex justify-content-between" style="width: 1070px; height: 435px;">
   {% for product in products %}
   <div class="productcard" style="border: 0px solid black; color: rgb(51, 51, 51);">
@@ -46,18 +49,18 @@
           style="object-fit: cover">
       </div>
       <div class="cart-icon" style=""><i class="bi bi-cart p-2"
-          style="background-color: #684252c2; color: white; border-radius: 50%;"></i></div>
+          style="background-color: #684252c2; color: white; border-radius: 10%;"></i></div>
       <div style="padding: 12px 10px 0 0">
         <div class="d-flex justify-content-between">
           <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
-            style="color: #FA622F; font-weight: 800;">{{ product.category }}</span>
+            style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
         </div>
         <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
         <p class="m-0" style="font-weight: 800;">{{ product.price }} 원</p>
       </div>
   </div>
   {% endfor %}
-  
+
 </div>
 
 <!-- 얇은 광고 배너1 -->
