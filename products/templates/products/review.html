@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block content %}
+    <div class='container py-3' style='background-color:rgb(252, 248, 237, 0.7);'>
+        {% comment %} <div style='float:left'><h5 class='fw-bolder'>{{ product_name }}</h5></div> {% endcomment %}
+        <form action="" method="POST" enctype="multipart/form-data" class='form-label mt-3'>
+            {% csrf_token %}
+            {% bootstrap_form review_form %}
+            {% bootstrap_form review_image_form %}
+            {% bootstrap_button button_class="btn btn-warning fw-bolder mb-2" style='color:white; float:right' button_type="submit" content="리뷰 올리기" %}
+        </form>
+    </div>
+
+{% endblock %}

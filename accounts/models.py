@@ -36,3 +36,5 @@ class Profile(models.Model):
         format="JPEG",
         options={"quality": 50},
     )
+
+
