@@ -4,8 +4,7 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import Thumbnail
 from django.conf import settings
 from products.models import Product
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
+
  
 
 # Create your models here.
@@ -37,9 +36,37 @@ class Profile(models.Model):
         options={"quality": 50},
     )
 
-class Purchase(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='purchases', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
-    image_thumbnail = ImageSpecField(source='image', processors=[ResizeToFill(120,60)])
+
+class Order(models.Model):
+  first_name = models.CharField(max_length=50)
+  last_name = models.CharField(max_length=50)
+  created = models.DateTimeField(auto_now_add=True)
+  paid = models.BooleanField(default=False)
+
+  class Meta:
+    ordering = ['-created']
+
+  def __str__(self):
+    return 'Order {}'.format(self.id)
+
+  def get_total_product(self):
+    return sum(item.get_item_price() for item in self.items.all())
+
+  def get_total_price(self):
+    total_product = self.get_total_product()
+    return total_product - self.discount
+
+
+class OrderItem(models.Model):
+  order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+  product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
+  price = models.DecimalField(max_digits=10, decimal_places=2)
+  image = models.ImageField(upload_to='img/', blank=True)
+
+  def __str__(self):
+    return '{}'.format(self.id)
+
+  def get_item_price(self):
+    return self.price * self.quantity
+
 
