@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = 'articles'
 
 urlpatterns = [
@@ -12,4 +13,4 @@ urlpatterns = [
     path("comment/<int:pk>/", views.c_create, name="c_create"),
     path("comment/<int:c_pk>/delete/<int:a_pk>", views.c_delete, name="c_delete"),
     path("like/<int:pk>/", views.like, name="like"),
-]
+] 

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  <div class="container my-5">
+    {% if request.resolver_match.url_name == 'create' %}
+      <h1 class="text-center mb-5">판매 상품 등록</h1>
+    {% else %}
+      <h1 class="text-center mb-5">판매 상품 수정</h1>
+    {% endif %}
+
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% bootstrap_form product_form %}
+      {% bootstrap_form image_form %}
+
+      <div class="text-end">
+
+        {% if request.resolver_match.url_name == 'create' %}
+          <input type="submit" value="등록" class="btn btn-primary">
+        {% else %}
+          <input type="submit" value="수정" class="btn btn-primary">
+        {% endif %}
+      </div>
+    </form>
+  </div>
+{% endblock content %}
