@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
 from .forms import *
+from django.http import JsonResponse
+
 
 # Create your views here.
 def index(request):
@@ -16,6 +18,7 @@ def index(request):
     }
 
     return render(request, 'products/index.html', context)
+
 
 # admin의 판매 상품 등록
 @login_required
@@ -56,8 +59,10 @@ def create(request):
     else:
         return redirect('products:index')    # admin 아니면 index로 리다이렉트
 
+
 def detail(request, product_pk):
     product = Product.objects.get(pk=product_pk)
+    product_buy_form = ProductBuyForm()
     inquiry_form = InquiryForm()
     reply_form = ReplyForm()
     inquiries = product.inquiry_set.order_by('-pk')
@@ -66,22 +71,6 @@ def detail(request, product_pk):
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
     product.save()
-    
-    # 유저 회원가입 시 장바구니가 자동으로 생성됨.
-    # 로그인 한 유저면 카트 인스턴스를 생성함.
-    if request.user.is_authenticated:
-        cart = Cart.objects.get(user=request.user)
-    
-    if request.method == 'POST':
-        # 구매 수량 입력 후 장바구니
-        if 'cart' in request.POST:
-            product_buy_form = ProductBuyForm(request.POST)
-            if product_buy_form.is_valid():
-                form = product_buy_form.save()
-                CartItem.objects.create(cart=cart, product=product, quantity=form.quantity)
-
-    else:
-        product_buy_form = ProductBuyForm()
     
     context = {
         'product': product,
@@ -94,6 +83,7 @@ def detail(request, product_pk):
     }
 
     return render(request, 'products/detail.html', context)
+
 
 def update(request, product_pk):
     product = Product.objects.get(pk=product_pk)
@@ -142,6 +132,7 @@ def update(request, product_pk):
     else:
         return redirect('products:detail', product_pk) 
 
+
 # 찜
 def ddib(request, product_pk):
     product = Product.objects.get(pk=product_pk)
@@ -150,6 +141,44 @@ def ddib(request, product_pk):
     DdibItem.objects.create(ddib=ddib, product=product)
     
     return redirect('products:detail', product_pk)
+
+
+# 장바구니
+@login_required
+def cart(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+
+    # 유저 회원가입 시 장바구니가 자동으로 생성됨.
+    # 로그인 한 유저면 카트 인스턴스를 생성함.
+    cart = Cart.objects.get(user=request.user)
+
+    does_exist = False
+
+    if request.method == 'POST':
+        # 구매 수량 입력 후 장바구니
+        product_buy_form = ProductBuyForm(request.POST)
+
+        if product_buy_form.is_valid():
+            form = product_buy_form.save(commit=False)
+
+            cart_items = cart.cartitem_set.all()
+
+            # 이미 같은 상품이 있으면, 수량 추가
+            for item in cart_items:
+                if product == item.product:
+                    item.quantity += form.quantity
+                    item.save()
+                    does_exist = True
+                    break
+            else:
+                CartItem.objects.create(cart=cart, product=product, quantity=form.quantity)
+
+    data = {
+        'doesExist': does_exist,
+    }
+
+    return JsonResponse(data)
+
 
 # 후기 작성
 @login_required
@@ -268,12 +297,15 @@ def create_inquiry(request, product_pk):
 
 
 # 상품 문의 수정
+# 정석은 모달 하나만
+# 지금은 input 태그로..
 @login_required
 def update_inquiry(request, product_pk, inquiry_pk):
     product = get_object_or_404(Product, pk=product_pk)
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
 
     if request.user == inquiry.user:
+        # 모델폼이 아니어도 유효성검사가 된다.
         if request.method == 'POST':
             inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
             if inquiry_form.is_valid():
