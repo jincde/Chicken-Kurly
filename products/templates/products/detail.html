@@ -54,12 +54,35 @@
       </div>
       
       {% if request.user.is_authenticated %}
-        <form action="" method="POST">
+        <!-- 장바구니 버튼 & 모달 -->
+        <form id="product-buy-form" data-product-id="{{ product.pk }}">
+        {% comment %} <form action="{% url 'products:cart' product.pk %}" method="POST"> {% endcomment %}
           {% csrf_token %}
           {% bootstrap_form product_buy_form %}
-          <input type="submit" value="장바구니" name="cart">
+          <input type="submit" value="장바구니" name="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          {% comment %} <input type="submit" value="장바구니" name="cart"> {% endcomment %}
         </form>
 
+        <!-- Modal (수정 필요) -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                장바구니에 추가되었습니다
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 찜 버튼 -->
         <form action="{% url 'products:ddib' product.pk %}" method="POST">
           {% csrf_token %}
           <!-- <button type="submit" class="btn btn-lg default">
@@ -209,6 +232,7 @@
                                 <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST">
                                   {% csrf_token %}
                                   {% bootstrap_form inquiry_form %}
+                                  {% comment %} <input type="text" value={{ inquiry.title }}> {% endcomment %}
 
                                   <div class="text-center">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -243,3 +267,33 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block script %}
+  <script>
+    // 장바구니
+    const productBuyForm = document.querySelector('#product-buy-form')
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    productBuyForm.addEventListener('submit', event => {
+      event.preventDefault()
+      const productId = event.target.dataset.productId
+
+      axios({
+        method: 'POST',
+        url: `/products/${productId}/cart/`,
+        headers: {'X-CSRFToken': csrfToken},
+        data: new FormData(productBuyForm),
+      })
+      .then(response => {
+        const doesExist = response.data.doesExist
+
+        if (doesExist) {
+          console.log(doesExist)
+        } else {
+          console.log(doesExist)
+        }
+
+        productBuyForm.reset()
+      })
+    })
+  </script>
+{% endblock script %}
