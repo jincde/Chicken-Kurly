@@ -263,20 +263,35 @@ def update_inquiry(request, product_pk, inquiry_pk):
     product = get_object_or_404(Product, pk=product_pk)
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
 
-    if request.method == 'POST':
-        inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
-        if inquiry_form.is_valid():
-            inquiry = inquiry_form.save(commit=False)
-            inquiry.user = request.user
-            inquiry.product = product
-            inquiry.save()
+    if request.user == inquiry.user:
+        if request.method == 'POST':
+            inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
+            if inquiry_form.is_valid():
+                inquiry = inquiry_form.save(commit=False)
+                inquiry.user = request.user
+                inquiry.product = product
+                inquiry.save()
 
-    else:
-        inquiry_form = InquiryForm(instance=inquiry)
+        else:
+            inquiry_form = InquiryForm(instance=inquiry)
 
     # 나중에 비동기?
 
     return redirect('products:detail', product_pk)
+
+
+# 상품 문의 삭제
+@login_required
+def delete_inquiry(request, product_pk, inquiry_pk):
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
+
+    if request.user == inquiry.user:
+        inquiry.delete()
+
+    # 나중에 비동기?
+
+    return redirect('products:detail', product_pk)
+
 
 @login_required
 def create_reply(request, product_pk, inquiry_pk):
