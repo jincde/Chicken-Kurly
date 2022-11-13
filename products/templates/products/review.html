@@ -3,13 +3,16 @@
 {% load static %}
 
 {% block content %}
-    <div class='container py-3' style='background-color:rgb(252, 248, 237, 0.7);'>
+    <div class='container py-3'>
         <div style='float:left'><h5 class='fw-bolder'>{{ product.product_name }}</h5></div>
         <form action="" method="POST" enctype="multipart/form-data" class='form-label mt-3'>
             {% csrf_token %}
             {% bootstrap_form review_form %}
             {% bootstrap_form review_image_form %}
-            {% bootstrap_button button_class="btn btn-warning fw-bolder mb-2" style='color:white; float:right' button_type="submit" content="리뷰 올리기" %}
+            <div class="d-flex justify-content-center my-3">
+                <input type="submit" class="btn py-2 px-5 fw-bold form-control"
+                style="border-radius:0px; height:56px; background-color: #5e0080; color: white" value="등록하기">
+            </div>
         </form>
     </div>
 

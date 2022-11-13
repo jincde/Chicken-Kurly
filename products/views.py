@@ -61,7 +61,7 @@ def detail(request, product_pk):
     inquiry_form = InquiryForm()
     reply_form = ReplyForm()
     inquiries = product.inquiry_set.order_by('-pk')
-    reviews = product.review_set.all() 
+    reviews = product.review_set.all()
 
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
@@ -90,7 +90,7 @@ def detail(request, product_pk):
         'inquiry_form': inquiry_form,
         'reply_form': reply_form,
         'inquiries': inquiries,
-        'reviews': reviews,
+        'reviews': reviews
     }
 
     return render(request, 'products/detail.html', context)
@@ -191,9 +191,10 @@ def review_create(request, product_pk):
 @login_required
 def review_update(request, product_pk, review_pk):
     product = Product.objects.get(pk=product_pk)
-    review_images = ReviewImage.objects.filter(product_id=product_pk)
-
     review = get_object_or_404(Review, pk=review_pk)
+
+    review_images = ReviewImage.objects.filter(pk=review_pk)
+
     if request.user == review.user:
         if request.method == 'POST':
             review_form = ReviewForm(request.POST, instance=review)
@@ -219,9 +220,9 @@ def review_update(request, product_pk, review_pk):
                         img_instance.save()
 
                 review.save()
-                messages.success(request, '후기 등록이 완료되었습니다.')
+                messages.success(request, '후기 수정이 완료되었습니다.')
                 # 후기 목록이 포함된 상품 상세 보기 페이지로
-                return redirect('products:detail', product_pk, review_pk)
+                return redirect('products:detail', product_pk)
         else:
             review_form = ReviewForm(instance=review)
             if review_images:
@@ -237,9 +238,18 @@ def review_update(request, product_pk, review_pk):
         return render(request, 'products/review.html', context)
     
     else:
-        return redirect('products:detail', product_pk, review_pk) 
+        return redirect('products:detail', product_pk) 
 
-       
+# 후기 삭제
+@login_required
+def review_delete(request, product_pk, review_pk):
+    review = get_object_or_404(Review, pk=review_pk)
+
+    if request.user == review.user:
+        review.delete()
+
+    return redirect('products:detail', product_pk)
+
 # 상품 문의 등록
 @login_required
 def create_inquiry(request, product_pk):
