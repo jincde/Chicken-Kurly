@@ -19,10 +19,37 @@ label:focus,
   box-shadow: none !important;
 }
 
-.nav-grid {
-  display: grid;
-  grid-template-columns: 25fr 50fr 25fr;
+.navbar-line {
+  display: flex;
+  align-items: center;
+  -webkit-box-align: center;
 }
+
+.search-form {
+  position: relative;
+}
+
+
+
+.search-icon {
+  cursor: pointer;
+}
+
+.navbar-nav li a {
+  color: rgb(181, 181, 181);
+  font-weight: 400;
+}
+
+.navbar-nav li a:hover,
+.navbar-nav li a:active,
+.navbar-nav li a:after,
+.navbar-nav li a:focus {
+  color: #5e0080;
+  font-weight: 500;
+}
+
+
+
 
 .non_a {
   text-decoration: none;
@@ -58,4 +85,20 @@ label:focus,
   position: absolute;
   right: 10px;
   bottom: 120px;
+}
+
+.swiper {
+  width: 1070px;
+  height: 435px;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
+
+.btn-none {
+  border: 0;
+  padding: 0;
+  background: none;
 }

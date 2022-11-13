@@ -131,6 +131,13 @@
     </div>
   </div>
 </div>
+
+{% for purchase in purchases.all %}
+  <img src="{{ purchase.image.url }}" alt="">
+  <p>{{ purchase.title }}</p>
+  <br><br>
+  <img src="{{ purchase.image_thumbnail.url }}" alt="">
+{% endfor %}
 <!-- 찜한 식품 -->
 
 {% endblock content %}
