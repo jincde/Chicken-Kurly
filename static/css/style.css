@@ -48,6 +48,11 @@ label:focus,
   font-weight: 500;
 }
 
+.test-grid {
+  display: grid;
+  grid-template-columns: 400px auto;
+  gap: 4px;
+}
 
 
 
