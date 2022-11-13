@@ -18,7 +18,7 @@
 
 [장영진](https://github,com/jincde)
 
-[차화영](/https://github.com/forwardyoung)
+[차화영](https://github.com/forwardyoung)
 
 [이동현](https://github.com/soohofather)
 
