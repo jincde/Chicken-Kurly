@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
     rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
   <title>치킨컬리</title>
 </head>
 
@@ -35,48 +37,43 @@
       장영진 차화영
       최보영 최정아</div>
   </div>
-  <section class="d-flex container align-items-center justify-content-end"
+  <section class="d-flex container align-items-center justify-content-end navbar-line"
     style="max-width: 1050px; height: 35px; font-size: 12px;"><a class="non_a"
       href="{% url 'accounts:signup' %}">회원가입</a> <span class=mx-2 style="font-weight: 100;">|</span>
     <a class="non_a" href="{% url 'accounts:login' %}">로그인</a> <span class="mx-2" style="font-weight: 100;">|</span>고객센터
   </section>
-  <nav class="navbar navbar-expand-lg bg-light" style="height: 63px" style="background-color: white;">
-    <div class="container nav-grid" style="max-width: 1050px">
-      <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo.png' %}" width="100%"
+  <nav class="navbar navbar-expand-lg bg-transparent" style="height: 63px"
+    style="background-color: white; position: sticky; top: 0;">
+    <div class="container nav-grid" style="max-width: 1050px;">
+      <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo.png' %}" width="80px"
           height="42"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">치킨컬리</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">리뷰모음</a>
-          </li>
-        </ul>
-        <form class="d-flex align-items-center" role="search">
-          <input class="form-control search-input me-2" type="search" placeholder="검색어를 입력해주세요." aria-label="Search"
-            style="width: 400px; height: 47px; color: #5e0080; border:2px solid #5e0080;">
-        </form>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
-          viewBox="0 0 16 16">
-          <path
-            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-        </svg>
-        <div class="icons d-flex justify-content-end">
-          <div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-              class="bi bi-balloon-heart" viewBox="0 0 16 16">
-              <path fill-rule="evenodd"
-                d="m8 2.42-.717-.737c-1.13-1.161-3.243-.777-4.01.72-.35.685-.451 1.707.236 3.062C4.16 6.753 5.52 8.32 8 10.042c2.479-1.723 3.839-3.29 4.491-4.577.687-1.355.587-2.377.236-3.061-.767-1.498-2.88-1.882-4.01-.721L8 2.42Zm-.49 8.5c-10.78-7.44-3-13.155.359-10.063.045.041.089.084.132.129.043-.045.087-.088.132-.129 3.36-3.092 11.137 2.624.357 10.063l.235.468a.25.25 0 1 1-.448.224l-.008-.017c.008.11.02.202.037.29.054.27.161.488.419 1.003.288.578.235 1.15.076 1.629-.157.469-.422.867-.588 1.115l-.004.007a.25.25 0 1 1-.416-.278c.168-.252.4-.6.533-1.003.133-.396.163-.824-.049-1.246l-.013-.028c-.24-.48-.38-.758-.448-1.102a3.177 3.177 0 0 1-.052-.45l-.04.08a.25.25 0 1 1-.447-.224l.235-.468ZM6.013 2.06c-.649-.18-1.483.083-1.85.798-.131.258-.245.689-.08 1.335.063.244.414.198.487-.043.21-.697.627-1.447 1.359-1.692.217-.073.304-.337.084-.398Z" />
-            </svg></div>
-          <div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart2"
-              viewBox="0 0 16 16">
-              <path
-                d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
-            </svg></div>
+        <div style="width: 30%;">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link non_a" aria-current="page" href="#" style="font-size:18px;">치킨컬리</a>
+            </li>
+            <li class="navb-item">
+              <a class="nav-link non_a" href="#" style="font-size:18px;">리뷰모음</a>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex align-items-center" style="width: 400px; border:1.8px solid #5e0080; border-radius: 8px;">
+          <input class="form-control search-input" type="search" placeholder="검색어를 입력해주세요." aria-label="Search"
+            style="width: 350px; height: 47px; color: #5e0080; border: 0px">
+          </form>
+          <i class="bi bi-search search-icon" style="font-size:1.2rem;width: 10%; color: #5e0080;"></i>
+        </div>
+        <div class="d-flex justify-content-end" style="width: 300px">
+          <div class="icons d-flex justify-content-between" style="width: 130px;">
+            <div><i class="bi bi-github" style="font-size: 1.4rem"></i></div>
+            <div><i class="bi bi-heart" style="font-size: 1.4rem"></i></div>
+            <div><i class="bi bi-cart" style="font-size: 1.4rem"></i></div>
+          </div>
         </div>
       </div>
     </div>

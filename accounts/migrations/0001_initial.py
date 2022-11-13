@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
             name='Purchase',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', imagekit.models.fields.ProcessedImageField(blank=True, upload_to='images/')),
+                ('image', models.ImageField(upload_to='images/')),
             ],
         ),
     ]
