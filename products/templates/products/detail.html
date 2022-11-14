@@ -48,142 +48,144 @@
       </div>
     </div>
 
-      <!-- 상품 정보 -->
-      <div class="col">
-        <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
-        <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
-        <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
-        <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
-          <span style="font-size: 18px;">원</span>
-        </p>
-      </div>
-      
-      {% if request.user.is_authenticated %}
-        <!-- 장바구니 버튼 & 모달 -->
-        <form id="product-buy-form" data-product-id="{{ product.pk }}">
-          {% csrf_token %}
-          {% bootstrap_form product_buy_form %}
-          <input type="submit" value="장바구니" id="btn-cart" name="cart" data-bs-toggle="modal" data-bs-target="#cart" disabled>
-        </form>
+    <!-- 상품 정보 -->
+    <div class="col">
+      <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
+      <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
+      <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
+      <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
+        <span style="font-size: 18px;">원</span>
+      </p>
+    </div>
 
-        <!-- Modal (수정 필요) -->
-        <div class="modal fade" id="cart" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                장바구니에 상품을 담았습니다. <span id="product-existing"></span>
-              </div>
-              <div class="modal-footer">
-                <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
-                <button type="submit" class="btn" data-bs-dismiss="modal"
-                style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
-              </div>
-            </div>
+    {% if request.user.is_authenticated %}
+    <!-- 장바구니 버튼 & 모달 -->
+    <form id="product-buy-form" data-product-id="{{ product.pk }}">
+      {% csrf_token %}
+      {% bootstrap_form product_buy_form %}
+      <input type="submit" value="장바구니" id="btn-cart" name="cart" data-bs-toggle="modal" data-bs-target="#cart"
+        disabled>
+    </form>
+
+    <!-- Modal (수정 필요) -->
+    <div class="modal fade" id="cart" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            장바구니에 상품을 담았습니다. <span id="product-existing"></span>
+          </div>
+          <div class="modal-footer">
+            <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
+            <button type="submit" class="btn" data-bs-dismiss="modal"
+              style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
           </div>
         </div>
       </div>
-
-
-        <!-- 찜 버튼 -->
-        <form action="{% url 'products:ddib' product.pk %}" method="POST">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-lg default">
-            <i class="bi bi-heart" style="color: #5e0080;"></i>
-          </button> 
-          {% comment %} <input type="submit" value="찜" name="ddib"> {% endcomment %}
-        </form>
-      {% endif %}
-
-      <!-- 상품 후기 -->
-      <div class='product-review position-relative' style='width:1010px; padding: bottom 100px;'>
-        <section class='review' style='padding:72px 0px;'>
-          <header class='review-title d-flex w-100' style='align-itmes:center; min: height 44px;'>
-            <h2 class='fw-bold' style='font: size 18px; line-height:22px;'>상품 후기</h2>
-          </header>
-          <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
-            {% for review in reviews %}
-            <div class='review-detail d-flex'
-              style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
-              <div class='review-writer' style='flex:0 0 225px;'>
-                <div class='d-flex'>
-                  <span>{{ review.user }}
-                  </span>
-                </div>
-              </div>
-              <article class='review-content' style='flex:1 1 0%;'>
-                <div>
-                  <div>
-                    <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>{{
-                      review.product.product_name }}</h3>
-                  </div>
-
-                  <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>{{ review.content }}</p>
-                  <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
-                    {% for photo in review.reviewimage_set.all %}
-                    <div class='d-flex'>
-                      <img src="{{ photo.review_img.url }}" alt="{{ photo.review_img }}" class='review-img' style="width:93px; height:93px; flex-shrink:0; border-radius:2px">
-                    </div>
-                    {% endfor %}
-                  </div>
-                </div>
-                <footer class='review-date w-100 d-flex justify-content-between w-100'
-                  style='align-items:center; padding-top:19px; padding-right:20px'>
-                  <div>
-                    <span style='color: rgb(153, 153, 153);'>{{ review.created_at|date:"Y.m.d" }}</span>
-                  </div>
-                  {% if request.user == review.user %}
-                  <div>
-                    <form class='d-flex' action="{% url 'products:review_update' product.pk review.pk %}" method="GET">
-                      {% csrf_token %}
-                      <input type="submit" class="btn fw-bold form-control"
-                        style="border-radius:3px; height:36px; width:96px; border:1px solid rgb(221, 221, 221); font-size:12px; text-align:center;"
-                        value="후기수정">
-                    </form>
-                  </div>
-                  {% endif %}
-                </footer>
-              </article>
-            </div>
-            {% endfor %}
-          </div>
-          {% if request.user.is_authenticated %}
-          <div class='review-btn position-absolute' style='right:0px'>
-            <form action="{% url 'products:review_create' product.pk %}" method="GET">
-              {% csrf_token %}
-              <div class="d-flex justify-content-center my-3">
-                <input type="submit" class="btn fw-bold form-control"
-                  style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white"
-                  value="후기쓰기">
-              </div>
-            </form>
-          </div>
-          {% endif %}
-          {% comment %} 후기 페이지네이션 {% endcomment %}
-          <div class='page d-flex justify-content-center' style='padding-top:20px'>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </section>
-      </div>
+    </div>
   </div>
+
+
+  <!-- 찜 버튼 -->
+  <form action="{% url 'products:ddib' product.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-lg default">
+      <i class="bi bi-heart" style="color: #5e0080;"></i>
+    </button>
+    {% comment %} <input type="submit" value="찜" name="ddib"> {% endcomment %}
+  </form>
+  {% endif %}
+
+  <!-- 상품 후기 -->
+  <div class='product-review position-relative' style='width:1010px; padding: bottom 100px;'>
+    <section class='review' style='padding:72px 0px;'>
+      <header class='review-title d-flex w-100' style='align-itmes:center; min: height 44px;'>
+        <h2 class='fw-bold' style='font: size 18px; line-height:22px;'>상품 후기</h2>
+      </header>
+      <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
+        {% for review in reviews %}
+        <div class='review-detail d-flex'
+          style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
+          <div class='review-writer' style='flex:0 0 225px;'>
+            <div class='d-flex'>
+              <span>{{ review.user }}
+              </span>
+            </div>
+          </div>
+          <article class='review-content' style='flex:1 1 0%;'>
+            <div>
+              <div>
+                <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
+                  {{ review.product.product_name }}</h3>
+              </div>
+
+              <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>
+                {{ review.content }}</p>
+              <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
+                {% for photo in review.reviewimage_set.all %}
+                <div class='d-flex'>
+                  <img src="{{ photo.review_img.url }}" alt="{{ photo.review_img }}" class='review-img'
+                    style="width:93px; height:93px; flex-shrink:0; border-radius:2px">
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <footer class='review-date w-100 d-flex justify-content-between w-100'
+              style='align-items:center; padding-top:19px; padding-right:20px'>
+              <div>
+                <span style='color: rgb(153, 153, 153);'>{{ review.created_at|date:"Y.m.d" }}</span>
+              </div>
+              {% if request.user == review.user %}
+              <div>
+                <form class='d-flex' action="{% url 'products:review_update' product.pk review.pk %}" method="GET">
+                  {% csrf_token %}
+                  <input type="submit" class="btn fw-bold form-control"
+                    style="border-radius:3px; height:36px; width:96px; border:1px solid rgb(221, 221, 221); font-size:12px; text-align:center;"
+                    value="후기수정">
+                </form>
+              </div>
+              {% endif %}
+            </footer>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+      {% if request.user.is_authenticated %}
+      <div class='review-btn position-absolute' style='right:0px'>
+        <form action="{% url 'products:review_create' product.pk %}" method="GET">
+          {% csrf_token %}
+          <div class="d-flex justify-content-center my-3">
+            <input type="submit" class="btn fw-bold form-control"
+              style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white" value="후기쓰기">
+          </div>
+        </form>
+      </div>
+      {% endif %}
+      {% comment %} 후기 페이지네이션 {% endcomment %}
+      <div class='page d-flex justify-content-center' style='padding-top:20px'>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+  </div>
+
 
   <!-- 상품 문의 등록 버튼 & 모달 -->
   <div class="row">
@@ -367,28 +369,29 @@
     </table>
   </div>
 </div>
+</div>
 {% endblock content %}
 
 {% block script %}
 
-  <script>
-    // 수량이 1 ~ 10일 때만 장바구니 버튼 활성화
-    const quantityField = document.querySelector('#id_quantity') // quantity 입력 필드
-    const btnCart = document.querySelector('#btn-cart') // 장바구니 버튼
-    quantityField.addEventListener('input', event => {
-      if (0 < event.target.value && event.target.value <= 10) {
-        btnCart.disabled = false;
-      } else {
-        btnCart.disabled = true
-      }
-    })
-    
-    // 장바구니 모달
-    const productBuyForm = document.querySelector('#product-buy-form')
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-    productBuyForm.addEventListener('submit', event => {
-      event.preventDefault()
-      const productId = event.target.dataset.productId
+<script>
+  // 수량이 1 ~ 10일 때만 장바구니 버튼 활성화
+  const quantityField = document.querySelector('#id_quantity') // quantity 입력 필드
+  const btnCart = document.querySelector('#btn-cart') // 장바구니 버튼
+  quantityField.addEventListener('input', event => {
+    if (0 < event.target.value && event.target.value <= 10) {
+      btnCart.disabled = false;
+    } else {
+      btnCart.disabled = true
+    }
+  })
+
+  // 장바구니 모달
+  const productBuyForm = document.querySelector('#product-buy-form')
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  productBuyForm.addEventListener('submit', event => {
+    event.preventDefault()
+    const productId = event.target.dataset.productId
 
     axios({
       method: 'POST',
@@ -407,7 +410,7 @@
           productExisting.innerText = '이미 담은 상품의 수량을 추가했습니다.'
         }
       })
-    })
-    // 찜 
-  </script>
+  })
+    // 찜
+</script>
 {% endblock script %}
