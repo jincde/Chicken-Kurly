@@ -45,14 +45,22 @@ def create(request):
     }
     return render(request, "articles/create.html", context)
 
+@login_required
 def detail(request, pk):
 
     article = Article.objects.get(pk=pk)
-    comments = Comment.objects.filter(article=article)
+    comments = Comment.objects.filter(article=article).order_by('-pk')
+
+    page = request.GET.get('page', '1')
+    paginator = Paginator(comments, 5)
+    paginated_comments = paginator.get_page(page)
+    max_index = len(paginator.page_range)
 
     context = {
         'article': article,
         'comments': comments,
+        'paginated_comments': paginated_comments,
+        'max_index': max_index,
     }
 
     return render(request, "articles/detail.html", context)
@@ -62,8 +70,8 @@ def delete(request, pk):
 
     article = Article.objects.get(pk=pk)
 
-    article.delete()
-
+    if request.user == article.user:
+        article.delete()
     return redirect("articles:index")
 
 @login_required
@@ -71,17 +79,19 @@ def update(request, pk):
 
     article = Article.objects.get(pk=pk)
 
-    if request.method == "POST":
-        article_form = ArticleForm(request.POST, request.FILES, instance=article)
-        if article_form.is_valid():
-            article_form.save()
-            return redirect("articles:index")
-    else:
-        article_form = ArticleForm(instance=article)
-    context = {
-        "article_form": article_form,
-    }
-    return render(request, "articles/update.html", context)
+    if request.user == article.user:
+        if request.method == "POST":
+            article_form = ArticleForm(request.POST, request.FILES, instance=article)
+            if article_form.is_valid():
+                article_form.save()
+                return redirect("articles:index")
+        else:
+            article_form = ArticleForm(instance=article)
+        context = {
+            "article_form": article_form,
+        }
+        return render(request, "articles/update.html", context)
+    return redirect("articles:index")
 
 
 @login_required
@@ -107,17 +117,24 @@ def c_delete(request, c_pk, a_pk):
 @login_required
 def like(request, pk):
 
-    article = Article.objects.get(pk=pk)
+    if request.user.is_authenticated:
+        article = Article.objects.get(pk=pk)
 
-    if request.user in article.like_users.all():
-        article.like_users.remove(request.user)
-        is_liked = False
-    else:
-        article.like_users.add(request.user)
-        is_liked = True
+        if article.like_users.filter(pk=request.user.pk).exists():
+            article.like_users.remove(request.user)
+            is_liked = False
+        else:
+            article.like_users.add(request.user)
+            is_liked = True
 
-    context = {"isLiked": is_liked, "likeCount": article.like_users.count()}
+        like_count = article.like_users.count()
+        
+        context = {
+            'is_liked': is_liked,
+            'likeCount': like_count,
 
-    return JsonResponse(context)
+        }
+        return JsonResponse(context)
+    return redirect('accounts:login')
 
     

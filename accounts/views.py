@@ -166,3 +166,17 @@ def create(request):
     
     else:
         return redirect('products:index')    # admin 아니면 index로 리다이렉트
+
+
+# 로그인한 유저의 장바구니 페이지
+@login_required
+def cart(request):
+    cart = Cart.objects.get(user=request.user)
+
+    cart_items = cart.cartitem_set.all()
+
+    context = {
+        'cart_items': cart_items,
+    }
+
+    return render(request, 'accounts/cart.html', context)

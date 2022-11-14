@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!-- 체크박스로 상품 선택 후 주문 버튼을 누르면 -->
+  <!-- OrderItem에 선택된 상품들의 정보만 저장하기 -->
+  <!-- 선택된 상품이 없으면, 주문 버튼 비활성화 -->
+  <!-- 1. 체크박스의 값을 view로 가져가는 방법? -->
+  <!-- 2. 장바구니에서 수량을 선택하는 방법? (실시간 감지 → 버튼 활성 및 가격 변경 必) -->
+  <div class="container my-5">
+    <h2 class="text-center mb-5">장바구니</h2>
+
+    <div class="row">
+      <div class="col-12 col-md-9">
+        {% for item in cart_items %}
+          <div class="row">
+            <div class="d-flex align-items-center form-check mb-4">
+              <input class="form-check-input me-3" type="checkbox" value="" id="check-{{ item.pk }}">
+              
+              <div class="col-7 d-flex justify-content-start">  
+                <div class="d-flex align-items-center">
+                  <img src="{{ item.product.image_set.all.0.image.url }}" alt="{{ item.product.image_set.all.0.image }}" class="rounded-1" width="72px" height="72px">
+                  <div class="fs-5 ms-3">{{ item.product.product_name }}</div>
+                </div>
+              </div>
+              
+              <!-- 수량 입력 -->
+              <div class="col-2">
+                <input class="form-control" type="number" id="quantity" name="quantity" min="1" value="{{ item.quantity }}">
+              </div>
+
+              <div class="col-2 d-flex justify-content-end align-items-center">
+                <div class="fw-bold me-3"><span>{{ item.product.price }}</span>원</div>
+                <!-- 장바구니에서 삭제 -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- 주소 및 가격 정보 -->
+      <div class="col-12 col-md-3">
+        <!-- 주소 정보 -->
+        <div class="p-3 mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <span class="bi bi-geo-alt fs-5"></span>
+            <div class="ms-2">배송지</div>
+          </div>
+          <div class="mb-3">서울특별시 용산구 독서당로 111</div>
+          <button type="submit" class="btn w-100"
+          style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">배송지 변경</button>
+        </div>
+
+        <!-- 가격 정보 -->
+        <div class="bg-light p-3" style="border-radius:3px">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>상품금액</div>
+            <div>5,600원</div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>상품할인금액</div>
+            <div>0원</div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>배송비</div>
+            <div>0원</div>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>결제금액</div>
+            <div class="fw-bold">5,600원</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn w-100 fs-5 my-3"
+          style="border-radius:3px; height:60px; background-color:#5e0080; color:white">주문하기</button>
+      </div>
+    </div>
+    
+  </div>
+{% endblock content %}

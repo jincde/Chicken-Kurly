@@ -3,17 +3,34 @@
 {% load static %}
 
 {% block content %}
-    <div class='container py-3'>
-        <div style='float:left'><h5 class='fw-bolder'>{{ product.product_name }}</h5></div>
-        <form action="" method="POST" enctype="multipart/form-data" class='form-label mt-3'>
+<div class="container my-5" style="width: 1070px; padding-bottom: 100px;">
+    <div class="p-3" style="box-shadow: 4px 12px 30px 6px rgb(0 0 0 / 9%); border-radius: 0px;">
+        <form class="p-4" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form review_form %}
-            {% bootstrap_form review_image_form %}
-            <div class="d-flex justify-content-center my-3">
-                <input type="submit" class="btn py-2 px-5 fw-bold form-control"
-                style="border-radius:0px; height:56px; background-color: #5e0080; color: white" value="등록하기">
+            <div class=" d-flex justify-content-end">
+                <input class="btn" style="color: #5e0080; font-weight: 600;" type="submit" value="작성완료"></input>
             </div>
+            <h2><input class="input-title form-control mb-3" style="border:0px; font-size: 1.5rem;" name="title"
+                    placeholder="제목을 입력해주세요." value="{{ article.title }}"></h2>
+            <hr>
+            <textarea rows="18" cols="10" class="form-control my-3" style="border:0px" name="content"
+                placeholder="ㆍ 작성하신 후기는 치킨컬리 이용자에게 공개됩니다.&#13;&#10;&#13;&#10;ㆍ후기 작성 시 1,000원의 적립금을 영업일 기준 2일 전후로 지급합니다.&#13;&#10;&#13;&#10;ㆍ후기 도용 시 적립금 2배 회수, 1년간 커뮤니티 이용 제한, 3개월간 후기 적립금 지급이 중단됩니다.">{{ article.content }}</textarea>
+            <input type="file" name="review_img" multiple="" accept="image/*" class="form-control" id="id_review_img">
         </form>
     </div>
-
+</div>
+<!-- <div class='container py-3'>
+    <div style='float:left'>
+        <h5 class='fw-bolder'>{{ product.product_name }}</h5>
+    </div>
+    <form action="" method="POST" enctype="multipart/form-data" class='form-label mt-3'>
+        {% csrf_token %}
+        {% bootstrap_form review_form %}
+        {% bootstrap_form review_image_form %}
+        <div class="d-flex justify-content-center my-3">
+            <input type="submit" class="btn py-2 px-5 fw-bold form-control"
+                style="border-radius:0px; height:56px; background-color: #5e0080; color: white" value="등록하기">
+        </div>
+    </form>
+</div> -->
 {% endblock %}

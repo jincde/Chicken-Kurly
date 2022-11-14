@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.http import JsonResponse
-
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
@@ -66,7 +66,8 @@ def detail(request, product_pk):
     inquiry_form = InquiryForm()
     reply_form = ReplyForm()
     inquiries = product.inquiry_set.order_by('-pk')
-    reviews = product.review_set.all()
+    reviews = product.review_set.order_by('-pk') # 리뷰 최신순
+    # print(reviews[3].reviewimage_set.all())
 
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
@@ -79,9 +80,9 @@ def detail(request, product_pk):
         'inquiry_form': inquiry_form,
         'reply_form': reply_form,
         'inquiries': inquiries,
-        'reviews': reviews
-    }
+        'reviews': reviews,
 
+    }
     return render(request, 'products/detail.html', context)
 
 
@@ -136,11 +137,24 @@ def update(request, product_pk):
 # 찜
 def ddib(request, product_pk):
     product = Product.objects.get(pk=product_pk)
-    ddib = Ddib.objects.get(user=request.user)
+    ddib = Ddib.objects.get(user=request.user) # user와 ddib 1:1
+    ddib_items = ddib.ddibitem_set.all()
+    # print(ddib_items[0])
 
-    DdibItem.objects.create(ddib=ddib, product=product)
-    
-    return redirect('products:detail', product_pk)
+    for item in ddib_items: # 
+        if product == item.product:
+            item.delete() # 찜 목록에서 item을 지우고
+            is_ddib = False
+            break
+
+    else: # 찜한 상태가 아니라면
+        DdibItem.objects.create(ddib=ddib, product=product)
+        is_ddib = True
+    context = {
+        "is_ddib": is_ddib
+        }
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(context)
 
 
 # 장바구니
