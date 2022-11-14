@@ -9,7 +9,7 @@
 {% endblock css %}
 
 {% block content %}
-<div class="container my-5" style="width: 1070px;">
+<div class="container my-5" style="width: 1070px; padding-bottom: 100px;">
   {% if request.user.is_superuser == 1 %}
   <a href="{% url 'products:update' product.pk %}" class="btn btn-primary">상품 정보 수정</a>
   {% endif %}
@@ -99,10 +99,23 @@
   {% endif %}
 
   <!-- 상품 후기 -->
-  <div class='product-review position-relative' style='width:1010px; padding: bottom 100px;'>
+  <div class='product-review position-relative' style='padding: bottom 100px;'>
     <section class='review' style='padding:72px 0px;'>
-      <header class='review-title d-flex w-100' style='align-itmes:center; min: height 44px;'>
-        <h2 class='fw-bold' style='font: size 18px; line-height:22px;'>상품 후기</h2>
+      <header class='review-title d-flex align-items-center w-100'>
+        <h2 class='fw-bold' style='font-size: 18px;'>상품 후기 &nbsp<span style="color:#5e0080; font-weight: 700;">
+            {{ reviews.count }}</span></h2>
+        {% if request.user.is_authenticated %}
+        <div class='review-btn position-absolute' style='right:0px'>
+          <form action="{% url 'products:review_create' product.pk %}" method="GET">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center my-3">
+              <input type="submit" class="btn fw-bold form-control"
+                style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white"
+                value="후기쓰기">
+            </div>
+          </form>
+        </div>
+        {% endif %}
       </header>
       <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
         {% for review in reviews %}
@@ -117,11 +130,13 @@
           <article class='review-content' style='flex:1 1 0%;'>
             <div>
               <div>
-                <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
+                <h3 class="mb-0" style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
                   {{ review.product.product_name }}</h3>
               </div>
+              <p class="mb-0" style='white-space:pre-line; font-weight: 600;'>
+                {{ review.title }}</p>
 
-              <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>
+              <p style='white-space:pre-line; line-height:19px;'>
                 {{ review.content }}</p>
               <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
                 {% for photo in review.reviewimage_set.all %}
@@ -153,7 +168,7 @@
         {% endfor %}
       </div>
       {% if request.user.is_authenticated %}
-      <div class='review-btn position-absolute' style='right:0px'>
+      <!-- <div class='review-btn position-absolute' style='right:0px'>
         <form action="{% url 'products:review_create' product.pk %}" method="GET">
           {% csrf_token %}
           <div class="d-flex justify-content-center my-3">
@@ -161,7 +176,7 @@
               style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white" value="후기쓰기">
           </div>
         </form>
-      </div>
+      </div> -->
       {% endif %}
       {% comment %} 후기 페이지네이션 {% endcomment %}
       <div class='page d-flex justify-content-center' style='padding-top:20px'>
@@ -190,9 +205,9 @@
   <!-- 상품 문의 등록 버튼 & 모달 -->
   <div class="row">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="fw-bold m-0">상품 문의</h2>
+      <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
       <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
-        style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
+        style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
     </div>
 
     <div class="mb-3">
@@ -250,7 +265,7 @@
   </div>
 
   <!-- 상품 문의 목록 -->
-  <div class="row px-3">
+  <div class="row px-3" style="border-top:1px solid black;">
     <table class="table">
       <thead class="text-center">
         <tr>
