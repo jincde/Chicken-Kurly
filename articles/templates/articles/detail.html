@@ -43,7 +43,7 @@
       {% if paginated_comments.has_previous %}
         <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
         <li class="page-item">
-          <a class="page-link" tabindex="-1" href="?page=1">&#60;</a>
+          <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
         </li>
       {% else %}
         <li class="page-item disabled">
@@ -57,12 +57,12 @@
         {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %}
             <!-- // 현재 페이지일 때는 active -->
             {% if page_number == paginated_comments.number %}
-              <li class="page-item active" aria-current="page">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+              <li class="page-item" aria-current="page">
+                <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
               </li>
             {% else %}
               <li class="page-item text-color-warning">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
               </li>
             {% endif %}
         {% endif %}
@@ -71,7 +71,7 @@
       <!-- 다음페이지 -->
       {% if paginated_comments.has_next %}
         <li class="page-item">
-          <a class="page-link" href="?page={{ max_index }}">&#62;</a>
+          <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
         </li>
       {% else %}
         <li class="page-item disabled">
@@ -89,7 +89,7 @@
           <input style="width: 100%; border: 1px solid; padding: 0.4rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" maxlength ="300" required>
         </div>
         <div class="p-2">
-          <button class="btn btn-primary mb-1 ms-1" type="submit">등록</button>
+          <button class="btn mb-1 ms-1" style="background-color: #5e0080; color: white; text-decoration: none;" type="submit">등록</button>
         </div>
       </div>
     </div>

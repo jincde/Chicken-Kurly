@@ -7,66 +7,56 @@
     <div class="col-12 p-5">
       <h1 class='text-center'>자유게시판</h1><hr>
       <div class='text-end'>
-        <a class='btn btn-primary btn-sm' href="{% url 'articles:create' %}"> 글쓰기</a>
+        <a class='btn btn-sm fw-bold py-2' style="background-color: #5e0080; color: white; text-decoration: none; " href="{% url 'articles:create' %}">글쓰기</a>
       </div>
 
       {% for article in paginated_articles %}
-          <div class="card mx-auto mb-3 my-3" style="max-width: 610px;">
+          <div class="card mx-auto mb-2 my-3" style="max-width: 500px;">
             <div class="row g-0">
               <!-- 카드 이미지 -->
               <div class="col-4">
                 {% if article.image %}
                   <img src="{{ article.image.url }}" class="img-fluid rounded-start" alt="{{ article.image }}">
                 {% else %}
-                  <img src="https://dummyimage.com/200x215/000/fff" class="img-fluid rounded-start" alt="img">
+                  <img src="https://dummyimage.com/200x200/000/fff" class="img-fluid rounded-start" alt="img">
                 {% endif %}
               </div>
               <div class="col-8">
                 <div class="card-body">
-                  <div class='text-end fs-5' style="margin: -7px;">
+                  <div class='text-end fs-5' style="margin: -11px;">
                     <form class='like-forms' data-article-id="{{ article.pk }}">
                       {% csrf_token %}
                       {% if request.user in article.like_users.all %}
-                        <button type="submit" class="btn btn-danger btn-sm" id='like-btn-{{ article.pk }}' value="좋아요 취소">♥<span class="fs-6" id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span></button>
+                        <button type="submit" class="btn btn-danger btn-sm" id='like-btn-{{ article.pk }}'><i id='heart-{{ article.pk }}' class="bi bi-heart"><span class="fs-6" id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span></i></button>
                       {% else %}
-                        <button type="submit" class="btn btn-outline-danger btn-sm" id='like-btn-{{ article.pk }}' value="좋아요">♥<span class="fs-6" id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span></button>
+                        <button type="submit" class="btn btn-outline-danger btn-sm" id='like-btn-{{ article.pk }}'><i id='heart-{{ article.pk }}' class="bi bi-heart-fill"><span class="fs-6" id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span></i></button>
                       {% endif %}
                     </form>
                   </div>
                   <h4>
                     <!-- 카드 타이틀 -->
-                    <a
-                    href="
-                    {% url 'articles:detail' article.pk %}"
-                    style="
-                      min-height: 1.5rem;
-                      text-overflow: ellipsis;
-                      overflow: hidden;
-                      word-break: break-word;
-                      display: -webkit-box;
-                      -webkit-line-clamp: 1;
-                      -webkit-box-orient: vertical">
-                      {{ article.title }}</a>
+                    <a href="{% url 'articles:detail' article.pk %}" class="my-2" style="min-height: 1.5rem; text-overflow: ellipsis; overflow: hidden; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical">
+                      {{ article.title }}
+                    </a>
                   <!-- 글작성자, 작성시간 -->
                   <p class="fs-6">
-                    <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a>  |  {{ article.created_at }}  |
+                    <a href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a>
                   </p>
-                  <hr>
                   <!-- 글 내용 요약 -->
-                  <p style="
-                  min-height: 1rem;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  word-break: break-word;
-                  display: -webkit-box;
-                  -webkit-line-clamp: 1;
-                  -webkit-box-orient: vertical">
+                  <p class='fs-6' style="min-height: 2rem; text-overflow: ellipsis; overflow: hidden; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical">
                     {{ article.content }}
-                </p>
+                  </p>
                 </div>
-                <div class='text-end mx-2'>
-                  <a href="{% url 'articles:update' article.pk %}" style="text-decoration: none;"><span class='text-primary opacity-75'>수정</span></a>
-                  <a href="{% url 'articles:delete' article.pk %}" style="text-decoration: none;"><span class='text-danger opacity-75'>삭제</span></a>
+                <div class='d-flex mx-2'>
+                  <div class="me-auto">
+                    <span class='fs-6 opacity-75 text-start'>{{ article.created_at }}</span>
+                  </div>
+                  <div>
+                    {% if request.user == article.user %}
+                      <a href="{% url 'articles:update' article.pk %}" style="text-decoration: none;"><span class='text-primary opacity-75'>수정</span></a>
+                      <a href="{% url 'articles:delete' article.pk %}" style="text-decoration: none;"><span class='text-danger opacity-75'>삭제</span></a>
+                    {% endif %}
+                  </div>
                 </div>
               </div>
             </div>
@@ -80,7 +70,7 @@
           {% if paginated_articles.has_previous %}
             <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
             <li class="page-item">
-              <a class="page-link" tabindex="-1" href="?page=1">&#60;</a>
+              <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
             </li>
           {% else %}
             <li class="page-item disabled">
@@ -94,12 +84,12 @@
             {% if page_number >= paginated_articles.number|add:-2 and page_number <= paginated_articles.number|add:2 %}
                 <!-- // 현재 페이지일 때는 active -->
                 {% if page_number == paginated_articles.number %}
-                  <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                  <li class="page-item" aria-current="page">
+                    <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
                   </li>
                 {% else %}
                   <li class="page-item text-color-warning">
-                    <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                    <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
                   </li>
                 {% endif %}
             {% endif %}
@@ -108,7 +98,7 @@
           <!-- 다음페이지 -->
           {% if paginated_articles.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ max_index }}">&#62;</a>
+              <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
             </li>
           {% else %}
             <li class="page-item disabled">
@@ -141,14 +131,19 @@
             const likeBtn = document.querySelector(`#like-btn-${articleId}`)
             const likeCount = document.querySelector(`#like-count-${articleId}`)
             const isLiked = response.data.is_liked
-            console.log(isLiked)
-            console.log(likeCount)
+            const heart = document.querySelector(`#heart-${articleId}`)
             
             if (isLiked === true) {
-              likeBtn.classList.replace("btn-outline-danger", "btn-danger")
+              heart.classList.remove('bi-heart-fill')
+              heart.classList.add('bi-heart')
+              likeBtn.classList.remove('btn-outline-danger')
+              likeBtn.classList.add('btn-danger')
               likeCount.innerText = response.data.likeCount
             } else {
-              likeBtn.classList.replace("btn-danger", "btn-outline-danger")
+              heart.classList.remove('bi-heart')
+              heart.classList.add('bi-heart-fill')
+              likeBtn.classList.remove('btn-danger')
+              likeBtn.classList.add('btn-outline-danger')
               likeCount.innerText = response.data.likeCount
             }
 
