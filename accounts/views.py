@@ -7,9 +7,10 @@ from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from products.models import Cart, Ddib, Product
+from products.models import Cart, Ddib
+from .models import OrderItem
 
-from .forms import ImageForm, ProductForm
+from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import Image
 
@@ -86,12 +87,16 @@ def change_password(request):
 
 
 def profile(request, user_pk):
-    products = Product.objects.order_by('-pk')
+    OrderItems = OrderItem.objects.order_by('-pk')
+    order_items = OrderItem.objects.filter(user=request.user)
+   
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     context = {
-        "products": products,
+        "OrderItems": OrderItems,
         "person": person,
+        'order_items': order_items,
+        
     }
     return render(request, "accounts/profile.html", context)
 
@@ -140,32 +145,21 @@ def create(request):
     # 요청한 user의 is_superuser가 1이면(admin이면)
     if request.user.is_superuser == 1: 
         if request.method == 'POST':
-            product_form = ProductForm(request.POST)
-            # form에 image 폼 추가
-            image_form = ImageForm(request.POST, request.FILES)
-            tmp_images = request.FILES.getlist('image')
-            
+            OrderItem_form = OrderItemForm(request.POST, request.FILES)
+            # form에 image 폼 추가      
             # 상품 정보에 대한 폼과 이미지 폼이 유효하면
-            if product_form.is_valid() and image_form.is_valid():
-                product = product_form.save(commit=False)
-                product.admin = request.user
-
-                if tmp_images:
-                    for img in tmp_images:
-                        img_instance = Image(product=product, image=img)
-                        product.save()
-                        img_instance.save()
-
-                product.save()
+            if OrderItem_form.is_valid():
+                OrderItem = OrderItem_form.save(commit=False)
+                OrderItem.admin = request.user
+                OrderItem.user = request.user
+                OrderItem.save()
                 messages.success(request, '상품 등록이 완료되었습니다.')
                 return redirect('accounts:profile', request.user.pk)
         else:
-            product_form = ProductForm()
-            image_form = ImageForm()
-            
+            OrderItem_form = OrderItemForm()         
         context = {
-            'product_form': product_form,
-            'image_form': image_form,
+            'OrderItem_form': OrderItem_form,
+            
         }
 
         return render(request, 'accounts/create.html', context)
