@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="mx-auto col-md-6 col-10 p-5">
+    <div class="col-12 p-5">
       <h1 class='text-center'>자유게시판</h1><hr>
       <div class='text-end'>
         <a class='btn btn-primary btn-sm' href="{% url 'articles:create' %}"> 글쓰기</a>
@@ -14,21 +14,24 @@
           <div class="card mx-auto mb-3 my-3" style="max-width: 610px;">
             <div class="row g-0">
               <!-- 카드 이미지 -->
-              <div class="col-md-4">
+              <div class="col-4">
                 {% if article.image %}
                   <img src="{{ article.image.url }}" class="img-fluid rounded-start" alt="{{ article.image }}">
                 {% else %}
                   <img src="https://dummyimage.com/200x215/000/fff" class="img-fluid rounded-start" alt="img">
                 {% endif %}
               </div>
-              <div class="col-md-8">
+              <div class="col-8">
                 <div class="card-body">
                   <div class='text-end fs-5' style="margin: -7px;">
-                    {% if article.user in article.like_users.all %}
-                      <i id='like-btn' data-article-id="{{ article.pk }}" class="bi-heart-fill" style="color: red;" ><span class="fs-6" id='like-count'>{{ article.like_users.count}}</span></i></a>
-                    {% else %}
-                      <i id='like-btn' data-article-id="{{ article.pk }}" class="bi-heart" style="color: red;" ><span class="fs-6" id='like-count'>{{ article.like_users.count}}</span></i></a>
-                    {% endif %}
+                    <form class='like-forms' data-article-id="{{ article.pk }}">
+                      {% csrf_token %}
+                      {% if request.user in article.like_users.all %}
+                        <button type="submit" class="btn btn-danger btn-sm" id='like-btn-{{ article.pk }}' value="좋아요 취소">♥<span class="fs-6" id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span></button>
+                      {% else %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm" id='like-btn-{{ article.pk }}' value="좋아요">♥<span class="fs-6" id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span></button>
+                      {% endif %}
+                    </form>
                   </div>
                   <h4>
                     <!-- 카드 타이틀 -->
@@ -121,26 +124,39 @@
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
-    const likeBtn = document.querySelector('#like-btn')
-  
-    likeBtn.addEventListener('click', function (event){
-      console.log(event.target.dataset)
-      axios({
-        method: 'get',
-        url: `like/${event.target.dataset.articleId}/`
-      })
-      .then(response => {
-        if (response.data.isLiked === true){
-          event.target.classList.add('bi-heart-fill')
-          event.target.classList.remove('bi-heart')
-        } else {
-          event.target.classList.add('bi-heart')
-          event.target.classList.remove('bi-heart-fill')
-        } 
-        const likeCount = document.querySelector('#like-count')
-        likeCount.innerText = response.data.likeCount
+    const forms = document.querySelectorAll('.like-forms')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
-      })
+    forms.forEach((form) => {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const articleId = event.target.dataset.articleId
+
+       axios({
+          method: 'post',
+          url: `/articles/like/${event.target.dataset.articleId}/`,
+          headers: {'X-CSRFToken': csrftoken},
+        })
+          .then((response) => {
+            const likeBtn = document.querySelector(`#like-btn-${articleId}`)
+            const likeCount = document.querySelector(`#like-count-${articleId}`)
+            const isLiked = response.data.is_liked
+            console.log(isLiked)
+            console.log(likeCount)
+            
+            if (isLiked === true) {
+              likeBtn.classList.replace("btn-outline-danger", "btn-danger")
+              likeCount.innerText = response.data.likeCount
+            } else {
+              likeBtn.classList.replace("btn-danger", "btn-outline-danger")
+              likeCount.innerText = response.data.likeCount
+            }
+
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+        })
     })
 
 </script>
