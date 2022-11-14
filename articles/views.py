@@ -50,9 +50,16 @@ def detail(request, pk):
     article = Article.objects.get(pk=pk)
     comments = Comment.objects.filter(article=article)
 
+    page = request.GET.get('page', '1')
+    paginator = Paginator(comments, 5)
+    paginated_comments = paginator.get_page(page)
+    max_index = len(paginator.page_range)
+
     context = {
         'article': article,
         'comments': comments,
+        'paginated_comments': paginated_comments,
+        'max_index': max_index,
     }
 
     return render(request, "articles/detail.html", context)
