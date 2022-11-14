@@ -69,7 +69,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                장바구니에 상품이 추가되었습니다.
+                장바구니에 상품을 담았습니다. <span id="product-existing"></span>
               </div>
               <div class="modal-footer">
                 <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
@@ -373,6 +373,12 @@
         // 수량을 0으로 초기화 및 장바구니 버튼 비활성화
         productBuyForm.reset()
         btnCart.disabled = true
+
+        const doesExist = response.data.doesExist
+        const productExisting = document.querySelector('#product-existing') // 이미 장바구니에 상품이 있을 경우 출력할 문구
+        if (doesExist === true) {
+          productExisting.innerText = '이미 담은 상품의 수량을 추가했습니다.'
+        }
       })
     })
   </script>
