@@ -56,27 +56,25 @@
       {% if request.user.is_authenticated %}
         <!-- 장바구니 버튼 & 모달 -->
         <form id="product-buy-form" data-product-id="{{ product.pk }}">
-        {% comment %} <form action="{% url 'products:cart' product.pk %}" method="POST"> {% endcomment %}
           {% csrf_token %}
           {% bootstrap_form product_buy_form %}
-          <input type="submit" value="장바구니" name="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          {% comment %} <input type="submit" value="장바구니" name="cart"> {% endcomment %}
+          <input type="submit" value="장바구니" id="btn-cart" name="cart" data-bs-toggle="modal" data-bs-target="#cart" disabled>
         </form>
 
         <!-- Modal (수정 필요) -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="cart" tabindex="-1" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                장바구니에 추가되었습니다
+                장바구니에 상품이 추가되었습니다.
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
+                <button type="submit" class="btn" data-bs-dismiss="modal"
+                style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
               </div>
             </div>
           </div>
@@ -347,7 +345,18 @@
 
 {% block script %}
   <script>
-    // 장바구니
+    // 수량이 1 ~ 10일 때만 장바구니 버튼 활성화
+    const quantityField = document.querySelector('#id_quantity') // quantity 입력 필드
+    const btnCart = document.querySelector('#btn-cart') // 장바구니 버튼
+    quantityField.addEventListener('input', event => {
+      if (0 < event.target.value && event.target.value <= 10) {
+        btnCart.disabled = false;
+      } else {
+        btnCart.disabled = true
+      }
+    })
+    
+    // 장바구니 모달
     const productBuyForm = document.querySelector('#product-buy-form')
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
     productBuyForm.addEventListener('submit', event => {
@@ -361,15 +370,9 @@
         data: new FormData(productBuyForm),
       })
       .then(response => {
-        const doesExist = response.data.doesExist
-
-        if (doesExist) {
-          console.log(doesExist)
-        } else {
-          console.log(doesExist)
-        }
-
+        // 수량을 0으로 초기화 및 장바구니 버튼 비활성화
         productBuyForm.reset()
+        btnCart.disabled = true
       })
     })
   </script>
