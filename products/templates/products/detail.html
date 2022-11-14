@@ -2,6 +2,11 @@
 {% load django_bootstrap5 %}
 {% load mathfilters %}
 {% load widget_tweaks %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/products/review.css' %}">
+{% endblock css %}
 
 {% block content %}
   <div class="container my-5" style="width: 1070px;">
@@ -83,10 +88,10 @@
         <!-- 찜 버튼 -->
         <form action="{% url 'products:ddib' product.pk %}" method="POST">
           {% csrf_token %}
-          <!-- <button type="submit" class="btn btn-lg default">
-            <i class="bi bi-star" style="color: #5e0080;"></i>
-          </button> -->
-          <input type="submit" value="찜" name="ddib">
+          <button type="submit" class="btn btn-lg default">
+            <i class="bi bi-heart" style="color: #5e0080;"></i>
+          </button> 
+          {% comment %} <input type="submit" value="찜" name="ddib"> {% endcomment %}
         </form>
       {% endif %}
 
@@ -111,6 +116,13 @@
                     <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>{{ review.product.product_name }}</h3>
                   </div>
                   <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>{{ review.content }}</p>
+                  <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
+                    {% for photo in review.reviewimage_set.all %}
+                    <div class='d-flex'>
+                      <img src="{{ photo.review_img.url }}" alt="{{ photo.review_img }}" class='review-img' style="width:93px; height:93px; flex-shrink:0; border-radius:2px">
+                    </div>
+                    {% endfor %}
+                  </div>
                 </div>
                 <footer class='review-date w-100 d-flex justify-content-between w-100' style='align-items:center; padding-top:19px; padding-right:20px'>
                   <div>
@@ -375,5 +387,7 @@
         btnCart.disabled = true
       })
     })
+
+    // 찜 
   </script>
 {% endblock script %}
