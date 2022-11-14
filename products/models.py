@@ -6,6 +6,10 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
+    content = models.CharField(max_length=50)   # 상품 짧은 소개
+    carbohydrate = models.FloatField(blank=True)    # 탄수화물
+    protein = models.FloatField(blank=True) # 단백질
+    fat = models.FloatField(blank=True) # 지방
     price = models.IntegerField(default=0)
     sold_count = models.IntegerField(default=0)  # 상품 팔린 갯수
     quantity = models.IntegerField(default=0, validators=[
