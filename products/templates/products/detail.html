@@ -2,6 +2,11 @@
 {% load django_bootstrap5 %}
 {% load mathfilters %}
 {% load widget_tweaks %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/products/review.css' %}">
+{% endblock css %}
 
 {% block content %}
 <div class="container my-5" style="width: 1070px;">
@@ -43,53 +48,53 @@
       </div>
     </div>
 
-    <!-- 상품 정보 -->
-    <div class="col">
-      <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
-      <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
-      <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
-      <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
-        <span style="font-size: 18px;">원</span>
-      </p>
-    </div>
+      <!-- 상품 정보 -->
+      <div class="col">
+        <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
+        <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
+        <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
+        <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
+          <span style="font-size: 18px;">원</span>
+        </p>
+      </div>
+      
+      {% if request.user.is_authenticated %}
+        <!-- 장바구니 버튼 & 모달 -->
+        <form id="product-buy-form" data-product-id="{{ product.pk }}">
+          {% csrf_token %}
+          {% bootstrap_form product_buy_form %}
+          <input type="submit" value="장바구니" id="btn-cart" name="cart" data-bs-toggle="modal" data-bs-target="#cart" disabled>
+        </form>
 
-    {% if request.user.is_authenticated %}
-    <!-- 장바구니 버튼 & 모달 -->
-    <form id="product-buy-form" data-product-id="{{ product.pk }}">
-      {% comment %} <form action="{% url 'products:cart' product.pk %}" method="POST"> {% endcomment %}
-        {% csrf_token %}
-        {% bootstrap_form product_buy_form %}
-        <input type="submit" value="장바구니" name="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        {% comment %} <input type="submit" value="장바구니" name="cart"> {% endcomment %}
-      </form>
-
-      <!-- Modal (수정 필요) -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              장바구니에 추가되었습니다
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- Modal (수정 필요) -->
+        <div class="modal fade" id="cart" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                장바구니에 상품을 담았습니다. <span id="product-existing"></span>
+              </div>
+              <div class="modal-footer">
+                <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
+                <button type="submit" class="btn" data-bs-dismiss="modal"
+                style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 찜 버튼 -->
-      <form action="{% url 'products:ddib' product.pk %}" method="POST">
-        {% csrf_token %}
-        <!-- <button type="submit" class="btn btn-lg default">
-            <i class="bi bi-star" style="color: #5e0080;"></i>
-          </button> -->
-        <input type="submit" value="찜" name="ddib">
-      </form>
+
+        <!-- 찜 버튼 -->
+        <form action="{% url 'products:ddib' product.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-lg default">
+            <i class="bi bi-heart" style="color: #5e0080;"></i>
+          </button> 
+          {% comment %} <input type="submit" value="찜" name="ddib"> {% endcomment %}
+        </form>
       {% endif %}
 
       <!-- 상품 후기 -->
@@ -114,8 +119,15 @@
                     <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>{{
                       review.product.product_name }}</h3>
                   </div>
-                  <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>{{
-                    review.content }}</p>
+
+                  <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>{{ review.content }}</p>
+                  <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
+                    {% for photo in review.reviewimage_set.all %}
+                    <div class='d-flex'>
+                      <img src="{{ photo.review_img.url }}" alt="{{ photo.review_img }}" class='review-img' style="width:93px; height:93px; flex-shrink:0; border-radius:2px">
+                    </div>
+                    {% endfor %}
+                  </div>
                 </div>
                 <footer class='review-date w-100 d-flex justify-content-between w-100'
                   style='align-items:center; padding-top:19px; padding-right:20px'>
@@ -358,13 +370,25 @@
 {% endblock content %}
 
 {% block script %}
-<script>
-  // 장바구니
-  const productBuyForm = document.querySelector('#product-buy-form')
-  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-  productBuyForm.addEventListener('submit', event => {
-    event.preventDefault()
-    const productId = event.target.dataset.productId
+
+  <script>
+    // 수량이 1 ~ 10일 때만 장바구니 버튼 활성화
+    const quantityField = document.querySelector('#id_quantity') // quantity 입력 필드
+    const btnCart = document.querySelector('#btn-cart') // 장바구니 버튼
+    quantityField.addEventListener('input', event => {
+      if (0 < event.target.value && event.target.value <= 10) {
+        btnCart.disabled = false;
+      } else {
+        btnCart.disabled = true
+      }
+    })
+    
+    // 장바구니 모달
+    const productBuyForm = document.querySelector('#product-buy-form')
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    productBuyForm.addEventListener('submit', event => {
+      event.preventDefault()
+      const productId = event.target.dataset.productId
 
     axios({
       method: 'POST',
@@ -373,16 +397,17 @@
       data: new FormData(productBuyForm),
     })
       .then(response => {
-        const doesExist = response.data.doesExist
-
-        if (doesExist) {
-          console.log(doesExist)
-        } else {
-          console.log(doesExist)
-        }
-
+        // 수량을 0으로 초기화 및 장바구니 버튼 비활성화
         productBuyForm.reset()
+        btnCart.disabled = true
+
+        const doesExist = response.data.doesExist
+        const productExisting = document.querySelector('#product-existing') // 이미 장바구니에 상품이 있을 경우 출력할 문구
+        if (doesExist === true) {
+          productExisting.innerText = '이미 담은 상품의 수량을 추가했습니다.'
+        }
       })
-  })
-</script>
+    })
+    // 찜 
+  </script>
 {% endblock script %}
