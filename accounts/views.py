@@ -7,8 +7,11 @@ from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from products.models import Cart, Ddib
-from .models import Purchase
+from products.models import Cart, Ddib, Product
+
+from .forms import ImageForm, ProductForm
+from django.contrib import messages
+from products.models import Image
 
 
 
@@ -83,9 +86,11 @@ def change_password(request):
 
 
 def profile(request, user_pk):
+    products = Product.objects.order_by('-pk')
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     context = {
+        "products": products,
         "person": person,
     }
     return render(request, "accounts/profile.html", context)
@@ -129,10 +134,41 @@ def delete(request):
     return redirect("accounts:login")
 
 
+# admin의 판매 상품 등록
+@login_required
+def create(request):
+    # 요청한 user의 is_superuser가 1이면(admin이면)
+    if request.user.is_superuser == 1: 
+        if request.method == 'POST':
+            product_form = ProductForm(request.POST)
+            # form에 image 폼 추가
+            image_form = ImageForm(request.POST, request.FILES)
+            tmp_images = request.FILES.getlist('image')
+            
+            # 상품 정보에 대한 폼과 이미지 폼이 유효하면
+            if product_form.is_valid() and image_form.is_valid():
+                product = product_form.save(commit=False)
+                product.admin = request.user
 
-def purchase_list(request, pk):
-    purchases = Purchase.objects.get(pk=pk)
-    context = {
-        'purchases': purchases
-    }
-    return render(request, 'accounts/profile.html', context)
+                if tmp_images:
+                    for img in tmp_images:
+                        img_instance = Image(product=product, image=img)
+                        product.save()
+                        img_instance.save()
+
+                product.save()
+                messages.success(request, '상품 등록이 완료되었습니다.')
+                return redirect('accounts:profile', request.user.pk)
+        else:
+            product_form = ProductForm()
+            image_form = ImageForm()
+            
+        context = {
+            'product_form': product_form,
+            'image_form': image_form,
+        }
+
+        return render(request, 'accounts/create.html', context)
+    
+    else:
+        return redirect('products:index')    # admin 아니면 index로 리다이렉트

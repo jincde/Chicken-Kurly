@@ -2,25 +2,26 @@
 {% load django_bootstrap5 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-<form action="" method="POST">
-  <div class="container">
-    <div class="row">
-      <div class="col-4 p-3">
-        <div class="d-flex align-items-center">
-          {% if request.user.image %}
-            <img src="{{ request.user.image.url }}" alt="" style="width: 150px; height: 150px; border-radius: 50%">
-          {% else %}
-            <img src="" alt="">
-          {% endif %}
-          <p class="fs-3 my-2 ms-5">{{ user.username }}</p>
+{% block content %}
+  <form action="" method="POST" enctype="multipart/form-data">
+    <div class="container">
+      <div class="row">
+        <div class="col-4 p-3">
+          <div class="d-flex align-items-center">
+            {% if request.user.image %}
+              <img src="{{ request.user.image.url }}" alt="" style="width: 150px; height: 150px; border-radius: 50%">
+            {% else %}
+              <img src="" alt="">
+            {% endif %}
+            <p class="fs-3 my-2 ms-5">{{ user.username }}</p>
+          </div>
         </div>
       </div>
-    </div>
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    <input type="submit" class="btn btn-outline-dark" value="수정">
-    <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">비밀번호 변경</a>
-    <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a>
-    <a href="{% url 'accounts:detail' user.pk %}" class="btn btn-secondary">돌아가기</a>
-  </form>
-{% endblock content %}
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <input type="submit" class="btn btn-outline-dark" value="수정">
+      <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">비밀번호 변경</a>
+      <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a>
+      <a href="" class="btn btn-secondary">돌아가기</a>
+    </form>
+  {% endblock content %}
