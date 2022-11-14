@@ -134,58 +134,73 @@
   {% endif %}
 </div>
 
-<!-- 구매한 식품 <p>{{ purchases.user }}님이 구매하신 식품</p> <div class="row row-cols-4 g-3"> <div class="col"> <div class="card h-100"> {% if purchases.image %} <img src="{{ purchases.image.url }}" class="card-img-top" alt="..."> {% else %} <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="상품대체용"> {% endif %}-->
-<!-- 상품 정보 <div class="card-body"> {% for purchase in purchases %} <h5 class="card-title">{{ purchase.id }}</h5> <p class="card-text">{{ purchase.product }}</p> {% endfor %} </div> </div> </div> -->
 
-<!-- 구매한 식품 -->
-<div>
-  <div class="row">
-    {% for orderitem in orderitems %}
-    <div class="col-4 my-3">
-      <div class="card">
-        {% if orderitem.image %}
-        <!-- 이미지를 url로 사용해서 보여줌 -->
-        <img src="{{ orderitem.image.url }}" class="card-img-top" alt="...">
-        {% else %}
-        <img src="" class="card-img-top">
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ orderitem.title }}</h5>
-          <p class="text-muted"></p>
-          <a href="" class="btn btn-outline-primary my-3">질문 확인</a>
+  <!-- 구매한 식품 <p>{{ purchases.user }}님이 구매하신 식품</p> <div class="row row-cols-4 g-3"> <div class="col"> <div class="card h-100"> {% if purchases.image %} <img src="{{ purchases.image.url }}" class="card-img-top" alt="..."> {% else %} <img src="https://dummyimage.com/70x80/7a17d6/fff" alt="상품대체용"> {% endif %}-->
+  <!-- 상품 정보 <div class="card-body"> {% for purchase in purchases %} <h5 class="card-title">{{ purchase.id }}</h5> <p class="card-text">{{ purchase.product }}</p> {% endfor %} </div> </div> </div> -->
+
+  <!-- 구매한 식품 -->
+  <div>
+    <div class="row">
+      
+        <div class="col-4 my-3">
+          <div class="card">
+            
+              <!-- 이미지를 url로 사용해서 보여줌 -->
+              <img src="" class="card-img-top" alt="...">
+            
+              <img src="" class="card-img-top">
+            
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <p class="text-muted"></p>
+              <a href="" class="btn btn-outline-primary my-3">질문 확인</a>
+            </div>
+          </div>
         </div>
-      </div>
+    
+
     </div>
     {% endfor %}
   </div>
 </div>
 <!-- 찜한 식품 -->
 
-<!--구매한 식품 -->
-<div style="padding: 40px 0">
-  <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-    <h3 style="color: rgb(51, 51, 51)">{{ order.first_name }}님이 구매한 식품</h3>
-  </div>
-  <div class="swiper-box" style="position: relative">
-    <section class="swiper" id="test-slide">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        {% for orderitem in orderitems %}
-        <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-          {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-            <div class="orderitem-img" style="">
-              <img src="{{ orderitem.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
-                style="object-fit: cover">
-            </div>
-            <div style="padding: 12px 10px 0 0">
-              <div class="d-flex justify-content-between">
-                <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ orderitem.product }}</span><span
-                  class="m-0" style="color: #FA622F; font-weight: 700;"></span>
+
+  <!--구매한 식품 -->
+  <div style="padding: 40px 0">
+    <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
+      <h3 style="color: rgb(51, 51, 51)">님이 구매한 식품</h3>
+    </div>
+    <div class="swiper-box" style="position: relative">
+      <section class="swiper" id="test-slide">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          
+          <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
+            {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
+              <div class="orderitem-img" style="">
+                <img src="" alt="" width="100%" height="329px"
+                  style="object-fit: cover">
               </div>
-              <p class="m-0" style="font-weight: 400;">{{ orderitem.product }}</p>
-              <p class="m-0" style="font-weight: 800;">{{ orderitem.price }} 원</p>
-            </div>
+              <div style="padding: 12px 10px 0 0">
+                <div class="d-flex justify-content-between">
+                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;"></span><span class="m-0"
+                    style="color: #FA622F; font-weight: 700;"></span>
+                </div>
+                <p class="m-0" style="font-weight: 400;"></p>
+                <p class="m-0" style="font-weight: 800;"> 원</p>
+              </div>
+          </div>
+       
+        </div>
+  
+        <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
+            style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+        </div>
+        <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
+            style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+
         </div>
         {% endfor %}
       </div>
@@ -200,27 +215,42 @@
   </div>
 </div>
 
-<!-- 구매한 식품 -->
-<div style="padding: 40px 0;">
-  <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-    <h3 style="color: rgb(51, 51, 51)">구매한 상품</h3>
-  </div>
-  <div class="swiper-box" style="position: relative; padding:0 40px;">
-    <section class="swiper" id="test-slide">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        {% for product in products %}
-        <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-          {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-            <div class="product-img" style="">
-              <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
-                style="object-fit: cover">
-            </div>
-            <div style="padding: 12px 10px 0 0">
-              <div class="d-flex justify-content-between">
-                <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
-                  style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
+
+
+
+  <!-- 참고 
+  {% for item in order_items %}
+  src = {{ item.product.image_set.all.0.image.url }}
+{% endfor %} -->
+
+  <!-- 구매한 식품 -->
+  <div style="padding: 40px 0;">
+    <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
+      <h3 style="color: rgb(51, 51, 51)">구매한 상품</h3>
+    </div>
+    <div class="swiper-box" style="position: relative; padding:0 40px;">
+      <section class="swiper" id="test-slide">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          {% for item in order_items %}  
+          <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">     
+              <div class="product-img" style="">
+                <img src="{{ item.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+                  style="object-fit: cover">
+              </div>
+              <div style="padding: 12px 10px 0 0">
+                <div class="d-flex justify-content-between">
+                
+                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-0"
+                    style="color: #FA622F; font-weight: 700;">{{  item.product.category }}</span>
+                </div>
+                <p class="m-0" style="font-weight: 400;">{{ item.product.product_name }}</p>
+                <p class="m-0" style="font-weight: 800;">{{  item.product.price }} 원</p>
+                {% for item in order_items %}
+                  {{ item.product.price }}
+                  {% endfor %}
+
               </div>
               <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
               <p class="m-0" style="font-weight: 800;">{{ product.price }} 원</p>
