@@ -6,10 +6,6 @@ from django.conf import settings
 from products.models import Product
 
 
-
-
- 
-
 # Create your models here.
 class User(AbstractUser):
     followings = models.ManyToManyField(
@@ -66,9 +62,5 @@ class OrderItem(models.Model):
   ordered = models.BooleanField(default=False)
   order_date = models.DateTimeField(auto_now_add=True)
   
-  
   def __str__(self):
     return '{}'.format(self.id)
-
-
-
