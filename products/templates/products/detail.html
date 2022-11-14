@@ -4,103 +4,104 @@
 {% load widget_tweaks %}
 
 {% block content %}
-  <div class="container my-5" style="width: 1070px;">
-    {% if request.user.is_superuser == 1 %}
-      <a href="{% url 'products:update' product.pk %}" class="btn btn-primary">상품 정보 수정</a>
-    {% endif %}
+<div class="container my-5" style="width: 1070px;">
+  {% if request.user.is_superuser == 1 %}
+  <a href="{% url 'products:update' product.pk %}" class="btn btn-primary">상품 정보 수정</a>
+  {% endif %}
 
-    <div class="row">
-      <div class="col">
-        <!-- carousel 사진 영역 -->
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-          <div class="carousel-indicators">
-            {% for image in product.image_set.all %}
-              <!-- 사진 인덱싱 위해 mathfilters 설치해야 함 -->
-              <button type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to="{{ forloop.counter|sub:1|mod:image_cnt }}"
-                class="{% if forloop.counter == 1 %} active {% endif %}" aria-current="true"
-                aria-label="Slide {{ forloop.counter|mod:image_cnt }}">
-              </button>
-            {% endfor %}
-          </div>
-          <div class="carousel-inner">
-            {% for image in product.image_set.all %}
-              <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style="height: 340px">
-                <img src="{{ image.image.url }}" class="d-block h-100 mx-auto" alt="{{ image.image }}">
-              </div>
-            {% endfor %}
-          </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+  <div class="row">
+    <div class="col">
+      <!-- carousel 사진 영역 -->
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+        <div class="carousel-indicators">
+          {% for image in product.image_set.all %}
+          <!-- 사진 인덱싱 위해 mathfilters 설치해야 함 -->
+          <button type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="{{ forloop.counter|sub:1|mod:image_cnt }}"
+            class="{% if forloop.counter == 1 %} active {% endif %}" aria-current="true"
+            aria-label="Slide {{ forloop.counter|mod:image_cnt }}">
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+          {% endfor %}
         </div>
+        <div class="carousel-inner">
+          {% for image in product.image_set.all %}
+          <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style="height: 340px">
+            <img src="{{ image.image.url }}" class="d-block h-100 mx-auto" alt="{{ image.image }}">
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
+    </div>
 
-      <!-- 상품 정보 -->
-      <div class="col">
-        <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
-        <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
-        <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
-        <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
-          <span style="font-size: 18px;">원</span>
-        </p>
-      </div>
-      
-      {% if request.user.is_authenticated %}
-        <!-- 장바구니 버튼 & 모달 -->
-        <form id="product-buy-form" data-product-id="{{ product.pk }}">
-        {% comment %} <form action="{% url 'products:cart' product.pk %}" method="POST"> {% endcomment %}
-          {% csrf_token %}
-          {% bootstrap_form product_buy_form %}
-          <input type="submit" value="장바구니" name="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          {% comment %} <input type="submit" value="장바구니" name="cart"> {% endcomment %}
-        </form>
+    <!-- 상품 정보 -->
+    <div class="col">
+      <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
+      <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
+      <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
+      <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
+        <span style="font-size: 18px;">원</span>
+      </p>
+    </div>
 
-        <!-- Modal (수정 필요) -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                장바구니에 추가되었습니다
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
+    {% if request.user.is_authenticated %}
+    <!-- 장바구니 버튼 & 모달 -->
+    <form id="product-buy-form" data-product-id="{{ product.pk }}">
+      {% comment %} <form action="{% url 'products:cart' product.pk %}" method="POST"> {% endcomment %}
+        {% csrf_token %}
+        {% bootstrap_form product_buy_form %}
+        <input type="submit" value="장바구니" name="cart" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        {% comment %} <input type="submit" value="장바구니" name="cart"> {% endcomment %}
+      </form>
+
+      <!-- Modal (수정 필요) -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              장바구니에 추가되었습니다
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- 찜 버튼 -->
-        <form action="{% url 'products:ddib' product.pk %}" method="POST">
-          {% csrf_token %}
-          <!-- <button type="submit" class="btn btn-lg default">
+      <!-- 찜 버튼 -->
+      <form action="{% url 'products:ddib' product.pk %}" method="POST">
+        {% csrf_token %}
+        <!-- <button type="submit" class="btn btn-lg default">
             <i class="bi bi-star" style="color: #5e0080;"></i>
           </button> -->
-          <input type="submit" value="찜" name="ddib">
-        </form>
+        <input type="submit" value="찜" name="ddib">
+      </form>
       {% endif %}
 
       <!-- 상품 후기 -->
-      <div class='product-review position-relative' style='width:1010px; padding: bottom 100px;' >
+      <div class='product-review position-relative' style='width:1010px; padding: bottom 100px;'>
         <section class='review' style='padding:72px 0px;'>
           <header class='review-title d-flex w-100' style='align-itmes:center; min: height 44px;'>
-            <h2 class='fw-bold' style='font: size 18px; line-height:22px;' >상품 후기</h2>
+            <h2 class='fw-bold' style='font: size 18px; line-height:22px;'>상품 후기</h2>
           </header>
           <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
             {% for review in reviews %}
-            <div class='review-detail d-flex' style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
+            <div class='review-detail d-flex'
+              style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
               <div class='review-writer' style='flex:0 0 225px;'>
                 <div class='d-flex'>
                   <span>{{ review.user }}
@@ -110,11 +111,14 @@
               <article class='review-content' style='flex:1 1 0%;'>
                 <div>
                   <div>
-                    <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>{{ review.product.product_name }}</h3>
+                    <h3 style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>{{
+                      review.product.product_name }}</h3>
                   </div>
-                  <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>{{ review.content }}</p>
+                  <p style='padding-top:12px; white-space:pre-line; line-height:19px; padding-right:20px'>{{
+                    review.content }}</p>
                 </div>
-                <footer class='review-date w-100 d-flex justify-content-between w-100' style='align-items:center; padding-top:19px; padding-right:20px'>
+                <footer class='review-date w-100 d-flex justify-content-between w-100'
+                  style='align-items:center; padding-top:19px; padding-right:20px'>
                   <div>
                     <span style='color: rgb(153, 153, 153);'>{{ review.created_at|date:"Y.m.d" }}</span>
                   </div>
@@ -123,7 +127,8 @@
                     <form class='d-flex' action="{% url 'products:review_update' product.pk review.pk %}" method="GET">
                       {% csrf_token %}
                       <input type="submit" class="btn fw-bold form-control"
-                      style="border-radius:3px; height:36px; width:96px; border:1px solid rgb(221, 221, 221); font-size:12px; text-align:center;" value="후기수정">
+                        style="border-radius:3px; height:36px; width:96px; border:1px solid rgb(221, 221, 221); font-size:12px; text-align:center;"
+                        value="후기수정">
                     </form>
                   </div>
                   {% endif %}
@@ -137,8 +142,9 @@
             <form action="{% url 'products:review_create' product.pk %}" method="GET">
               {% csrf_token %}
               <div class="d-flex justify-content-center my-3">
-                  <input type="submit" class="btn fw-bold form-control"
-                  style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white" value="후기쓰기">
+                <input type="submit" class="btn fw-bold form-control"
+                  style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white"
+                  value="후기쓰기">
               </div>
             </form>
           </div>
@@ -146,220 +152,226 @@
           {% comment %} 후기 페이지네이션 {% endcomment %}
           <div class='page d-flex justify-content-center' style='padding-top:20px'>
             <nav aria-label="Page navigation example">
-            <ul class="pagination">
-            <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            </a>
-            </li>
-            </ul>
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
             </nav>
           </div>
         </section>
       </div>
+  </div>
+
+  <!-- 상품 문의 등록 버튼 & 모달 -->
+  <div class="row">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fw-bold m-0">상품 문의</h2>
+      <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
+        style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
     </div>
 
-    <!-- 상품 문의 등록 버튼 & 모달 -->
-    <div class="row">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold m-0">상품 문의</h2>
-        <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
-        style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
-      </div>
+    <div class="mb-3">
+      <p class="text-muted m-0">· 상품에 대한 문의를 남기는 공간입니다. 해당 게시판의 성격과 다른 글은 사전동의 없이 담당 게시판으로 이동될 수 있습니다.</p>
+      <p class="text-muted m-0">· 배송관련, 주문(취소/교환/환불)관련 문의 및 요청사항은 내 1:1 문의에 남겨주세요.</p>
+    </div>
 
-      <div class="mb-3">
-        <p class="text-muted m-0">· 상품에 대한 문의를 남기는 공간입니다. 해당 게시판의 성격과 다른 글은 사전동의 없이 담당 게시판으로 이동될 수 있습니다.</p>
-        <p class="text-muted m-0">· 배송관련, 주문(취소/교환/환불)관련 문의 및 요청사항은 내 1:1 문의에 남겨주세요.</p>
-      </div>
+    <!-- Modal -->
+    {% if request.user.is_authenticated %}
+    <div class="modal fade" id="inquiry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
 
-      <!-- Modal -->
-      {% if request.user.is_authenticated %}
-        <div class="modal fade" id="inquiry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-body">
+            <div class="d-flex align-items-center mb-3">
+              <img src="{{ product.image_set.all.0.image.url }}" alt="" class="rounded-1" width="64px" height="64px">
+              <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
+            </div>
+
+            <form action="{% url 'products:create_inquiry' product.pk %}" method="POST">
+              {% csrf_token %}
+              {% bootstrap_form inquiry_form %}
+
+              <div class="text-center">
+                <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                  style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                <button type="submit" class="btn"
+                  style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
               </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="modal fade" id="inquiry" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">로그인하셔야 본 서비스를 이용하실 수 있습니다.</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
 
-              <div class="modal-body">
-                <div class="d-flex align-items-center mb-3">
-                  <img src="{{ product.image_set.all.0.image.url }}" alt="" class="rounded-1" width="64px" height="64px">
-                  <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
+  <!-- 상품 문의 목록 -->
+  <div class="row px-3">
+    <table class="table">
+      <thead class="text-center">
+        <tr>
+          <th scope="col" style="width: 710px;">제목</th>
+          <th scope="col" style="width: 100px;">작성자</th>
+          <th scope="col" style="width: 100px;">작성일</th>
+          <th scope="col" style="width: 100px;">답변상태</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for inquiry in inquiries %}
+        <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+          style="vertical-align: middle;">
+          <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+          <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+          <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+          {% if inquiry.reply %}
+          <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+          {% else %}
+          <td style="width: 100px;" class="text-center">-</td>
+          {% endif %}
+        </tr>
+
+        <!-- 답변 Collapse -->
+        <tr class="collapse" id="collapse-inquiry-{{ inquiry.pk }}">
+          <td colspan="4" class="text-bg-light px-3">
+            <div>
+              <div class="d-flex">
+                <div class="me-3">Q.</div>
+                <div>{{ inquiry.content }}</div>
+              </div>
+              <div>
+                {% if inquiry.reply %}
+                <div class="d-flex mt-3">
+                  <div class="me-3">A.</div>
+                  <div>{{ inquiry.reply.content }}</div>
+                </div>
+                {% else %}
+                <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
+                {% if request.user == inquiry.user %}
+                <div class="d-flex justify-content-end mt-3">
+                  <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry">수정</a>
+
+                  <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}">
+                    <input type="submit" class="btn-none text-muted" value="삭제">
+                  </form>
                 </div>
 
-                <form action="{% url 'products:create_inquiry' product.pk %}" method="POST">
-                  {% csrf_token %}
-                  {% bootstrap_form inquiry_form %}
-
-                  <div class="text-center">
-                    <button type="button" class="btn me-2" data-bs-dismiss="modal"
-                    style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                    <button type="submit" class="btn"
-                    style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      {% else %}
-        <div class="modal fade" id="inquiry" tabindex="-1">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">로그인하셔야 본 서비스를 이용하실 수 있습니다.</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      {% endif %}
-    </div>
-
-    <!-- 상품 문의 목록 -->
-    <div class="row px-3">
-      <table class="table">
-        <thead class="text-center">
-          <tr>
-            <th scope="col" style="width: 710px;">제목</th>
-            <th scope="col" style="width: 100px;">작성자</th>
-            <th scope="col" style="width: 100px;">작성일</th>
-            <th scope="col" style="width: 100px;">답변상태</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for inquiry in inquiries %}
-            <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false" style="vertical-align: middle;">
-              <td scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
-              <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
-              <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
-              {% if inquiry.reply %}
-                <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
-              {% else %}
-                <td style="width: 100px;" class="text-center">-</td>
-              {% endif %}
-            </tr>
-            
-            <!-- 답변 Collapse -->
-            <tr class="collapse" id="collapse-inquiry-{{ inquiry.pk }}">
-              <td colspan="4" class="text-bg-light px-3">
-                <div>
-                  <div class="d-flex">
-                    <div class="me-3">Q.</div> 
-                    <div>{{ inquiry.content }}</div>
-                  </div>
-                  <div>
-                    {% if inquiry.reply %}
-                      <div class="d-flex mt-3">
-                        <div class="me-3">A.</div> 
-                        <div>{{ inquiry.reply.content }}</div>
+                <!-- 문의 수정 모달 -->
+                <div class="modal fade" id="updateInquiry" data-bs-backdrop="static" data-bs-keyboard="false"
+                  tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                    {% else %}
-                      <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
-                      {% if request.user == inquiry.user %}
-                        <div class="d-flex justify-content-end mt-3">
-                          <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry">수정</a>
-                          
-                          <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}">
-                            <input type="submit" class="btn-none text-muted" value="삭제">
-                          </form>
+
+                      <div class="modal-body">
+                        <div class="d-flex align-items-center mb-3">
+                          <img src="{{ product.image_set.all.0.image.url }}" alt="" class="rounded-1" width="64px"
+                            height="64px">
+                          <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
                         </div>
 
-                        <!-- 문의 수정 모달 -->
-                        <div class="modal fade" id="updateInquiry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                
-                              <div class="modal-body">
-                                <div class="d-flex align-items-center mb-3">
-                                  <img src="{{ product.image_set.all.0.image.url }}" alt="" class="rounded-1" width="64px" height="64px">
-                                  <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
-                                </div>
-                                
-                                <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST">
-                                  {% csrf_token %}
-                                  
-                                  <!-- inquiry_form -->
-                                  <div class="mb-3">
-                                    <label class="form-label" for="id_title">제목</label>
-                                    <input type="text" name="title" maxlength="50" class="form-control" placeholder="제목" required id="id_title" value={{ inquiry.title }}>
-                                  </div>
-                                  <div class="mb-3">
-                                    <label class="form-label" for="id_content">내용</label>
-                                    <textarea name="content" cols="40" rows="10" class="form-control" placeholder="내용" required id="id_content">{{ inquiry.content }}</textarea>
-                                  </div>
-
-                                  <div class="text-center">
-                                    <button type="button" class="btn me-2" data-bs-dismiss="modal"
-                                    style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                                    <button type="submit" class="btn"
-                                    style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      {% endif %}
-
-                      {% if request.user.is_superuser == 1 %}
-                        <hr>
-                        <form action="{% url 'products:create_reply' product.pk inquiry.pk %}" method="POST">
+                        <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST">
                           {% csrf_token %}
-                          {{ reply_form.content|add_class:'form-control my-3'|attr:'rows:3'|attr:'placeholder:답변을 작성해주세요.' }}
-        
-                          <div class="text-center mb-3">
-                            <button type="reset" class="btn me-2" data-bs-dismiss="modal"
-                            style="border:solid 1px #d3d3d3; border-radius:3px; height:40px; width:120px; background-color: white;">취소</button>
+
+                          <!-- inquiry_form -->
+                          <div class="mb-3">
+                            <label class="form-label" for="id_title">제목</label>
+                            <input type="text" name="title" maxlength="50" class="form-control" placeholder="제목"
+                              required id="id_title" value={{ inquiry.title }}>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label" for="id_content">내용</label>
+                            <textarea name="content" cols="40" rows="10" class="form-control" placeholder="내용" required
+                              id="id_content">{{ inquiry.content }}</textarea>
+                          </div>
+
+                          <div class="text-center">
+                            <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                              style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
                             <button type="submit" class="btn"
-                            style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">등록</button>
+                              style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
                           </div>
                         </form>
-                      {% endif %}
-                    {% endif %}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+                {% endif %}
+
+                {% if request.user.is_superuser == 1 %}
+                <hr>
+                <form action="{% url 'products:create_reply' product.pk inquiry.pk %}" method="POST">
+                  {% csrf_token %}
+                  {{ reply_form.content|add_class:'form-control my-3'|attr:'rows:3'|attr:'placeholder:답변을 작성해주세요.' }}
+
+                  <div class="text-center mb-3">
+                    <button type="reset" class="btn me-2" data-bs-dismiss="modal"
+                      style="border:solid 1px #d3d3d3; border-radius:3px; height:40px; width:120px; background-color: white;">취소</button>
+                    <button type="submit" class="btn"
+                      style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">등록</button>
+                  </div>
+                </form>
+                {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+</div>
 {% endblock content %}
 
 {% block script %}
-  <script>
-    // 장바구니
-    const productBuyForm = document.querySelector('#product-buy-form')
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-    productBuyForm.addEventListener('submit', event => {
-      event.preventDefault()
-      const productId = event.target.dataset.productId
+<script>
+  // 장바구니
+  const productBuyForm = document.querySelector('#product-buy-form')
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  productBuyForm.addEventListener('submit', event => {
+    event.preventDefault()
+    const productId = event.target.dataset.productId
 
-      axios({
-        method: 'POST',
-        url: `/products/${productId}/cart/`,
-        headers: {'X-CSRFToken': csrfToken},
-        data: new FormData(productBuyForm),
-      })
+    axios({
+      method: 'POST',
+      url: `/products/${productId}/cart/`,
+      headers: { 'X-CSRFToken': csrfToken },
+      data: new FormData(productBuyForm),
+    })
       .then(response => {
         const doesExist = response.data.doesExist
 
@@ -371,6 +383,6 @@
 
         productBuyForm.reset()
       })
-    })
-  </script>
+  })
+</script>
 {% endblock script %}
