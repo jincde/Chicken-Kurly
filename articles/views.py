@@ -45,10 +45,11 @@ def create(request):
     }
     return render(request, "articles/create.html", context)
 
+@login_required
 def detail(request, pk):
 
     article = Article.objects.get(pk=pk)
-    comments = Comment.objects.filter(article=article)
+    comments = Comment.objects.filter(article=article).order_by('-pk')
 
     page = request.GET.get('page', '1')
     paginator = Paginator(comments, 5)
@@ -69,8 +70,8 @@ def delete(request, pk):
 
     article = Article.objects.get(pk=pk)
 
-    article.delete()
-
+    if request.user == article.user:
+        article.delete()
     return redirect("articles:index")
 
 @login_required
@@ -78,17 +79,19 @@ def update(request, pk):
 
     article = Article.objects.get(pk=pk)
 
-    if request.method == "POST":
-        article_form = ArticleForm(request.POST, request.FILES, instance=article)
-        if article_form.is_valid():
-            article_form.save()
-            return redirect("articles:index")
-    else:
-        article_form = ArticleForm(instance=article)
-    context = {
-        "article_form": article_form,
-    }
-    return render(request, "articles/update.html", context)
+    if request.user == article.user:
+        if request.method == "POST":
+            article_form = ArticleForm(request.POST, request.FILES, instance=article)
+            if article_form.is_valid():
+                article_form.save()
+                return redirect("articles:index")
+        else:
+            article_form = ArticleForm(instance=article)
+        context = {
+            "article_form": article_form,
+        }
+        return render(request, "articles/update.html", context)
+    return redirect("articles:index")
 
 
 @login_required
