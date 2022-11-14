@@ -2,10 +2,14 @@
 
 {% block content %}
 <div class='container'>
-  <h1 class='text-center'>Detail</h1><hr>
-  {{ article.title }}
+  <h1 class='text-center'>게시글 상세 페이지</h1><hr>
+  <div class="p-2">
+  제목 : {{ article.title }}
+  </div>
   <hr>
-  {{ article.content }}
+  <div class="p-2">
+  내용 : {{ article.content }}
+  </div>
   {% if article.image %}
   <div class="my-4 mx-2 text-center">
     <img class="rounded me-3" style="width: 20rem; height: 20rem" src="{{ article.image.url }}" alt="image">
@@ -14,7 +18,7 @@
   <hr>
   <!-- 댓글창 -->
   {% if comments %}
-    {% for comment in comments %}
+    {% for comment in paginated_comments %}
     <div class='mx-2' sytle='margin: -2px;'>
       <span class='fs-6 fw-bold'>{{ comment.user }}</span><span class='fs-6 opacity-75'>  {{ comment.created_at }}</span>
       <p class='fs-6 opacity-75'>{{ comment.content }}
@@ -31,16 +35,66 @@
     {% else %}
         <h4 class='text-center'>댓글이 없습니다 ㅠㅠ</h4>
     {% endif %}
+
+    <!-- 댓글 페이지네이션 -->
+    {% if paginated_comments %}
+    <ul class="pagination justify-content-center">
+      <!-- 첫 페이지 -->
+      {% if paginated_comments.has_previous %}
+        <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+        <li class="page-item">
+          <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">&#60;</a>
+        </li>
+      {% endif %}
+
+      <!-- 페이지리스트 -->
+      <!-- //페이지 범위를 하나씩 리턴 -->
+      {% for page_number in paginated_comments.paginator.page_range %}
+        {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %}
+            <!-- // 현재 페이지일 때는 active -->
+            {% if page_number == paginated_comments.number %}
+              <li class="page-item" aria-current="page">
+                <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% else %}
+              <li class="page-item text-color-warning">
+                <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <!-- 다음페이지 -->
+      {% if paginated_comments.has_next %}
+        <li class="page-item">
+          <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" href="#">&#62;</a>
+        </li>
+      {% endif %}
+    </ul>
+  {% endif %}
+
     <!-- 댓글 입력 폼 -->
     <form action="{% url 'articles:c_create' article.pk %}" method="POST" name="comment">
       {% csrf_token %}
-        <div style="display: inline-block;">
-          <input style="width: 40rem; border: 0.8px solid; padding: 0.3rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" required>
+      <div class="d-flex justify-content-center">
+        <div class="p-2 flex-grow-1">
+          <input style="width: 100%; border: 1px solid; padding: 0.4rem 0;" type="text" placeholder="댓글을 입력해주세요" name="comment" id="comment" maxlength ="300" required>
         </div>
-        <div style="display: inline-block;">
-          <button class="btn btn-primary btn-sm mb-1 ms-1" type="submit">등록</button>
+        <div class="p-2">
+          <button class="btn mb-1 ms-1" style="background-color: #5e0080; color: white; text-decoration: none;" type="submit">등록</button>
         </div>
+      </div>
     </div>
     </form>
-  </div>
+</div>
+
+
 {% endblock content %}
