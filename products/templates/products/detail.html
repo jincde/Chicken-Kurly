@@ -57,7 +57,7 @@
         <span style="font-size: 18px;">원</span>
       </p>
     </div>
-
+    
     {% if request.user.is_authenticated %}
     <!-- 장바구니 버튼 & 모달 -->
     <form id="product-buy-form" data-product-id="{{ product.pk }}">
@@ -87,16 +87,20 @@
     </div>
   </div>
 
-
-  <!-- 찜 버튼 -->
-  <form action="{% url 'products:ddib' product.pk %}" method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-lg default">
-      <i class="bi bi-heart" style="color: #5e0080;"></i>
-    </button>
-    {% comment %} <input type="submit" value="찜" name="ddib"> {% endcomment %}
-  </form>
-  {% endif %}
+    <!-- 찜 버튼 -->
+    <span>
+      <form data-product-id='{{ product.pk }}' id='ddib-btn' class="ddib-heart mt-2">
+        {% csrf_token %}
+        <button style='background-color:transparent; border:1px solid rgb(221, 221, 221); border-radius:3px' class='product-detail-ddib-btn' type='submit'>
+          {% if request.user in product.ddib_users.all %}
+            <i style='color:#5e0080;' class="bi bi-heart-fill"></i>
+          {% else %}
+            <i style='color:#5e0080;' class="bi bi-heart"></i>
+          {% endif %}
+        </button>
+      </form>
+    </span>
+    {% endif %}
 
   <!-- 상품 후기 -->
   <div class='product-review position-relative' style='padding: bottom 100px;'>
@@ -425,7 +429,39 @@
           productExisting.innerText = '이미 담은 상품의 수량을 추가했습니다.'
         }
       })
-  })
-    // 찜
+    })
+
+    // (1) 찜하기 버튼
+    const ddibBtn = document.querySelector('#ddib-btn')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    console.log(ddibBtn)
+    // (2) 찜하기 버튼을 클릭하면, 함수 실행
+    ddibBtn.addEventListener('click', function (event) {
+        // 서버로 비동기 요청(axios)을 하고 싶음
+        event.preventDefault()
+        console.log(event.currentTarget.dataset.productId)
+        axios({
+        method: 'post',
+        url: `/products/${event.currentTarget.dataset.productId}/ddib/`,
+        headers: { 'X-CSRFToken': csrftoken },
+        })
+        .then(response => {
+        console.log(response)
+        console.log(response.data)
+        const ddibItem = document.querySelector('#ddib-btn > button > i')
+        ddibItem.classList.toggle('bi-heart')
+        ddibItem.classList.toggle('bi-heart-fill')
+        // 다음 주석 처리한 내용과 동일
+        // if (response.data.isLiked === true) {
+        //     event.target.classList.add('bi-heart-fill')
+        //     event.target.classList.remove('bi-heart')
+        // } else {
+        //     event.target.classList.add('bi-heart')
+        //     event.target.classList.remove('bi-heart-fill')
+        // } 
+        })
+    })
 </script>
+
 {% endblock script %}

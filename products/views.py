@@ -137,11 +137,24 @@ def update(request, product_pk):
 # 찜
 def ddib(request, product_pk):
     product = Product.objects.get(pk=product_pk)
-    ddib = Ddib.objects.get(user=request.user)
+    ddib = Ddib.objects.get(user=request.user) # user와 ddib 1:1
+    ddib_items = ddib.ddibitem_set.all()
+    # print(ddib_items[0])
 
-    DdibItem.objects.create(ddib=ddib, product=product)
-    
-    return redirect('products:detail', product_pk)
+    for item in ddib_items: # 
+        if product == item.product:
+            item.delete() # 찜 목록에서 item을 지우고
+            is_ddib = False
+            break
+
+    else: # 찜한 상태가 아니라면
+        DdibItem.objects.create(ddib=ddib, product=product)
+        is_ddib = True
+    context = {
+        "is_ddib": is_ddib
+        }
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(context)
 
 
 # 장바구니
