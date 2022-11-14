@@ -161,3 +161,7 @@ section .wave.wave2 {
     background-position-x: -640px;
   }
 }
+
+.inquiry_title:hover {
+  cursor: pointer;
+}
