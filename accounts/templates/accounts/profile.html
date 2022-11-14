@@ -4,16 +4,23 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block content %}
-  <div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
-    <div class="container test-grid" style="max-width: 1070px; display: grid;">
-      <div class="profile" style="max-width: 100%; background-color: white;">
-        <div class="px-4 py-3 contentcard" style="border-radius: 15px; ">
-          <div class="d-flex justify-content-center pb-3">
-            {% if person.image %}
-              <img src="{{ person.image.url }}" alt="">
-            {% else %}
-              <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
-            {% endif %}
+
+<div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
+  <div class="container test-grid" style="max-width: 1070px; display: grid;">
+    <div class="profile" style="max-width: 100%; background-color: white;">
+      <div class="px-4 py-3 contentcard" style="border-radius: 15px; ">
+        <div class="d-flex justify-content-center pb-3">
+          {% if person.image %}
+          <img src="{{ person.image.url }}" alt="">
+          {% else %}
+          <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
+          {% endif %}
+        </div>
+        <div>
+          <div class="d-flex justify-content-start">
+            <h3 style="font-size: 24px;font-weight: 600; color: black; margin:0 30px 8px;">
+              {{ person.username }}</h3>
+
           </div>
           <div>
             <div class="d-flex justify-content-start">
@@ -67,7 +74,42 @@
       </section>
 
     </div>
-  </div>
+
+    <section class="d-flex flex-column" style="gap: 4px">
+      <div class="d-flex d-grid" style="width: 100%; height: 200px; gap: 4px;">
+        <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
+          <p class="m-0">누적 구매 금액</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">100,000,000 <span
+              style="font-size: 1rem;">원</span></p>
+        </div>
+        <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
+          <p class="m-0">포인트 <i class="bi bi-arrow-right-short"></i></p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">2,555,330 <span
+              style="font-size: 1rem;">P</span></p>
+        </div>
+        <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
+          <p class="m-0">누적 구매 횟수</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">1,211 <span
+              style="font-size: 1rem;">회</span></p>
+        </div>
+      </div>
+      <div class="d-flex d-grid" style="width: 100%; height: 100%; gap: 4px;">
+        <div class="d-flex flex-column justify-content-center"
+          style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
+          <p class="m-0">작성 게시글</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">25 <span
+              style="font-size: 1rem;">개</span></p>
+        </div>
+        <div class="d-flex flex-column justify-content-center"
+          style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
+          <p class="m-0">작성 댓글</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">312 <span
+              style="font-size: 1rem;">개</span></p>
+        </div>
+
+      </div>
+      <!-- <div style="width:200px; height:63px; background-color: white;"></div> -->
+    </section>
 
   <div class="container d-flex justify-content-center">
     <div class="row">
