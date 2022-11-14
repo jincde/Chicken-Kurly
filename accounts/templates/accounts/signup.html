@@ -5,10 +5,70 @@
 
 {% block content %}
 <section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
-  <h2 class="d-flex justify-content-center my-5">회원가입</h2>
+  <!-- <h2 class="d-flex justify-content-center my-5">회원가입</h2> -->
+  <div>
+    <svg viewbox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style type="text/css">
+          .wave {
+            animation: wave 8s linear infinite;
+            transform: rotate(180deg);
+          }
+
+          .wave1 {
+            animation: wave1 10s linear infinite;
+            transform: rotate(180deg);
+          }
+
+          .wave2 {
+            animation: wave2 12s linear infinite;
+            transform: rotate(180deg);
+          }
+
+          @keyframes wave {
+            0% {
+              transform: translateX(0%);
+            }
+
+            100% {
+              transform: translateX(100%);
+            }
+          }
+
+          @keyframes wave1 {
+            0% {
+              transform: scaleY(1.2) translateX(0%);
+            }
+
+            100% {
+              transform: scaleY(1.2) translateX(100%);
+            }
+          }
+
+          @keyframes wave2 {
+            0% {
+              transform: scaleY(.8) translateX(0%);
+            }
+
+            100% {
+              transform: scaleY(.8) translateX(100%);
+            }
+          }
+        </style>
+        <path id='sineWave' fill="#5e0080" fill-opacity="0.5"
+          d="M0,160 C320,300,420,300,740,160 C1060,20,1120,20,1440,160 V0 H0" />
+      </defs>
+      <use class="wave" href="#sineWave" />
+      <use class="wave" x="-100%" href="#sineWave" />
+      <use class="wave1" href="#sineWave" />
+      <use class="wave1" x="-100%" href="#sineWave" />
+      <use class="wave2" href="#sineWave" />
+      <use class="wave2" x="-100%" href="#sineWave" />
+    </svg>
+  </div>
   <div>
     <form class="mx-3" action="{% url 'accounts:signup' %}"
-      style="border-top: 2px solid rgb(51, 51, 51); font-size:14px;" method="POST">
+      style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" method="POST">
       {% csrf_token %}
       <div class="d-flex align-items-center">
         <h6 class="my-3" style="width: 123px; color: rgb(51, 51, 51); font-size:14px;">아이디</h6>
@@ -59,6 +119,16 @@
     <p class='mb-0' style="color: rgba(194, 200, 204, 1)">이미 회원이라면? <a class="text-decoration-none"
         style="color:#5e0080" href="{% url 'accounts:login' %}">로그인</a></p>
   </div>
+
 </section>
+
+<section class="wave-section container" style="width: 640px;">
+  <div class="wave wave1"></div>
+  <div class="wave wave2"></div>
+  <div class="wave wave1"></div>
+  <div class="wave wave2"></div>
+</section>
+
+
 
 {% endblock %}
