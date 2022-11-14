@@ -92,7 +92,7 @@
         </form>
       {% endif %}
 
-      {% comment %} 상품 후기 {% endcomment %}
+      <!-- 상품 후기 -->
       <div class='product-review position-relative' style='width:1010px; padding: bottom 100px;' >
         <section class='review' style='padding:72px 0px;'>
           <header class='review-title d-flex w-100' style='align-itmes:center; min: height 44px;'>
@@ -169,8 +169,15 @@
 
     <!-- 상품 문의 등록 버튼 & 모달 -->
     <div class="row">
-      <div class="text-end">
-        <button type="button" class="btn btn-primary w-auto" data-bs-toggle="modal" data-bs-target="#inquiry">문의하기</button>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold m-0">상품 문의</h2>
+        <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
+        style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
+      </div>
+
+      <div class="mb-3">
+        <p class="text-muted m-0">· 상품에 대한 문의를 남기는 공간입니다. 해당 게시판의 성격과 다른 글은 사전동의 없이 담당 게시판으로 이동될 수 있습니다.</p>
+        <p class="text-muted m-0">· 배송관련, 주문(취소/교환/환불)관련 문의 및 요청사항은 내 1:1 문의에 남겨주세요.</p>
       </div>
 
       <!-- Modal -->
@@ -194,8 +201,10 @@
                   {% bootstrap_form inquiry_form %}
 
                   <div class="text-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="submit" class="btn btn-primary">등록</button>
+                    <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                    style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                    <button type="submit" class="btn"
+                    style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
                   </div>
                 </form>
               </div>
@@ -220,7 +229,7 @@
     </div>
 
     <!-- 상품 문의 목록 -->
-    <div class="row">
+    <div class="row px-3">
       <table class="table">
         <thead class="text-center">
           <tr>
@@ -238,7 +247,7 @@
               <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
               <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
               {% if inquiry.reply %}
-                <td style="width: 100px;" class="text-center text-primary">답변완료</td>
+                <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
               {% else %}
                 <td style="width: 100px;" class="text-center">-</td>
               {% endif %}
@@ -286,12 +295,22 @@
                                 
                                 <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST">
                                   {% csrf_token %}
-                                  {% bootstrap_form inquiry_form %}
-                                  {% comment %} <input type="text" value={{ inquiry.title }}> {% endcomment %}
+                                  
+                                  <!-- inquiry_form -->
+                                  <div class="mb-3">
+                                    <label class="form-label" for="id_title">제목</label>
+                                    <input type="text" name="title" maxlength="50" class="form-control" placeholder="제목" required id="id_title" value={{ inquiry.title }}>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label class="form-label" for="id_content">내용</label>
+                                    <textarea name="content" cols="40" rows="10" class="form-control" placeholder="내용" required id="id_content">{{ inquiry.content }}</textarea>
+                                  </div>
 
                                   <div class="text-center">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                    <button type="submit" class="btn btn-primary">등록</button>
+                                    <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                                    style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                                    <button type="submit" class="btn"
+                                    style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
                                   </div>
                                 </form>
                               </div>
@@ -301,13 +320,16 @@
                       {% endif %}
 
                       {% if request.user.is_superuser == 1 %}
+                        <hr>
                         <form action="{% url 'products:create_reply' product.pk inquiry.pk %}" method="POST">
                           {% csrf_token %}
                           {{ reply_form.content|add_class:'form-control my-3'|attr:'rows:3'|attr:'placeholder:답변을 작성해주세요.' }}
         
-                          <div class="text-end mb-3">
-                            <button type="reset" class="btn btn-secondary">취소</button>
-                            <button type="submit" class="btn btn-primary">등록</button>
+                          <div class="text-center mb-3">
+                            <button type="reset" class="btn me-2" data-bs-dismiss="modal"
+                            style="border:solid 1px #d3d3d3; border-radius:3px; height:40px; width:120px; background-color: white;">취소</button>
+                            <button type="submit" class="btn"
+                            style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">등록</button>
                           </div>
                         </form>
                       {% endif %}
