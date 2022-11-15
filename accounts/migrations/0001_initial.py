@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('image', models.ImageField(blank=True, upload_to='img/'))
+                ('image', models.ImageField(blank=True, upload_to='img/')),
                 ('ordered', models.BooleanField(default=False)),
                 ('order_date', models.DateTimeField(auto_now_add=True)),
 

@@ -58,7 +58,7 @@ label:focus,
 
 .non_a {
   text-decoration: none;
-  color: black;
+  color: rgb(61, 61, 61);
 }
 
 .non_a:hover {
@@ -164,4 +164,11 @@ section .wave.wave2 {
 
 .inquiry_title:hover {
   cursor: pointer;
+}
+
+.contentcard:hover {
+  border-radius: 15px;
+  transform: translateY(-10px);
+  transition: all ease-in-out .3s;
+  box-shadow: 4px 12px 30px 6px rgb(0 0 0 / 9%);
 }
