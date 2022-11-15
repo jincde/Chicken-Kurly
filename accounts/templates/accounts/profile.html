@@ -213,37 +213,36 @@
   </div>
 
 
-        
 
-        {% if request.user.is_superuser == 1 %}
-          <a href="{% url 'accounts:create' %}" class="btn btn-primary">글쓰기</a>
-        {% endif %}
+  {% if request.user.is_superuser == 1 %}
+    <a href="{% url 'accounts:create' %}" class="btn btn-primary">글쓰기</a>
+  {% endif %}
 
-        <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-        <script>
-          const swiper = new Swiper('#test-slide', {
-            // Optional parameters
-            direction: 'horizontal',
-            slidesPerView: 4,
-            spaceBetween: 15,
-            loop: false,
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('#test-slide', {
+      // Optional parameters
+      direction: 'horizontal',
+      slidesPerView: 4,
+      spaceBetween: 15,
+      loop: false,
 
-            // If we need pagination
-            pagination: {
-              el: '.swiper-pagination'
-            },
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination'
+      },
 
-            // Navigation arrows
-            navigation: {
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev'
-            },
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
 
-            // And if we need scrollbar
-            // scrollbar: {
-            //   el: '.swiper-scrollbar',
-            // },
-          });
-        </script>
+      // And if we need scrollbar
+      // scrollbar: {
+      //   el: '.swiper-scrollbar',
+      // },
+    });
+  </script>
 
-      {% endblock content %}
+{% endblock content %}

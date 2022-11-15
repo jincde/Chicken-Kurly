@@ -59,6 +59,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
+  quantity = models.IntegerField()
   ordered = models.BooleanField(default=False)
   order_date = models.DateTimeField(auto_now_add=True)
   
