@@ -2,6 +2,8 @@
 
 **닭가슴살 러버들을 위한 건강한 식습관 공유 커뮤니티**
 
+[@chickenkurly_regram](https://www.instagram.com/chickenkurly_regram/)
+
 ![carousel2](README.assets/carousel2.jpg)
 
 ![carousel1](README.assets/carousel1.jpg)
