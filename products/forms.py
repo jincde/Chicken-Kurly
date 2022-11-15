@@ -6,7 +6,7 @@ from .models import *
 class ProductForm(ModelForm):
     class Meta:
         model = Product
-        fields = ['product_name', 'price', 'brand', 'category']
+        fields = ['product_name', 'content', 'carbohydrate', 'protein', 'fat', 'price', 'brand', 'category']
 
 # 일반 user가 구매할 때 form (구매 수량만)
 class ProductBuyForm(ModelForm):

@@ -7,9 +7,10 @@ from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from products.models import Cart, Ddib, Product
+from products.models import Cart, Ddib
+from .models import OrderItem
 
-from .forms import ImageForm, ProductForm
+from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import Image
 
@@ -86,12 +87,16 @@ def change_password(request):
 
 
 def profile(request, user_pk):
-    products = Product.objects.order_by('-pk')
+    OrderItems = OrderItem.objects.order_by('-pk')
+    order_items = OrderItem.objects.filter(user=request.user)
+   
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     context = {
-        "products": products,
+        "OrderItems": OrderItems,
         "person": person,
+        'order_items': order_items,
+        
     }
     return render(request, "accounts/profile.html", context)
 
@@ -140,35 +145,58 @@ def create(request):
     # 요청한 user의 is_superuser가 1이면(admin이면)
     if request.user.is_superuser == 1: 
         if request.method == 'POST':
-            product_form = ProductForm(request.POST)
-            # form에 image 폼 추가
-            image_form = ImageForm(request.POST, request.FILES)
-            tmp_images = request.FILES.getlist('image')
-            
+            OrderItem_form = OrderItemForm(request.POST, request.FILES)
+            # form에 image 폼 추가      
             # 상품 정보에 대한 폼과 이미지 폼이 유효하면
-            if product_form.is_valid() and image_form.is_valid():
-                product = product_form.save(commit=False)
-                product.admin = request.user
-
-                if tmp_images:
-                    for img in tmp_images:
-                        img_instance = Image(product=product, image=img)
-                        product.save()
-                        img_instance.save()
-
-                product.save()
+            if OrderItem_form.is_valid():
+                OrderItem = OrderItem_form.save(commit=False)
+                OrderItem.admin = request.user
+                OrderItem.user = request.user
+                OrderItem.save()
                 messages.success(request, '상품 등록이 완료되었습니다.')
                 return redirect('accounts:profile', request.user.pk)
         else:
-            product_form = ProductForm()
-            image_form = ImageForm()
-            
+            OrderItem_form = OrderItemForm()         
         context = {
-            'product_form': product_form,
-            'image_form': image_form,
+            'OrderItem_form': OrderItem_form,
+            
         }
 
         return render(request, 'accounts/create.html', context)
     
     else:
         return redirect('products:index')    # admin 아니면 index로 리다이렉트
+
+
+# 로그인한 유저의 장바구니 페이지
+@login_required
+def cart(request):
+    cart = Cart.objects.get(user=request.user)
+
+    cart_items = cart.cartitem_set.all()
+
+    context = {
+        'cart_items': cart_items,
+    }
+
+    return render(request, 'accounts/cart.html', context)
+
+
+# 장바구니에서 구매
+@login_required
+def cart_purchase(request):
+    cart = Cart.objects.get(user=request.user)
+    selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
+    quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
+    
+    # 선택된 아이템의 개수만큼 반복
+    for i in range(len(selected_items)):
+        # 1. 리스트의 product_pk와 일치하는 아이템 인스턴스 객체
+        cart_item = cart.cartitem_set.get(product_id=selected_items[i])
+        # 2. 장바구니 페이지에서 수정된 수량으로 변경
+        quantity = quantities[i]
+        
+        # 위 2개의 정보를 바탕으로 주문서 작성
+        OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
+    
+    return redirect('accounts:cart')
