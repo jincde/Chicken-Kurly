@@ -3,13 +3,14 @@
 
 {% block content %}
 <div class='container'>
-  <h1 class='text-center'>게시글 상세 페이지</h1><hr>
+  <h1 class='text-center'>게시글 상세 페이지</h1>
+  <hr>
   <div class="p-2">
-  제목 : {{ article.title }}
+    제목 : {{ article.title }}
   </div>
   <hr>
   <div class="p-2">
-  내용 : {{ article.content }}
+    내용 : {{ article.content }}
   </div>
   {% if article.image %}
   <div class="my-4 mx-2 text-center">
@@ -19,6 +20,7 @@
   <hr>
   <!-- 댓글창 -->
   {% if comments %}
+
       {% for comment in paginated_comments %}
         <div class='mx-2' sytle='margin: -2px;'>
           <div class='d-flex'>
@@ -64,53 +66,43 @@
         </div>
       {% endfor %}
     {% else %}
-        <h4 class='text-center'>댓글이 없습니다 ㅠㅠ</h4>
+    <li class="page-item disabled">
+      <a class="page-link" href="#">&#60;</a>
+    </li>
     {% endif %}
 
-    <!-- 댓글 페이지네이션 -->
-    {% if paginated_comments %}
-    <ul class="pagination justify-content-center">
-      <!-- 첫 페이지 -->
-      {% if paginated_comments.has_previous %}
-        <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
-        <li class="page-item">
-          <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
-        </li>
+    <!-- 페이지리스트 -->
+    <!-- //페이지 범위를 하나씩 리턴 -->
+    {% for page_number in paginated_comments.paginator.page_range %}
+    {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %} <!-- //
+      현재 페이지일 때는 active -->
+      {% if page_number == paginated_comments.number %}
+      <li class="page-item" aria-current="page">
+        <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
+          href="?page={{ page_number }}">{{ page_number }}</a>
+      </li>
       {% else %}
-        <li class="page-item disabled">
-          <a class="page-link" href="#">&#60;</a>
-        </li>
+      <li class="page-item text-color-warning">
+        <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{
+          page_number }}</a>
+      </li>
       {% endif %}
-
-      <!-- 페이지리스트 -->
-      <!-- //페이지 범위를 하나씩 리턴 -->
-      {% for page_number in paginated_comments.paginator.page_range %}
-        {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %}
-            <!-- // 현재 페이지일 때는 active -->
-            {% if page_number == paginated_comments.number %}
-              <li class="page-item" aria-current="page">
-                <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
-              </li>
-            {% else %}
-              <li class="page-item text-color-warning">
-                <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
-              </li>
-            {% endif %}
-        {% endif %}
+      {% endif %}
       {% endfor %}
 
       <!-- 다음페이지 -->
       {% if paginated_comments.has_next %}
-        <li class="page-item">
-          <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
-        </li>
+      <li class="page-item">
+        <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
+      </li>
       {% else %}
-        <li class="page-item disabled">
-          <a class="page-link" tabindex="-1" href="#">&#62;</a>
-        </li>
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" href="#">&#62;</a>
+      </li>
       {% endif %}
-    </ul>
+  </ul>
   {% endif %}
+
 
     <!-- 댓글 입력 폼 -->
     <form action="{% url 'articles:c_create' article.pk %}" method="POST" id="comment-form" data-article-id="{{ article.pk }}">
@@ -124,7 +116,8 @@
         </div>
       </div>
     </div>
-    </form>
+</div>
+</form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
