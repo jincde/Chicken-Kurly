@@ -9,7 +9,7 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
 from .models import OrderItem, WatchItem
-
+from .models import Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import Image
@@ -104,6 +104,17 @@ def profile(request, user_pk):
     }
     return render(request, "accounts/profile.html", context)
 
+# 찜한 상품 삭제
+def ddib_delete(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    ddib = Ddib.objects.get(user=request.user) # user와 ddib 1:1
+    ddib_items = ddib.ddibitem_set.all()
+
+    for item in ddib_items:
+        if product == item.product:
+            item.delete()
+            break
+    return redirect('accounts:profile', request.user.pk)
 
 @login_required
 def profile_update(request):

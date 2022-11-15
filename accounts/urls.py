@@ -19,4 +19,5 @@ urlpatterns = [
     path('create/', views.create, name='create'),
     path('cart/', views.cart, name='cart'), # 장바구니 페이지
     path('cart/purchase/', views.cart_purchase, name='cart_purchase'), # 장바구니 업데이트
+    path('<int:product_pk>/ddib_delete/', views.ddib_delete, name='ddib_delete'), # 프로필에서 찜한 상품(product_pk) 삭제
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
