@@ -156,8 +156,6 @@ def ddib(request, product_pk):
     # return redirect('products:detail', product_pk)
     return JsonResponse(context)
 
-
-# 장바구니
 @login_required
 def cart(request, product_pk):
     product = Product.objects.get(pk=product_pk)
