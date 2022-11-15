@@ -9,7 +9,7 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
 from .models import OrderItem, WatchItem
-
+from .models import Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import Image
