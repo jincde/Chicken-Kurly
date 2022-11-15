@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 <div class='container'>
@@ -18,19 +19,49 @@
   <hr>
   <!-- 댓글창 -->
   {% if comments %}
-    {% for comment in paginated_comments %}
-    <div class='mx-2' sytle='margin: -2px;'>
-      <span class='fs-6 fw-bold'>{{ comment.user }}</span><span class='fs-6 opacity-75'>  {{ comment.created_at }}</span>
-      <p class='fs-6 opacity-75'>{{ comment.content }}
-        <span>
-          <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
-            <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-              <i class="bi bi-x"></i>
-            </span>
+      {% for comment in paginated_comments %}
+        <div class='mx-2' sytle='margin: -2px;'>
+          <div class='d-flex'>
+            <div class="flex-grow-1">
+              <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
+              <span class='fs-6 opacity-50 fst-italic'>  {{ comment.created_at }}</span>
+            </div>
+            <div>
+              {% if request.user in comment.like_users.all %}  
+                <span><a href="{% url 'articles:c_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up-fill"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
+              {% else %}
+                <span><a href="{% url 'articles:c_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <p class='fs-6'>{{ comment.content }}
+            {% if request.user == comment.user %}
+            <span>
+              <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+                <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                  <i class="bi bi-x"></i>
+                </span>
               </a>
-            </span>
+            </span>            
+            {% endif %}
           </p>                            
-        </div>                        
+          <div class='p-3'>
+            <!-- 대댓글 목록 -->
+            {% for recomment in recomments%}
+              <p>
+              {{ recomment.comment.pk }}
+              {{ recomment.content }}
+              </p>
+            {% endfor %}
+            
+            <!-- 대댓글 입력창 -->
+            <form action="{% url 'articles:rec_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
+              {% csrf_token %}
+              {% bootstrap_form recomment_form %}
+              {% bootstrap_button button_type='submit' content='글쓰기' %}
+            </form>            
+          </div>                        
+        </div>
       {% endfor %}
     {% else %}
         <h4 class='text-center'>댓글이 없습니다 ㅠㅠ</h4>
@@ -82,7 +113,7 @@
   {% endif %}
 
     <!-- 댓글 입력 폼 -->
-    <form action="{% url 'articles:c_create' article.pk %}" method="POST" name="comment">
+    <form action="{% url 'articles:c_create' article.pk %}" method="POST" id="comment-form" data-article-id="{{ article.pk }}">
       {% csrf_token %}
       <div class="d-flex justify-content-center">
         <div class="p-2 flex-grow-1">
@@ -96,5 +127,43 @@
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  
+  // 댓글 비동기 구현 코드 ㅠㅠ 일단 보류..
+  {% comment %} const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  const commentForm = document.querySelector('#comment-form')
+  commentForm.addEventListener('submit', function(event){
+    event.preventDefault()
+    axios({
+      method: 'post',
+      url: `/articles/comment/${event.target.dataset.articleId}/`,
+      headers: {'X-CSRFToken': csrftoken},
+      data: new FormData(commentForm)
+    })
+    .then(response => {
+      console.log(response.data)
+
+      const comments = document.querySelector('#comments')
+      const div = document.createElement('div')
+      div.classList.add('mx-2')
+      div.style.margin = '-2px'
+      const span = document.createElement('span')
+      span.innerText = `${response.data.userName}`
+      span.classList.add('fs-5')
+      span.classList.add('fw-semibold')
+      span.style.color = '#5e0080'
+      const p = document.createElement('p')
+      p.innerText = `${response.data.content}`
+      div.appendChild(span)
+      div.appendChild(p)
+      comments.append(div)
+      const commentInput = document.querySelector('#comment')
+      commentInput.value = ''
+    })
+  })
+   {% endcomment %}
+
+</script>
 
 {% endblock content %}
