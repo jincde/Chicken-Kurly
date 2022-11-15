@@ -7,7 +7,7 @@
     <div class="col-12 p-5">
       <h1 class='text-center'>자유게시판</h1><hr>
       <div class='text-end'>
-        <a class='btn btn-sm fw-bold py-2' style="background-color: #5e0080; color: white; text-decoration: none; " href="{% url 'articles:create' %}">글쓰기</a>
+        <a class='btn btn-sm fw-bold py-2' style="background-color: #5e0080; color: white; text-decoration: none;" href="{% url 'articles:create' %}">글쓰기</a>
       </div>
 
       {% for article in paginated_articles %}

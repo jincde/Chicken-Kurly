@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import ArticleForm
-from .models import Article, Comment
+from .forms import ArticleForm, ReCommentForm
+from .models import Article, Comment, ReComment
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required  
 from django.http import JsonResponse
@@ -50,6 +50,8 @@ def detail(request, pk):
 
     article = Article.objects.get(pk=pk)
     comments = Comment.objects.filter(article=article).order_by('-pk')
+    recomment_form = ReCommentForm()
+    recomments = ReComment.objects.all()
 
     page = request.GET.get('page', '1')
     paginator = Paginator(comments, 5)
@@ -59,8 +61,10 @@ def detail(request, pk):
     context = {
         'article': article,
         'comments': comments,
+        'recomment_form': recomment_form,
         'paginated_comments': paginated_comments,
         'max_index': max_index,
+        'recomments': recomments,
     }
 
     return render(request, "articles/detail.html", context)
@@ -100,11 +104,30 @@ def c_create(request,pk):
     comment = request.POST.get("comment")
     article = Article.objects.get(pk=pk)
 
+    Comment.objects.create(content=comment, article=article, user=request.user)
+    
+    # 댓글 비동기를 위한 코드
+    # context = {
+    #     'content': comment,
+    #     'userName': request.user.username,
+    # }
 
-    if comment != "":
-        Comment.objects.create(content=comment, article=article, user=request.user)
+    return redirect('articles:detail', pk)
 
-    return redirect("articles:detail", pk)
+@login_required
+def rec_create(request, c_pk, a_pk):
+
+    if request.method == 'POST':
+        comment = Comment.objects.get(pk=c_pk)
+        recomment_form = ReCommentForm(request.POST)
+        if recomment_form.is_valid():
+            recomment = recomment_form.save(commit=False)
+            recomment.comment = comment
+            recomment.user = request.user
+            recomment.save()
+        return redirect('articles:detail', a_pk)
+    
+
 
 @login_required
 def c_delete(request, c_pk, a_pk):
@@ -137,4 +160,18 @@ def like(request, pk):
         return JsonResponse(context)
     return redirect('accounts:login')
 
-    
+@login_required
+def c_like(request, c_pk, a_pk):
+
+    if request.user.is_authenticated:
+
+        comment = Comment.objects.get(pk=c_pk)
+
+        if request.user in comment.like_users.all():
+            comment.like_users.remove(request.user)
+        else:
+            comment.like_users.add(request.user)
+
+        return redirect('articles:detail', a_pk)
+    return redirect('accounts:login')
+
