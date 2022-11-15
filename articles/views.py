@@ -102,12 +102,13 @@ def c_create(request,pk):
 
     Comment.objects.create(content=comment, article=article, user=request.user)
     
-    context = {
-        'content': comment,
-        'userName': request.user.username,
-    }
+    # 댓글 비동기를 위한 코드
+    # context = {
+    #     'content': comment,
+    #     'userName': request.user.username,
+    # }
 
-    return JsonResponse(context)
+    return redirect('articles:detail', pk)
 
 @login_required
 def c_delete(request, c_pk, a_pk):
