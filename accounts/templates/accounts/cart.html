@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
   <!-- 체크박스로 상품 선택 후 주문 버튼을 누르면 -->
@@ -18,7 +19,7 @@
               <div class="row">
                 <div class="d-flex align-items-center form-check mb-4">
                   <!-- 체크박스 -->
-                  <input class="form-check-input me-3" type="checkbox" name="selected_items" value="{{ item.pk }}" id="check-{{ item.pk }}" checked>
+                  <input data-item-id="{{ item.pk }}" class="item-checkboxes form-check-input me-3" type="checkbox" name="selected_items" value="{{ item.pk }}" id="check-{{ item.pk }}">
                   <!-- 상품 정보 -->
                   <div class="col-7 d-flex justify-content-start">  
                     <div class="d-flex align-items-center">
@@ -32,7 +33,7 @@
                   
                   <!-- 수량 입력 -->
                   <div class="col-2">
-                    <input data-item-id="{{ item.pk }}" class="form-control quantity-input" type="number" name="quantities" min="1" value="{{ item.quantity }}">
+                    <input data-item-id="{{ item.pk }}" data-is-disabled="true" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="quantities" min="1" value="{{ item.quantity }}" disabled>
                   </div>
 
                   <div class="col-2 d-flex justify-content-end align-items-center">
@@ -89,30 +90,5 @@
 {% endblock content %}
 
 {% block script %}
-  <script>
-    // 상품 수량 입력 값에 따른 가격 표기 변경
-    // 체크 해제 시 가격 표기 변경 (해야 함!!!!!!!!!!!!!!!!!!!!!!)
-    const quantityFields = document.querySelectorAll('.quantity-input') // quantity 입력 필드 리스트
-    quantityFields.forEach(quantityField => {
-      quantityField.addEventListener('input', event => {
-        const itemId = event.target.dataset.itemId
-
-        const itemPriceField = document.querySelector(`#price-${itemId}-field`)  // 각 상품 가격 표시 필드
-        const defaultItemPrice = document.querySelector(`#price-${itemId}`).innerText // 상품의 기본 가격 (1개 가격)
-        itemPriceField.innerText = defaultItemPrice * event.target.value  // 문자열 * 숫자 = 숫자 (자동 형변환)
-        
-        const productsPriceField = document.querySelector('#products-price')  // 모든 상품 가격을 합친 금액
-        const totalPriceField = document.querySelector('#total-price')
-        const itemPriceFields = document.querySelectorAll('.price-fields')
-        let totalPrice = 0
-        itemPriceFields.forEach(price => {
-          totalPrice += Number(price.innerText)
-        })
-
-        productsPriceField.innerText = String(totalPrice) + '원'
-        totalPriceField.innerText = String(totalPrice) + '원'
-      })
-    })
-    
-  </script>
+  <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 {% endblock script %}
