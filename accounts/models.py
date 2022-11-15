@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from imagekit.models import ProcessedImageField
 from imagekit.processors import Thumbnail
 from django.conf import settings
-from products.models import Product
+from products.models import Product, Ddib
 
 
 # Create your models here.
@@ -64,3 +64,9 @@ class OrderItem(models.Model):
   
   def __str__(self):
     return '{}'.format(self.id)
+
+# 찜한 상품
+class WatchItem(models.Model):
+  user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+  ddib = models.ForeignKey(Ddib, on_delete=models.CASCADE)
+  product = models.ForeignKey(Product, on_delete=models.CASCADE)

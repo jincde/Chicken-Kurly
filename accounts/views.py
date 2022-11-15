@@ -8,7 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
-from .models import OrderItem
+from .models import OrderItem, WatchItem
 
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
@@ -58,15 +58,15 @@ def logout(request):
 @login_required
 def update(request):
     if request.method == "POST":
-        forms = CustomUserChangeForm(request.POST, instance=request.user)
-        if forms.is_valid():
-            forms.save()
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
             
             return redirect("accounts:profile", request.user.pk)
     else:
-        forms = CustomUserChangeForm(instance=request.user)
+        form = CustomUserChangeForm(instance=request.user)
     context = {
-        "forms": forms,
+        "form": form,
     }
     return render(request, "accounts/update.html", context)
 
@@ -89,6 +89,7 @@ def change_password(request):
 def profile(request, user_pk):
     OrderItems = OrderItem.objects.order_by('-pk')
     order_items = OrderItem.objects.filter(user=request.user)
+    watch_items = WatchItem.objects.filter(user=request.user)
    
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
@@ -96,6 +97,7 @@ def profile(request, user_pk):
         "OrderItems": OrderItems,
         "person": person,
         'order_items': order_items,
+        'watch_items': watch_items,
         
     }
     return render(request, "accounts/profile.html", context)
