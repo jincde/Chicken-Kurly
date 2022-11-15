@@ -9,11 +9,10 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
 from .models import OrderItem, WatchItem
-
+from .models import Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import Image
-
 
 
 # Create your views here.
@@ -24,6 +23,7 @@ def signup(request):
             user = forms.save()
             Cart.objects.create(user=user)
             Ddib.objects.create(user=user)
+            # UserDdib.objects.create(user=user)
             return redirect("articles:index")
     else:
         forms = SignupForm()
@@ -87,18 +87,20 @@ def change_password(request):
 
 
 def profile(request, user_pk):
+    products = Product.objects.order_by('-pk')
+    ddib = Ddib.objects.get(user=request.user) # 요청한 사용자의 찜(가방)을 가져와라.
+    ddib_items = ddib.ddibitem_set.all() # 찜한 목록(가방 안에 있는 물건들)을 가져와라.
     OrderItems = OrderItem.objects.order_by('-pk')
     order_items = OrderItem.objects.filter(user=request.user)
     watch_items = WatchItem.objects.filter(user=request.user)
-   
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     context = {
         "OrderItems": OrderItems,
         "person": person,
+        "ddib_items": ddib_items,
         'order_items': order_items,
         'watch_items': watch_items,
-        
     }
     return render(request, "accounts/profile.html", context)
 
