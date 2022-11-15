@@ -131,7 +131,7 @@
   <!-- 구매한 식품 -->
   <div style="padding: 40px 0;">
     <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-      <h3 style="color: rgb(51, 51, 51)">구매한 식품</h3>
+      <h3 style="color: rgb(51, 51, 51)">구매한 상품</h3>
     </div>
     <div class="swiper-box" style="position: relative; padding:0 40px;">
       <section class="swiper" id="test-slide">
@@ -168,7 +168,51 @@
         </div>
       </section>
     </div>
-  </div>      
+  </div>
+
+  <!-- 찜한 상품 -->
+  <div style="padding: 40px 0;">
+    <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
+      <h3 style="color: rgb(51, 51, 51)">찜한 상품</h3>
+    </div>
+    <div class="swiper-box" style="position: relative; padding:0 40px;">
+      <section class="swiper" id="test-slide">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          {% for item in watch_items %}
+          <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
+            {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
+              <div class="product-img" style="">
+                <img src="{{ item.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+                style="object-fit: cover">
+              </div>
+              <div style="padding: 12px 10px 0 0">
+                <div class="d-flex justify-content-between">
+                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-0"
+                    style="color: #FA622F; font-weight: 700;">{{ item.product.category }}</span>
+                </div>
+                <p class="m-0" style="font-weight: 400;">{{ item.product.product_name }}</p>
+                <p class="m-0" style="font-weight: 800;">{{ item.product.price }} 원</p>
+                {% for item in order_items %}
+                          {{ item.product.price }}
+                        {% endfor %}
+              </div>
+          </div>
+          {% endfor %}
+        </div>
+  
+        <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
+            style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+        </div>
+        <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
+            style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
 
   {% if request.user.is_superuser == 1 %}
     <a href="{% url 'accounts:create' %}" class="btn btn-primary">글쓰기</a>

@@ -16,7 +16,7 @@ class SignupForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
-    class Meta:
+    class Meta():
         model = get_user_model()
         fields = (
             "username",
@@ -26,8 +26,8 @@ class CustomUserChangeForm(UserChangeForm):
 
 class ProfileForm(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ["user", "image"]
+        model = Profile()
+        fields = ["image"]
 
 
 class OrderItemForm(ModelForm):
