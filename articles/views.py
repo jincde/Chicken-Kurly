@@ -100,11 +100,14 @@ def c_create(request,pk):
     comment = request.POST.get("comment")
     article = Article.objects.get(pk=pk)
 
+    Comment.objects.create(content=comment, article=article, user=request.user)
+    
+    context = {
+        'content': comment,
+        'userName': request.user.username,
+    }
 
-    if comment != "":
-        Comment.objects.create(content=comment, article=article, user=request.user)
-
-    return redirect("articles:detail", pk)
+    return JsonResponse(context)
 
 @login_required
 def c_delete(request, c_pk, a_pk):
