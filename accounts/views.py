@@ -189,9 +189,15 @@ def cart(request):
     cart = Cart.objects.get(user=request.user)
 
     cart_items = cart.cartitem_set.all()
+    
+    # 장바구니 기본이 checked일 때
+    # total_price = 0
+    # for item in cart_items:
+    #     total_price += item.product.price * item.quantity
 
     context = {
         'cart_items': cart_items,
+        # 'total_price': total_price,
     }
 
     return render(request, 'accounts/cart.html', context)
