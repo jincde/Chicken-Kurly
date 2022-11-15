@@ -3,9 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from imagekit.models import ProcessedImageField
 from imagekit.processors import Thumbnail
 from django.conf import settings
-from products.models import Product
+from products.models import Product, DdibItem
 
- 
 
 # Create your models here.
 class User(AbstractUser):
@@ -68,5 +67,3 @@ class OrderItem(models.Model):
 
   def get_item_price(self):
     return self.price * self.quantity
-
-
