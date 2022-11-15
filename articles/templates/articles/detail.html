@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 <div class='container'>
@@ -20,7 +21,19 @@
   {% if comments %}
       {% for comment in paginated_comments %}
         <div class='mx-2' sytle='margin: -2px;'>
-          <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span><span class='fs-6 opacity-50 fst-italic'>  {{ comment.created_at }}</span>
+          <div class='d-flex'>
+            <div class="flex-grow-1">
+              <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
+              <span class='fs-6 opacity-50 fst-italic'>  {{ comment.created_at }}</span>
+            </div>
+            <div>
+              {% if request.user in comment.like_users.all %}  
+                <span><a href="{% url 'articles:c_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up-fill"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
+              {% else %}
+                <span><a href="{% url 'articles:c_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
+              {% endif %}
+            </div>
+          </div>
           <p class='fs-6'>{{ comment.content }}
             {% if request.user == comment.user %}
             <span>
@@ -29,10 +42,26 @@
                   <i class="bi bi-x"></i>
                 </span>
               </a>
-            </span>
+            </span>            
             {% endif %}
           </p>                            
-        </div>                        
+          <div class='p-3'>
+            <!-- 대댓글 목록 -->
+            {% for recomment in recomments%}
+              <p>
+              {{ recomment.comment.pk }}
+              {{ recomment.content }}
+              </p>
+            {% endfor %}
+            
+            <!-- 대댓글 입력창 -->
+            <form action="{% url 'articles:rec_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
+              {% csrf_token %}
+              {% bootstrap_form recomment_form %}
+              {% bootstrap_button button_type='submit' content='글쓰기' %}
+            </form>            
+          </div>                        
+        </div>
       {% endfor %}
     {% else %}
         <h4 class='text-center'>댓글이 없습니다 ㅠㅠ</h4>
