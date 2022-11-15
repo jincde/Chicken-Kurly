@@ -246,9 +246,87 @@
   </div>
 </div>
 
+  <!-- 문의한 글  -->
+      <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
+        {% for review in reviews %}
+        <div class='review-detail d-flex'
+          style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
+          <div class='review-writer' style='flex:0 0 225px;'>
+            <div class='d-flex'>
+              <span>{{ review.user }}
+              </span>
+            </div>
+          </div>
+          <article class='review-content' style='flex:1 1 0%;'>
+            <div>
+              <div>
+                <h3 class="mb-0" style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
+                  {{ review.product.product_name }}</h3>
+              </div>
+              <p class="mb-0" style='white-space:pre-line; font-weight: 600;'>
+                {{ review.title }}</p>
+
+              <p style='white-space:pre-line; line-height:19px;'>
+                {{ review.content }}</p>
+              <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
+                {% for photo in review.reviewimage_set.all %}
+                <div class='d-flex'>
+                  <img src="{{ photo.review_img.url }}" alt="{{ photo.review_img }}" class='review-img'
+                    style="width:93px; height:93px; flex-shrink:0; border-radius:2px">
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <footer class='review-date w-100 d-flex justify-content-between w-100'
+              style='align-items:center; padding-top:19px; padding-right:20px'>
+              <div>
+                <span style='color: rgb(153, 153, 153);'>{{ review.created_at|date:"Y.m.d" }}</span>
+              </div>
+              {% if request.user == review.user %}
+              <div>
+                <form class='d-flex' action="{% url 'products:review_update' product.pk review.pk %}" method="GET">
+                  {% csrf_token %}
+                  <input type="submit" class="btn fw-bold form-control"
+                    style="border-radius:3px; height:36px; width:96px; border:1px solid rgb(221, 221, 221); font-size:12px; text-align:center;"
+                    value="후기수정">
+                </form>
+              </div>
+              {% endif %}
+            </footer>
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+      {% if request.user.is_authenticated %}
+      {% endif %}
+
+      <div class='page d-flex justify-content-center' style='padding-top:20px'>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+  </div>
+
+
+
 
   {% if request.user.is_superuser == 1 %}
-    <a href="{% url 'accounts:create' %}" class="btn btn-primary">글쓰기</a>
+    <a href="{% url 'accounts:create' %}" class="btn btn-primary">상품등록</a>
   {% endif %}
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
