@@ -10,7 +10,7 @@
   <div class="container my-5">
     <h2 class="text-center mb-5">장바구니</h2>
 
-    <form action="{% url 'accounts:cart_purchase' %}" method="POST">
+    <form id="cart-update-form" action="{% url 'accounts:cart_update' %}" method="POST">
       {% csrf_token %}
 
       <div class="row">
@@ -40,11 +40,14 @@
                     <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
                     <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price }}</span>원</div>
                     <!-- 장바구니에서 삭제 -->
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    {% comment %} <input type="submit" class="btn-close" form="form-{{ item.pk }}" value=""> {% endcomment %}
+                    <input type="submit" class="btn-close" name="delete" value="{{ item.pk }}"  style="color:transparent;">
                   </div>
                 </div>
               </div>
             {% endfor %}
+
+            <input type="submit" class="" name="select_delete" value="선택삭제">
         </div>
 
         <!-- 주소 및 가격 정보 -->
@@ -81,7 +84,7 @@
             </div>
           </div>
 
-          <input type="submit" value="주문하기" class="btn w-100 fs-5 my-3"
+          <input type="submit" name="purchase" value="주문하기" class="btn w-100 fs-5 my-3"
             style="border-radius:3px; height:60px; background-color:#5e0080; color:white">
         </div>
       </div>
@@ -91,4 +94,12 @@
 
 {% block script %}
   <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+  <script>
+    const cartUpdateForm = document.querySelector('#cart-update-form')
+    cartUpdateForm.onkeypress = function(event) {
+      if (event.keyCode == 13) {
+        event.preventDefault()
+      }
+    }
+  </script>
 {% endblock script %}

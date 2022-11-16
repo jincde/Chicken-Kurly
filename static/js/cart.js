@@ -56,7 +56,7 @@ checkBoxes.forEach(checkBox => {
 
       if (itemPriceField.getAttribute('data-is-disabled') === 'true') {
         itemPriceField.innerText = defaultItemPrice * quantityField.value
-        // 선택되지 않은 상품의 가격을 음수로
+        // 선택되지 않은 상품의 가격을 0으로
         itemPriceDict[itemId] = 0
 
         let tmp = 0
