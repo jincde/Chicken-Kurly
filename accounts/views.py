@@ -21,7 +21,7 @@ def signup(request):
     if request.method == "POST":
         forms = SignupForm(request.POST, request.FILES)
         if forms.is_valid():
-            user = forms.save()
+            user = forms.save()      
             Cart.objects.create(user=user)
             Ddib.objects.create(user=user)
             # UserDdib.objects.create(user=user)
