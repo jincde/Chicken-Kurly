@@ -2,13 +2,6 @@
 {% load static %}
 
 {% block content %}
-  <!-- form 중첩이 되지 않아 input의 form 속성으로 접근 -->
-  {% for item in cart_items %}
-    <form id="form-{{ item.pk }}" action="{% url 'accounts:cart_delete' item.pk %}" method="POST">
-      {% csrf_token %}
-    </form>
-  {% endfor %}
-
   <!-- 체크박스로 상품 선택 후 주문 버튼을 누르면 -->
   <!-- OrderItem에 선택된 상품들의 정보만 저장하기 -->
   <!-- 선택된 상품이 없으면, 주문 버튼 비활성화 -->
@@ -17,7 +10,7 @@
   <div class="container my-5">
     <h2 class="text-center mb-5">장바구니</h2>
 
-    <form id="cart-update-form" action="{% url 'accounts:cart_purchase' %}" method="POST">
+    <form id="cart-update-form" action="{% url 'accounts:cart_update' %}" method="POST">
       {% csrf_token %}
 
       <div class="row">
