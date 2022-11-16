@@ -12,7 +12,8 @@ from .models import OrderItem, WatchItem
 from .models import Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
-from products.models import Image
+from products.models import *
+from products.forms import *
 
 
 # Create your views here.
@@ -93,6 +94,10 @@ def profile(request, user_pk):
     OrderItems = OrderItem.objects.order_by('-pk')
     order_items = OrderItem.objects.filter(user=request.user)
     watch_items = WatchItem.objects.filter(user=request.user)
+    user = get_user_model().objects.get(pk=user_pk)
+    inquiries = user.inquiry_set.order_by('-pk')
+    print(inquiries)
+
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     context = {
@@ -101,6 +106,7 @@ def profile(request, user_pk):
         "ddib_items": ddib_items,
         'order_items': order_items,
         'watch_items': watch_items,
+        'inquiries': inquiries,
     }
     return render(request, "accounts/profile.html", context)
 
