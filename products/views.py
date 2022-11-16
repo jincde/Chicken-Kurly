@@ -315,9 +315,17 @@ def create_inquiry(request, product_pk):
         inquiry.product = product
         inquiry.save()
 
-    # 나중에 비동기?
+    print(request.POST.get('title'))
+    print(request.POST.get('content'))
 
-    return redirect('products:detail', product_pk)
+    # 비동기 구현중~
+    data = {
+        'isSuccess': True,
+    }
+
+    return JsonResponse(data)
+
+    # return redirect('products:detail', product_pk)
 
 
 # 상품 문의 수정
