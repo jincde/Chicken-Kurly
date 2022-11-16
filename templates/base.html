@@ -69,7 +69,7 @@
             </li>
           </ul>
         </div>
-        <div class="d-flex align-items-center" style="width: 400px; border:1.8px solid #5e0080; border-radius: 8px;">
+        <div class="d-flex align-items-center" style="width: 400px; border:1px solid #5e0080; border-radius: 8px;">
           <form action="{% url 'articles:search' %}" method="">
             {% csrf_token %}
             <input class="form-control search-input" name="keyword" type="search" placeholder="검색어를 입력해주세요."
