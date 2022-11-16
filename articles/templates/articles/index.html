@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class='large-font text-center top-20'>
+  <ion-icon name="heart" style="font-size: 1.2rem;">
+    <!-- <div class='red-bg'></div> -->
+  </ion-icon>
+</div>
+
 
 <div class="d-flex justify-content-between flex-wrap"
   style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0">
   <div class="d-flex justify-content-between align-items-center" style="width: 1070px; margin-bottom: 16px;">
-    <h3 style="font-size: 20px; font-weight: 700">최신 아티클</h3>
+    <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">최신 아티클 <span
+        style="font-size: 26px;">📌</span></h3>
     <div>
       <a class="non_a" style="text-decoration: none;" href="{% url 'articles:create' %}">글쓰기</a>
     </div>
@@ -29,8 +36,8 @@
     <div class="card-body p-3" style="height: 131px;">
       <!-- 글작성자 -->
       <p style="font-size: 13px; font-weight: 400; margin-bottom: 4px;">
-        <a class="non_a" href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }} |
-          {{ article.created_at|date:'Y.m.d' }}</a>
+        <a class="non_a" href="{% url 'accounts:profile' article.user.pk %}">{{ article.user }}</a> <span>|
+          {{ article.created_at|date:'Y.m.d' }}</span>
       </p>
       <!-- 카드 타이틀 -->
       <a href="{% url 'articles:detail' article.pk %}" class="non_a"
@@ -41,15 +48,26 @@
         <form class='like-forms' data-article-id="{{ article.pk }}">
           {% csrf_token %}
           {% if request.user in article.like_users.all %}
-          <button type="submit" class="" style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
-            <i id='heart-{{ article.pk }}' style="color: red;" class="bi bi-heart-fill"></i>
-            <span id='like-count-{{ article.pk }}' style="font-size: 1rem">
-              {{ article.like_users.count }}</span></button>
+          <div class="d-flex align-items-center justify-content-end">
+            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+              id='like-btn-{{ article.pk }}'>
+              <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" class="ion-icon active me-2"
+                name="heart">
+              </ion-icon>
+              <span id='like-count-{{ article.pk }}' style="font-size: 1rem">
+                {{ article.like_users.count }}</span>
+            </button>
+          </div>
           {% else %}
-          <button type=" submit" class="" style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
-            <i id='heart-{{ article.pk }}' class="bi bi-heart" style="color:red"></i>
-            <span style="font-size: 1rem" id='like-count-{{ article.pk }}'>
-              {{ article.like_users.count }}</span></button>
+          <div class="d-flex align-items-center justify-content-end">
+            <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+              id='like-btn-{{ article.pk }}'>
+              <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" class="ion-icon me-2"
+                name="heart"></ion-icon>
+              <span style="font-size: 1rem" id='like-count-{{ article.pk }}'>
+                {{ article.like_users.count }}</span>
+            </button>
+          </div>
           {% endif %}
         </form>
       </div>
@@ -133,12 +151,17 @@
           const heart = document.querySelector(`#heart-${articleId}`)
 
           if (isLiked === true) {
-            heart.classList.add('bi-heart-fill')
-            heart.classList.remove('bi-heart')
+            heart.classList.add('active')
+            // heart.classList.remove('bi-heart')
+            // likeBtn.classList.remove('btn-outline-danger')
+            // likeBtn.classList.add('btn-danger')
             likeCount.innerText = response.data.likeCount
           } else {
-            heart.classList.add('bi-heart')
-            heart.classList.remove('bi-heart-fill')
+            // heart.classList.add('bi-heart')
+            heart.classList.remove('active')
+            // likeBtn.classList.remove('btn-danger')
+            // likeBtn.classList.add('btn-outline-danger')
+
             likeCount.innerText = response.data.likeCount
           }
 
@@ -148,6 +171,8 @@
         })
     })
   })
-
 </script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
 {% endblock content %}
