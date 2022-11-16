@@ -189,5 +189,6 @@ def search(request):
         context = {
             "products": products,
             "articles": articles,
+            "keyword": keyword,
         }
         return render(request, "articles/search.html", context)
