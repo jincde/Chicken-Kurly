@@ -199,6 +199,10 @@ section .wave.wave2 {
   cursor: pointer;
 }
 
+.contentcard {
+  transition: all ease-in-out .3s;
+}
+
 .contentcard:hover {
   border-radius: 15px;
   transform: translateY(-10px);
