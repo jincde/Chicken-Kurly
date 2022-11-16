@@ -12,7 +12,8 @@ from .models import OrderItem, WatchItem
 from .models import Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
-from products.models import Image
+from products.models import *
+from products.forms import *
 
 
 # Create your views here.
@@ -93,6 +94,10 @@ def profile(request, user_pk):
     OrderItems = OrderItem.objects.order_by('-pk')
     order_items = OrderItem.objects.filter(user=request.user)
     watch_items = WatchItem.objects.filter(user=request.user)
+    user = get_user_model().objects.get(pk=user_pk)
+    inquiries = user.inquiry_set.order_by('-pk')
+    print(inquiries)
+
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     context = {
@@ -101,6 +106,7 @@ def profile(request, user_pk):
         "ddib_items": ddib_items,
         'order_items': order_items,
         'watch_items': watch_items,
+        'inquiries': inquiries,
     }
     return render(request, "accounts/profile.html", context)
 
@@ -120,16 +126,20 @@ def ddib_delete(request, product_pk):
 def profile_update(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
+        forms = PasswordChangeForm(request.user, request.POST)
+        if form and forms.is_valid():
             form.save()
+            forms.save()
             return redirect("accounts:profile", request.user.pk)
     else:
         form = ProfileForm(instance=request.user)
+        forms = PasswordChangeForm(request.user)
     return render(
         request,
         "accounts/profile_update.html",
         {
             "form": form,
+            "forms": forms,
         },
     )
 
@@ -205,19 +215,31 @@ def cart(request):
 
 # 장바구니에서 구매
 @login_required
-def cart_purchase(request):
+def cart_update(request):
     cart = Cart.objects.get(user=request.user)
     selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
     quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
     
-    # 선택된 아이템의 개수만큼 반복
-    for i in range(len(selected_items)):
-        # 1. 리스트의 product_pk와 일치하는 아이템 인스턴스 객체
-        cart_item = cart.cartitem_set.get(product_id=selected_items[i])
-        # 2. 장바구니 페이지에서 수정된 수량으로 변경
-        quantity = quantities[i]
-        
-        # 위 2개의 정보를 바탕으로 주문서 작성
-        OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
+    if 'purchase' in request.POST:
+        # 선택된 아이템의 개수만큼 반복
+        for i in range(len(selected_items)):
+            # 1. 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
+            cart_item = cart.cartitem_set.get(pk=selected_items[i])
+            # 2. 장바구니 페이지에서 수정된 수량으로 변경
+            quantity = quantities[i]
+            
+            # 위 2개의 정보를 바탕으로 주문서 작성
+            OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
     
+    if 'select_delete' in request.POST:
+        for i in range(len(selected_items)):
+            # 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
+            cart_item = cart.cartitem_set.get(pk=selected_items[i])
+            cart_item.delete()
+
+    if 'delete' in request.POST:
+        product_pk = request.POST.get('delete')
+        cart_item = cart.cartitem_set.get(pk=product_pk)
+        cart_item.delete()
+
     return redirect('accounts:cart')

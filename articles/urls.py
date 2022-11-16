@@ -18,4 +18,5 @@ urlpatterns = [
     path("rec_create/<int:c_pk>/<int:a_pk>", views.rec_create, name="rec_create"),
     path("rec_detail_create/<int:c_pk>/<int:a_pk>", views.rec_detail_create, name="rec_detail_create"),
     path("rec_detail/<int:c_pk>/<int:a_pk>", views.rec_detail, name="rec_detail"),
+    path("search/", views.search, name="search"),
 ] 

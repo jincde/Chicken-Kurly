@@ -39,9 +39,15 @@
       최보영 최정아</div>
   </div>
   <section class="d-flex container align-items-center justify-content-end navbar-line"
-    style="max-width: 1050px; height: 35px; font-size: 12px;"><a class="non_a"
-      href="{% url 'accounts:signup' %}">회원가입</a> <span class=mx-2 style="font-weight: 100;">|</span>
+    style="max-width: 1050px; height: 35px; font-size: 12px;">
+    {% if request.user.is_authenticated %}
+    <a class="non_a" href="">
+      {{ user.username }}님</a> <span class="mx-2" style="font-weight: 100;">|</span><a class="non_a"
+      href="{% url 'accounts:logout' %}">로그아웃</a><span class="mx-2" style="font-weight: 100;">|</span>고객센터
+    {% else %}
+    <a class="non_a" href="{% url 'accounts:signup' %}">회원가입</a> <span class=mx-2 style="font-weight: 100;">|</span>
     <a class="non_a" href="{% url 'accounts:login' %}">로그인</a> <span class="mx-2" style="font-weight: 100;">|</span>고객센터
+    {% endif %}
   </section>
   <nav class="navbar navbar-expand-md bg-transparent" style="height: 63px"
     style="background-color: white; position: sticky; top: 0;">
@@ -64,8 +70,10 @@
           </ul>
         </div>
         <div class="d-flex align-items-center" style="width: 400px; border:1.8px solid #5e0080; border-radius: 8px;">
-          <input class="form-control search-input" type="search" placeholder="검색어를 입력해주세요." aria-label="Search"
-            style="width: 350px; height: 47px; color: #5e0080; border: 0px; font-weight: 400;">
+          <form action="{% url 'articles:search' %}" method="">
+            {% csrf_token %}
+            <input class="form-control search-input" name="keyword" type="search" placeholder="검색어를 입력해주세요."
+              aria-label="Search" style="width: 350px; height: 47px; color: #5e0080; border: 0px; font-weight: 400;">
           </form>
           <i class="bi bi-search search-icon" style="font-size:1.2rem;width: 10%; color: #5e0080;"></i>
         </div>

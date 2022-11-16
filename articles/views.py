@@ -4,7 +4,8 @@ from .models import Article, Comment, ReComment
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required  
 from django.http import JsonResponse
-
+from products.models import Product
+from django.db.models import Q
 # Create your views here.
 
 
@@ -210,6 +211,7 @@ def c_like(request, c_pk, a_pk):
         return redirect('articles:detail', a_pk)
     return redirect('accounts:login')
 
+
 @login_required
 def rec_like(request, c_pk, a_pk):
 
@@ -225,3 +227,19 @@ def rec_like(request, c_pk, a_pk):
         return redirect('articles:rec_detail', c_pk, a_pk)
     return redirect('accounts:login')
 
+def search(request):
+    keyword = request.GET.get("keyword", "")  # 검색어
+
+    if keyword:
+        products = Product.objects.filter(
+            Q(product_name__icontains=keyword) | Q(brand__icontains=keyword)
+        ).distinct()
+        articles = Article.objects.filter(
+            Q(title__icontains=keyword) | Q(content__icontains=keyword)
+        ).distinct()
+        context = {
+            "products": products,
+            "articles": articles,
+            "keyword": keyword,
+        }
+        return render(request, "articles/search.html", context)
