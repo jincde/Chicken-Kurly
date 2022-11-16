@@ -78,3 +78,6 @@ class WatchItem(models.Model):
   ddib = models.ForeignKey(Ddib, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+
+
+
