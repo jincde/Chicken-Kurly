@@ -14,6 +14,7 @@ from django.contrib import messages
 from products.models import *
 from products.forms import *
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -97,10 +98,18 @@ def profile(request, user_pk):
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
     inquiries = user.inquiry_set.order_by('-pk')
+    
+    reply_form = ReplyForm()
     print(inquiries)
 
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
+
+    # 문의 페이지네이션
+    inquiry_page = request.GET.get('inquiry_page', '1')
+    inquiry_paginator = Paginator(inquiries, 5)
+    inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
+
     context = {
         "OrderItems": OrderItems,
         "person": person,
@@ -108,6 +117,8 @@ def profile(request, user_pk):
         'order_items': order_items,
         'watch_items': watch_items,
         'inquiries': inquiries,
+        'reply_form': reply_form,
+        'inquiries': inquiry_page_obj,
     }
     return render(request, "accounts/profile.html", context)
 
