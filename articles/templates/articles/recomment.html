@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<div class='container'>
+  <h1>댓글 상세페이지</h1>
+  <hr>
+  <div class='mx-2' sytle='margin: -2px;'>
+    <div class='d-flex'>
+      <!-- 댓글 작성자, 시간 -->
+      <div class="flex-grow-1">
+        <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
+        <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
+      </div>
+      <!-- 댓글 좋아요 -->
+      <div>
+        {% if request.user in comment.like_users.all %}
+          <span><a href="{% url 'articles:rec_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up-fill"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
+        {% else %}
+          <span><a href="{% url 'articles:rec_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <!-- 댓글 내용 -->
+  <p class='fs-6'>{{ comment.content }}
+    {% if request.user == comment.user %}
+    <span>
+      <a href="">
+        <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+          <i class="bi bi-x"></i>
+        </span>
+      </a>
+    </span>
+    {% endif %}
+  </p>
+  <hr>
+  <!-- 대댓글 -->
+        <!-- 대댓글 목록 -->
+        {% for recomment in paginated_recomments %}
+          {% if recomment.comment.pk == comment.pk %}
+            <p>
+              {{ recomment.comment.user }}
+              {{ recomment.content }}
+            </p>
+            <span>{{ recomment.created_at }}</span>
+          {% endif %}
+        {% endfor %}    
+        <!-- 댓글 페이지네이션 -->
+        {% if paginated_recomments %}
+        <ul class="pagination justify-content-center">
+          <!-- 첫 페이지 -->
+          {% if paginated_recomments.has_previous %}
+          <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+          <li class="page-item">
+            <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">&#60;</a>
+          </li>
+          {% endif %}
+      
+          <!-- 페이지리스트 -->
+          <!-- //페이지 범위를 하나씩 리턴 -->
+          {% for page_number in paginated_recomments.paginator.page_range %}
+            {% if page_number >= paginated_recomments.number|add:-2 and page_number <= paginated_recomments.number|add:2 %}
+                <!-- // 현재 페이지일 때는 active -->
+                  {% if page_number == paginated_recomments.number %}
+                  <li class="page-item" aria-current="page">
+                    <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
+                      href="?page={{ page_number }}">{{ page_number }}</a>
+                  </li>
+                  {% else %}
+                  <li class="page-item text-color-warning">
+                    <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
+                  </li>
+                  {% endif %}
+              {% endif %}
+            {% endfor %}
+      
+            <!-- 다음페이지 -->
+            {% if paginated_recomments.has_next %}
+            <li class="page-item">
+              <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" href="#">&#62;</a>
+            </li>
+            {% endif %}
+        </ul>
+        {% endif %}
+        <!-- 대댓글 입력창 -->
+        <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
+          {% csrf_token %}
+          {% bootstrap_form recomment_form %}
+          {% bootstrap_button button_type='submit' content='글쓰기' %}
+        </form>
+  </div>
+</div>
+
+
+{% endblock content %}
