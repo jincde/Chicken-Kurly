@@ -205,19 +205,31 @@ def cart(request):
 
 # 장바구니에서 구매
 @login_required
-def cart_purchase(request):
+def cart_update(request):
     cart = Cart.objects.get(user=request.user)
     selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
     quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
     
-    # 선택된 아이템의 개수만큼 반복
-    for i in range(len(selected_items)):
-        # 1. 리스트의 product_pk와 일치하는 아이템 인스턴스 객체
-        cart_item = cart.cartitem_set.get(product_id=selected_items[i])
-        # 2. 장바구니 페이지에서 수정된 수량으로 변경
-        quantity = quantities[i]
-        
-        # 위 2개의 정보를 바탕으로 주문서 작성
-        OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
+    if 'purchase' in request.POST:
+        # 선택된 아이템의 개수만큼 반복
+        for i in range(len(selected_items)):
+            # 1. 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
+            cart_item = cart.cartitem_set.get(pk=selected_items[i])
+            # 2. 장바구니 페이지에서 수정된 수량으로 변경
+            quantity = quantities[i]
+            
+            # 위 2개의 정보를 바탕으로 주문서 작성
+            OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
     
+    if 'select_delete' in request.POST:
+        for i in range(len(selected_items)):
+            # 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
+            cart_item = cart.cartitem_set.get(pk=selected_items[i])
+            cart_item.delete()
+
+    if 'delete' in request.POST:
+        product_pk = request.POST.get('delete')
+        cart_item = cart.cartitem_set.get(pk=product_pk)
+        cart_item.delete()
+
     return redirect('accounts:cart')
