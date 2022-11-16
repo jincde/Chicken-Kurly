@@ -52,7 +52,7 @@ def detail(request, pk):
     article = Article.objects.get(pk=pk)
     comments = Comment.objects.filter(article=article).order_by('-pk')
     recomment_form = ReCommentForm()
-    recomments = ReComment.objects.all()
+    recomments = ReComment.objects.all().order_by('-pk')
 
     page = request.GET.get('page', '1')
     paginator = Paginator(comments, 5)
@@ -69,6 +69,28 @@ def detail(request, pk):
     }
 
     return render(request, "articles/detail.html", context)
+
+def rec_detail(request, c_pk, a_pk):
+
+    article = Article.objects.get(pk=a_pk)
+    comment = Comment.objects.get(pk=c_pk)
+    recomments = ReComment.objects.filter(comment=comment).order_by('-pk')
+    recomment_form = ReCommentForm()
+
+    page = request.GET.get('page', '1')
+    paginator = Paginator(recomments, 10)
+    paginated_recomments = paginator.get_page(page)
+    max_index = len(paginator.page_range)
+
+    context = {
+        'comment': comment,
+        'paginated_recomments': paginated_recomments,
+        'recomment_form': recomment_form,
+        'max_index': max_index,
+        'article': article,
+    }
+
+    return render(request, 'articles/recomment.html', context)
 
 @login_required
 def delete(request, pk):
@@ -127,6 +149,19 @@ def rec_create(request, c_pk, a_pk):
             recomment.user = request.user
             recomment.save()
         return redirect('articles:detail', a_pk)
+
+@login_required
+def rec_detail_create(request, c_pk, a_pk):
+
+    if request.method == 'POST':
+        comment = Comment.objects.get(pk=c_pk)
+        recomment_form = ReCommentForm(request.POST)
+        if recomment_form.is_valid():
+            recomment = recomment_form.save(commit=False)
+            recomment.comment = comment
+            recomment.user = request.user
+            recomment.save()
+        return redirect('articles:rec_detail', c_pk, a_pk)
     
 
 
@@ -174,6 +209,22 @@ def c_like(request, c_pk, a_pk):
             comment.like_users.add(request.user)
 
         return redirect('articles:detail', a_pk)
+    return redirect('accounts:login')
+
+
+@login_required
+def rec_like(request, c_pk, a_pk):
+
+    if request.user.is_authenticated:
+
+        comment = Comment.objects.get(pk=c_pk)
+
+        if request.user in comment.like_users.all():
+            comment.like_users.remove(request.user)
+        else:
+            comment.like_users.add(request.user)
+
+        return redirect('articles:rec_detail', c_pk, a_pk)
     return redirect('accounts:login')
 
 def search(request):
