@@ -10,10 +10,14 @@ from django.core.paginator import Paginator
 def index(request):
     products = Product.objects.order_by('-pk')
     review = Review.objects.order_by('-pk')
+    hits = Product.objects.order_by('-hit')
+    sold = Product.objects.order_by('-sold_count')
 
     context = {
         'products': products,
-        'review':review
+        'review':review,
+        'hits': hits,
+        'sold': sold,
         # 'image_cnt': products.image_set.count(), # index 페이지에서 carousel로 보여줄 때 사용
     }
 
