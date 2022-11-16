@@ -239,3 +239,7 @@ bi-heart {
   stroke-width: 20;
   transition: all 0.5s;
 }
+
+.warning {
+  color: #eb5373;
+}
