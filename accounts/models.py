@@ -20,6 +20,7 @@ class User(AbstractUser):
         format="JPEG",
         options={"quality": 90},
     )
+    address = models.CharField(max_length=50)
 
     @property
     def full_name(self):
