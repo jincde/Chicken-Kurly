@@ -69,13 +69,20 @@ def detail(request, product_pk):
     product_buy_form = ProductBuyForm()
     inquiry_form = InquiryForm()
     reply_form = ReplyForm()
-    inquiries = product.inquiry_set.order_by('-pk')
+    inquiries = product.inquiry_set.order_by('-pk') # 문의 최신순
     reviews = product.review_set.order_by('-pk') # 리뷰 최신순
     # print(reviews[3].reviewimage_set.all())
 
     # model에서 hit은 default=0으로 설정했고 한 번 볼 때마다 1 증가하도록
     product.hit += 1
     product.save()
+
+
+    # 문의 페이지네이션
+    inquiry_page = request.GET.get('inquiry_page', '1')
+    inquiry_paginator = Paginator(inquiries, 5)
+    inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
+
     
     context = {
         'product': product,
@@ -83,10 +90,11 @@ def detail(request, product_pk):
         'product_buy_form': product_buy_form,
         'inquiry_form': inquiry_form,
         'reply_form': reply_form,
-        'inquiries': inquiries,
-        'reviews': reviews,
 
+        'inquiries': inquiry_page_obj,  # 문의 페이지네이션
+        'reviews': reviews,
     }
+
     return render(request, 'products/detail.html', context)
 
 
