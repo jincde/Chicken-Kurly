@@ -1,3 +1,4 @@
+/* 1. 장바구니 수량에 따른 계산 */
 const checkBoxes = document.querySelectorAll('.item-checkboxes')
 let itemPriceDict = {}  // item-id : price
 let totalPrice = 0
@@ -67,6 +68,49 @@ checkBoxes.forEach(checkBox => {
         productsPriceField.innerText = totalPrice + '원'
         totalPriceField.innerText = totalPrice + '원'
       }
+    }
+  })
+})
+
+
+/* 2. enter키로 form 제출 방지 */
+const cartUpdateForm = document.querySelector('#cart-update-form')
+cartUpdateForm.onkeypress = function(event) {
+  if (event.keyCode == 13) {
+    event.preventDefault()
+  }
+}
+
+
+/* 3. 삭제 비동기 */
+const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+cartUpdateForm.addEventListener('submit', event => {
+  event.preventDefault()
+  console.log(event.submitter)
+
+  // view로 넘겨줄 formData 생성
+  let formData = new FormData(cartUpdateForm)
+  
+  // submit input들의 name:value 쌍 저장
+  formData.append('kindOfSubmit', event.submitter.name)
+  if (event.submitter.name === 'delete') {
+    console.log(event.submitter.value)
+    formData.append('productPk', event.submitter.value)
+  }
+
+  axios({
+    method: 'post',
+    url: '/accounts/cart/update/',
+    headers: {'X-CSRFToken': csrfToken},
+    data: formData,
+  })
+  .then(response => {
+    const deletedItemList = response.data.deletedItemList
+    console.log(deletedItemList)
+    
+    for (let value of deletedItemList) {
+      const productBox = document.querySelector(`#product-${value}-box`)
+      productBox.remove()
     }
   })
 })
