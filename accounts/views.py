@@ -8,8 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
-from .models import OrderItem, WatchItem
-from .models import Product
+from .models import OrderItem, WatchItem, Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import *
@@ -235,6 +234,8 @@ def cart_update(request):
             
             # 위 2개의 정보를 바탕으로 주문서 작성
             OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
+            cart_item.product.sold_count += 1
+            cart_item.product.save()
     
     elif 'select_delete' in request.POST.get('kindOfSubmit'):
         for i in range(len(selected_items)):

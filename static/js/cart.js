@@ -114,3 +114,6 @@ cartUpdateForm.addEventListener('submit', event => {
     }
   })
 })
+
+
+/* 4. 구매 완료하면 장바구니 비우기? */

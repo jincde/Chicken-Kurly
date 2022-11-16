@@ -238,7 +238,9 @@
                 <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
               </div>
 
+              <!-- 문의 생성 폼 -->
               <form action="{% url 'products:create_inquiry' product.pk %}" method="POST">
+              {% comment %} <form id="inquiry-create-form-{{ product.pk }}" onsubmit="create_inquiry(this, '{{ product.pk }}')"> {% endcomment %}
                 {% csrf_token %}
                 {% bootstrap_form inquiry_form %}
 
@@ -316,8 +318,9 @@
                   {% if request.user == inquiry.user %}
                   <div class="d-flex justify-content-end mt-3">
                     <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry">수정</a>
-
-                    <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}">
+                    
+                    {% comment %} <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
+                    <form id="inquiry-delete-form-{{ product.pk }}" onsubmit="delete_inquiry('{{ product.pk }}', '{{ inquiry.pk }}')">
                       <input type="submit" class="btn-none text-muted" value="삭제">
                     </form>
                   </div>
@@ -475,7 +478,7 @@
     const ddibBtn = document.querySelector('#ddib-btn')
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    console.log(ddibBtn)
+    // console.log(ddibBtn)
     // (2) 찜하기 버튼을 클릭하면, 함수 실행
     ddibBtn.addEventListener('click', function (event) {
         // 서버로 비동기 요청(axios)을 하고 싶음
@@ -504,4 +507,5 @@
     })
 </script>
 
+<script type="text/javascript" src="{% static 'js/product_inquiries.js' %}"></script>
 {% endblock script %}
