@@ -316,7 +316,7 @@
         {% for inquiry in inquiries %}
           <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
             style="vertical-align: middle;">
-            <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+            <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
             <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
             <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
             {% if inquiry.reply %}
@@ -332,7 +332,7 @@
               <div>
                 <div class="d-flex">
                   <div class="me-3">Q.</div>
-                  <div>{{ inquiry.content }}</div>
+                  <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
                 </div>
                 <div>
                   {% if inquiry.reply %}
@@ -344,16 +344,16 @@
                     <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
                     {% if request.user == inquiry.user %}
                       <div class="d-flex justify-content-end mt-3">
-                        <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry">수정</a>
+                        <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry{{ inquiry.pk }}">수정</a>
                         
                         {% comment %} <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
-                        <form id="inquiry-delete-form-{{ product.pk }}" onsubmit="event.preventDefault(); delete_inquiry(this, '{{ product.pk }}', '{{ inquiry.pk }}')">
+                        <form id="inquiry-delete-form-{{ inquiry.pk }}" onsubmit="event.preventDefault(); delete_inquiry(this, '{{ product.pk }}', '{{ inquiry.pk }}')">
                           <input type="submit" class="btn-none text-muted" value="삭제">
                         </form>
                       </div>
 
                       <!-- 문의 수정 모달 -->
-                      <div class="modal fade" id="updateInquiry" data-bs-backdrop="static" data-bs-keyboard="false"
+                      <div class="modal fade" id="updateInquiry{{ inquiry.pk }}" data-bs-backdrop="static" data-bs-keyboard="false"
                         tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
@@ -369,7 +369,9 @@
                                 <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
                               </div>
 
-                              <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST">
+                              <!-- 문의 수정 폼 -->
+                              {% comment %} <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
+                              <form id="inquiry-update-form-{{ inquiry.pk }}" onsubmit="event.preventDefault(); update_inquiry(this, '{{ product.pk }}', '{{ inquiry.pk }}')">
                                 {% csrf_token %}
 
                                 <!-- inquiry_form -->
@@ -387,7 +389,7 @@
                                 <div class="text-center">
                                   <button type="button" class="btn me-2" data-bs-dismiss="modal"
                                     style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                                  <button type="submit" class="btn"
+                                  <button type="submit" class="btn" data-bs-dismiss="modal"
                                     style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
                                 </div>
                               </form>

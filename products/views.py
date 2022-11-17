@@ -340,22 +340,32 @@ def update_inquiry(request, product_pk, inquiry_pk):
     product = get_object_or_404(Product, pk=product_pk)
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
 
+    inquiry_title = ''
+    inquiry_content = ''
+
     if request.user == inquiry.user:
         # 모델폼이 아니어도 유효성검사가 된다.
         if request.method == 'POST':
             inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
             if inquiry_form.is_valid():
-                inquiry = inquiry_form.save(commit=False)
-                inquiry.user = request.user
-                inquiry.product = product
-                inquiry.save()
+                new_inquiry = inquiry_form.save(commit=False)
+                new_inquiry.user = request.user
+                new_inquiry.product = product
+                new_inquiry.save()
+
+                inquiry_title = new_inquiry.title
+                inquiry_content = new_inquiry.content
 
         else:
             inquiry_form = InquiryForm(instance=inquiry)
 
-    # 나중에 비동기?
+    data = {
+        'inquiryTitle': inquiry_title,
+        'inquiryContent': inquiry_content,
+    }
 
-    return redirect('products:detail', product_pk)
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(data)
 
 
 # 상품 문의 삭제
