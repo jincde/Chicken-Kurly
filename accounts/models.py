@@ -5,6 +5,9 @@ from imagekit.processors import Thumbnail
 from django.conf import settings
 from products.models import Product, DdibItem
 from products.models import Product, Ddib
+from django.views.generic.dates import timezone_today
+from collections import defaultdict
+
 
 
 
@@ -80,4 +83,80 @@ class WatchItem(models.Model):
 
 
 
+# 등급
+BRONZE_MEMBERSHIP = 1
+SILVER_MEMBERSHIP = 2
+GOLD_MEMBERSHIP = 3
 
+
+MEMBERSHIP_AMOUNTS = {
+    'gold': 50000,
+    'silver': 30000,
+    'bronze': 0,
+}
+
+MEMBERSHIP_LEVELS = (
+    (BRONZE_MEMBERSHIP, 'Bronze'),
+    (SILVER_MEMBERSHIP, 'Silver'),
+    (GOLD_MEMBERSHIP, 'Gold'),
+)
+
+MEMBERSHIP_TO_KEY = dict((k, v.lower()) for k, v in MEMBERSHIP_LEVELS)
+
+class UserMember(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=250)
+    billing_name = models.CharField(
+        max_length=250,
+        blank=True,
+        help_text='If different from display name.',
+    )
+    contact_name = models.CharField(max_length=250)
+    contact_email = models.EmailField()
+    billing_email = models.EmailField(blank=True, help_text='If different from contact email.',)
+    membership_level = models.IntegerField(choices=MEMBERSHIP_LEVELS)
+    address = models.TextField(blank=True)
+    django_usage = models.TextField(blank=True, help_text='Not displayed publicly.')
+    inactive = models.BooleanField(default=False, help_text='No longer renewing.')
+
+    def for_public_display(self):
+        objs = self.get_queryset().filter(
+            invoice__expiration_date__gte=timezone_today(),
+        ).annotate(purchased_amount=models.Sum('invoice__amount'))
+        return objs.order_by('-purchased_amount', 'display_name')
+
+    def by_membership_level(self):
+        members_by_type = defaultdict(list)
+        members = self.for_public_display()
+        for member in members:
+            key = MEMBERSHIP_TO_KEY[member.membership_level]
+            members_by_type[key].append(member)
+        return members_by_type
+    
+    def _is_invoiced(self):
+        invoices = self.invoice_set.all()
+        return bool(invoices) and all(invoice.sent_date is not None for invoice in invoices)
+    _is_invoiced.boolean = True
+    is_invoiced = property(_is_invoiced)
+
+    def _is_paid(self):
+        invoices = self.invoice_set.all()
+        return bool(invoices) and all(invoice.paid_date is not None for invoice in invoices)
+    _is_paid.boolean = True
+    is_paid = property(_is_paid)
+
+    def get_expiry_date(self):
+        expiry_date = None
+        for invoice in self.invoice_set.all():
+            if expiry_date is None:
+                expiry_date = invoice.expiration_date
+            elif invoice.expiration_date and invoice.expiration_date > expiry_date:
+                expiry_date = invoice.expiration_date
+        return expiry_date
+
+class Invoice(models.Model):
+    sent_date = models.DateField(blank=True, null=True)
+    amount = models.IntegerField(help_text='In integer dollars')
+    paid_date = models.DateField(blank=True, null=True)
+    expiration_date = models.DateField(blank=True, null=True)
+    member = models.ForeignKey(UserMember, on_delete=models.CASCADE)

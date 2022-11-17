@@ -8,7 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
-from .models import OrderItem, WatchItem, Product
+from .models import OrderItem, WatchItem, Product, UserMember
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import *
@@ -98,6 +98,9 @@ def profile(request, user_pk):
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
     inquiries = user.inquiry_set.order_by('-pk')
+    usermember = UserMember.objects.get(pk=user_pk)
+
+    
     
     reply_form = ReplyForm()
     print(inquiries)
@@ -119,7 +122,8 @@ def profile(request, user_pk):
         'inquiries': inquiries,
         'reply_form': reply_form,
         'inquiries': inquiry_page_obj,
-    }
+        'usermember': usermember,
+        }
     return render(request, "accounts/profile.html", context)
 
 # 찜한 상품 삭제
