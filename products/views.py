@@ -73,6 +73,10 @@ def detail(request, product_pk):
     product.hit += 1
     product.save()
     
+    # 후기 페이지네이션
+    review_page = request.GET.get('review_page', '1')
+    review_paginator = Paginator(reviews, 5)
+    review_page_obj = review_paginator.get_page(review_page)
     context = {
         'product': product,
         'image_cnt': product.image_set.count(),
@@ -80,7 +84,8 @@ def detail(request, product_pk):
         'inquiry_form': inquiry_form,
         'reply_form': reply_form,
         'inquiries': inquiries,
-        'reviews': reviews,
+        'reviews': review_page_obj, # 후기 페이지 
+        
 
     }
     return render(request, 'products/detail.html', context)

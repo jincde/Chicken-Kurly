@@ -13,7 +13,7 @@ from .models import Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from products.models import Image
-
+from .forms import ProductBuyForm
 
 # Create your views here.
 def signup(request):
@@ -95,12 +95,18 @@ def profile(request, user_pk):
     watch_items = WatchItem.objects.filter(user=request.user)
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
+    product_buy_form = ProductBuyForm() 
+    cart = Cart.objects.get(user=request.user)
+    cart_items = cart.cartitem_set.all()
+
     context = {
         "OrderItems": OrderItems,
         "person": person,
         "ddib_items": ddib_items,
+        'product_buy_form': product_buy_form,
         'order_items': order_items,
         'watch_items': watch_items,
+        'cart_items': cart_items,
     }
     return render(request, "accounts/profile.html", context)
 

@@ -35,7 +35,6 @@
                   <div class="col-2">
                     <input data-item-id="{{ item.pk }}" data-is-disabled="true" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="quantities" min="1" value="{{ item.quantity }}" disabled>
                   </div>
-
                   <div class="col-2 d-flex justify-content-end align-items-center">
                     <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
                     <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price }}</span>원</div>
