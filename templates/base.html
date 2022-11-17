@@ -41,7 +41,7 @@
   <section class="d-flex container align-items-center justify-content-end navbar-line"
     style="max-width: 1050px; height: 35px; font-size: 12px;">
     {% if request.user.is_authenticated %}
-    <a class="non_a" href="">
+    <a class="non_a" href="{% url 'accounts:profile' user.pk %}">
       {{ user.username }}님</a> <span class="mx-2" style="font-weight: 100;">|</span><a class="non_a"
       href="{% url 'accounts:logout' %}">로그아웃</a><span class="mx-2" style="font-weight: 100;">|</span>고객센터
     {% else %}
@@ -80,8 +80,8 @@
         <div class="d-flex justify-content-end" style="width: 300px">
           <div class="icons d-flex justify-content-between" style="width: 130px;">
             <div><i class="bi bi-github" style="font-size: 1.4rem"></i></div>
-            <div><i class="bi bi-heart" style="font-size: 1.4rem"></i></div>
-            <div><i class="bi bi-cart" style="font-size: 1.4rem"></i></div>
+            <div><a href=""><i class="bi bi-heart" style="font-size: 1.4rem"></i></a></div>
+            <div><a href="{% url 'accounts:cart' %}"><i class="bi bi-cart" style="font-size: 1.4rem"></i></a></div>
           </div>
         </div>
       </div>

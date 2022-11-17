@@ -47,7 +47,6 @@ def create(request):
                         img_instance.save()
 
                 product.save()
-                # messages.success(request, '상품 등록이 완료되었습니다.')
                 return redirect('products:index')
         else:
             product_form = ProductForm()

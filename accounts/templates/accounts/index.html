@@ -7,17 +7,19 @@
 {% block content %}
 
   <div class="d-flex justify-content-center">
-    <div class="card text-center" style="width: 500px; height: 400px;">
+    <div class="card text-center mb-5 border-0" style="width: 330px; margin: 50px auto 50px;">
       <div class="card-body">
-        <p class="card-text">
+        <div class="card-text">
           {% if user.is_authenticated %}
+          <a class='btn w-100 mb-5 py-2' href="{% url 'accounts:logout' %}" style="background-color: #5e0080; border-color:#5e0080; color: white; font-weight: 500; border-radius: 3px"; >{{ user.username }}님 로그아웃하고 싶다면 클릭하세요</a>
           {% else %}
             <p class="mt-5">회원이신가요?</p>
-            <a class="btn btn-primary w-100" href="{% url "accounts:login" %}">로그인</a>
+            <a class="btn btn-primary w-100" style=" background-color: #5e0080; border-color:#5e0080; color: white; font-weight: 500; border-radius: 3px"  href="{% url 'accounts:login' %}">로그인</a>
+            <p class="mt-5">아직 회원이 아니신가요?</p>
+            <a class="btn btn-primary w-100 mb-5" style="border:1px solid #5e0080;background-color: white; color: #5e0080; font-weight: 500; border-radius: 3px" href="{% url 'accounts:signup' %}">회원가입</a>
           {% endif %}
-          <p class="mt-5">아직 회원이 아니신가요?</p>
-          <a class="btn btn-primary w-100 mb-5" href="{% url 'accounts:index' %}">회원가입</a>
-        </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
