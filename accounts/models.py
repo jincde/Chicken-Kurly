@@ -34,8 +34,6 @@ class User(AbstractUser):
     address = models.CharField(max_length=50)
     username = models.CharField(validators=[MinLengthValidator(5)], max_length=16, unique=True)
     name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(unique=True, null=True)
-    is_email_verified = models.BooleanField(default=False)
     current_rating = models.IntegerField(default=500, verbose_name="Current Rating")
     rating = models.CharField(max_length=255, choices=rating_choices, default=BRONZE, verbose_name="rating")
     xp = models.IntegerField(default=10, verbose_name="XP")
