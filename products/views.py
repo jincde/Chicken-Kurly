@@ -313,23 +313,43 @@ def create_inquiry(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
     inquiry_form = InquiryForm(request.POST)    # POST 아닌 건 detail에
 
+    # inquiry_pk = -1
+    # inquiry_user = ''
+    # inquiry_created_at = ''
+    # inquiry_title = ''
+    # inquiry_content = ''
+    # product_image_url = product.image_set.all()[0].image.url
+    # product_name = product.product_name
+    # product_content = product.content
+
     if inquiry_form.is_valid():
         inquiry = inquiry_form.save(commit=False)
         inquiry.user = request.user
         inquiry.product = product
         inquiry.save()
 
-    print(request.POST.get('title'))
-    print(request.POST.get('content'))
+        # inquiry_pk = inquiry.pk
+        # inquiry_user = inquiry.user.username
+        # inquiry_created_at = inquiry.created_at.strftime('%Y.%m.%d')
+        # inquiry_title = inquiry.title
+        # inquiry_content = inquiry.content
 
-    # 비동기 구현중~
-    data = {
-        'isSuccess': True,
-    }
 
-    return JsonResponse(data)
+    # 페이지네이션하고 비동기 같이 하니까 이상해서 제거..ㅠㅠ
+    # data = {
+    #     'inquiryPk': inquiry_pk,
+    #     'inquiryUser': inquiry_user,
+    #     'inquiryCreatedAt': inquiry_created_at,
+    #     'inquiryTitle': inquiry_title,
+    #     'inquiryContent': inquiry_content,
+    #     'productImageUrl': product_image_url,
+    #     'productName': product_name,
+    #     'productContent': product_content,
+    # }
 
-    # return redirect('products:detail', product_pk)
+    # return JsonResponse(data)
+
+    return redirect('products:detail', product_pk)
 
 
 # 상품 문의 수정
@@ -376,7 +396,7 @@ def delete_inquiry(request, product_pk, inquiry_pk):
     is_deleted = -1 # False
 
     if request.user == inquiry.user:
-    #     inquiry.delete()
+        inquiry.delete()
         is_deleted = inquiry.pk
 
     data = {
@@ -393,6 +413,8 @@ def create_reply(request, product_pk, inquiry_pk):
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
     reply_form = ReplyForm(request.POST)    # POST 아닌 건 detail에
 
+    reply_content = ''
+
     if request.user.is_superuser == 1:
         if reply_form.is_valid():
             reply = reply_form.save(commit=False)
@@ -400,7 +422,11 @@ def create_reply(request, product_pk, inquiry_pk):
             reply.inquiry = inquiry
             reply.product = product
             reply.save()
+            reply_content = reply.content
 
-    # 나중에 비동기
+    data = {
+        'replyContent': reply_content,
+    }
 
-    return redirect('products:detail', product_pk)
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(data)
