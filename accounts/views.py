@@ -117,10 +117,6 @@ def profile(request, user_pk):
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
     inquiries = user.inquiry_set.order_by('-pk')
-  
-
-    
-    
     reply_form = ReplyForm()
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
