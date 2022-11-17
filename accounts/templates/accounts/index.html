@@ -11,7 +11,7 @@
       <div class="card-body">
         <div class="card-text">
           {% if user.is_authenticated %}
-          <a class='btn w-100 mb-5 py-2' href="{% url 'accounts:logout' %}" style="background-color: #5e0080; border-color:#5e0080; color: white; font-weight: 500; border-radius: 3px"; >{{ user.username }}님 로그아웃하고 싶다면 클릭하세요</a>
+          <a class='btn w-100 mb-5 py-2' href="{% url 'accounts:logout' %}" style="background-color: #5e0080; border-color:#5e0080; color: white; font-weight: 500; border-radius: 3px"; >치킨컬리에서 로그아웃</a>
           {% else %}
             <p class="mt-5">회원이신가요?</p>
             <a class="btn btn-primary w-100" style=" background-color: #5e0080; border-color:#5e0080; color: white; font-weight: 500; border-radius: 3px"  href="{% url 'accounts:login' %}">로그인</a>
@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>  
 
   {% if request.user.is_superuser == 1 %}
     <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
