@@ -12,7 +12,7 @@ from django.forms import ModelForm, ClearableFileInput
 class SignupForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ("username",)
+        fields = ("username", "address")
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -27,7 +27,7 @@ class CustomUserChangeForm(UserChangeForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile()
-        fields = ["image"]
+        fields = ["image",]
 
 
 class OrderItemForm(ModelForm):

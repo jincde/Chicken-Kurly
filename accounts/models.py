@@ -20,6 +20,7 @@ class User(AbstractUser):
         format="JPEG",
         options={"quality": 90},
     )
+    address = models.CharField(max_length=50)
 
     @property
     def full_name(self):
@@ -76,4 +77,7 @@ class WatchItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   ddib = models.ForeignKey(Ddib, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+
+
 

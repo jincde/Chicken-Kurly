@@ -14,5 +14,9 @@ urlpatterns = [
     path("comment/<int:c_pk>/delete/<int:a_pk>", views.c_delete, name="c_delete"),
     path("like/<int:pk>/", views.like, name="like"),
     path("c_like/<int:c_pk>/<int:a_pk>", views.c_like, name="c_like"),
-    path("rc_create/<int:c_pk>/<int:a_pk>", views.rec_create, name="rec_create"),
+    path("rec_like/<int:c_pk>/<int:a_pk>", views.rec_like, name="rec_like"),
+    path("rec_create/<int:c_pk>/<int:a_pk>", views.rec_create, name="rec_create"),
+    path("rec_detail_create/<int:c_pk>/<int:a_pk>", views.rec_detail_create, name="rec_detail_create"),
+    path("rec_detail/<int:c_pk>/<int:a_pk>", views.rec_detail, name="rec_detail"),
+    path("search/", views.search, name="search"),
 ] 
