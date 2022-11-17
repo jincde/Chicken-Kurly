@@ -5,6 +5,7 @@ from imagekit.processors import Thumbnail
 from django.conf import settings
 from products.models import Product, DdibItem
 from products.models import Product, Ddib
+from django.core.validators import MinLengthValidator
 
 
 
@@ -23,6 +24,7 @@ class User(AbstractUser):
         options={"quality": 90},
     )
     address = models.CharField(max_length=50)
+    username = models.CharField(validators=[MinLengthValidator(5)], max_length=16, unique=True)
 
     @property
     def full_name(self):

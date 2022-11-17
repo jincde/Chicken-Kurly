@@ -1,5 +1,5 @@
 import django.contrib.auth.models
-import django.contrib.auth.validators
+import django.core.validators
 from django.db import migrations, models
 import django.utils.timezone
 import imagekit.models.fields
@@ -20,7 +20,6 @@ class Migration(migrations.Migration):
                 ('password', models.CharField(max_length=128, verbose_name='password')),
                 ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
                 ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
                 ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
                 ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
                 ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
@@ -29,6 +28,7 @@ class Migration(migrations.Migration):
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
                 ('image', imagekit.models.fields.ProcessedImageField(blank=True, upload_to='images/')),
                 ('address', models.CharField(max_length=50)),
+                ('username', models.CharField(max_length=16, unique=True, validators=[django.core.validators.MinLengthValidator(5)])),
             ],
             options={
                 'verbose_name': 'user',
@@ -37,6 +37,16 @@ class Migration(migrations.Migration):
             },
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Invoice',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('sent_date', models.DateField(blank=True, null=True)),
+                ('amount', models.IntegerField(help_text='In integer dollars')),
+                ('paid_date', models.DateField(blank=True, null=True)),
+                ('expiration_date', models.DateField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -66,6 +76,21 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('image', imagekit.models.fields.ProcessedImageField(blank=True, upload_to='')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='UserMember',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('display_name', models.CharField(max_length=250)),
+                ('billing_name', models.CharField(blank=True, help_text='If different from display name.', max_length=250)),
+                ('contact_name', models.CharField(max_length=250)),
+                ('contact_email', models.EmailField(max_length=254)),
+                ('billing_email', models.EmailField(blank=True, help_text='If different from contact email.', max_length=254)),
+                ('membership_level', models.IntegerField(choices=[(1, 'Bronze'), (2, 'Silver'), (3, 'Gold')])),
+                ('address', models.TextField(blank=True)),
+                ('django_usage', models.TextField(blank=True, help_text='Not displayed publicly.')),
+                ('inactive', models.BooleanField(default=False, help_text='No longer renewing.')),
             ],
         ),
         migrations.CreateModel(

@@ -47,7 +47,6 @@ def create(request):
                         img_instance.save()
 
                 product.save()
-                messages.success(request, '상품 등록이 완료되었습니다.')
                 return redirect('products:index')
         else:
             product_form = ProductForm()
@@ -231,7 +230,7 @@ def review_create(request, product_pk):
                     img_instance.save()
 
             review.save()
-            messages.success(request, '후기가 정상적으로 수정되었습니다..')
+            # messages.success(request, '후기가 정상적으로 수정되었습니다..')
             return redirect('products:detail', product_pk)
     else:
         review_form = ReviewForm()
@@ -277,7 +276,7 @@ def review_update(request, product_pk, review_pk):
                         img_instance.save()
 
                 review.save()
-                messages.success(request, '후기 수정이 완료되었습니다.')
+                # messages.success(request, '후기 수정이 완료되었습니다.')
                 # 후기 목록이 포함된 상품 상세 보기 페이지로
                 return redirect('products:detail', product_pk)
         else:
@@ -313,23 +312,43 @@ def create_inquiry(request, product_pk):
     product = get_object_or_404(Product, pk=product_pk)
     inquiry_form = InquiryForm(request.POST)    # POST 아닌 건 detail에
 
+    # inquiry_pk = -1
+    # inquiry_user = ''
+    # inquiry_created_at = ''
+    # inquiry_title = ''
+    # inquiry_content = ''
+    # product_image_url = product.image_set.all()[0].image.url
+    # product_name = product.product_name
+    # product_content = product.content
+
     if inquiry_form.is_valid():
         inquiry = inquiry_form.save(commit=False)
         inquiry.user = request.user
         inquiry.product = product
         inquiry.save()
 
-    print(request.POST.get('title'))
-    print(request.POST.get('content'))
+        # inquiry_pk = inquiry.pk
+        # inquiry_user = inquiry.user.username
+        # inquiry_created_at = inquiry.created_at.strftime('%Y.%m.%d')
+        # inquiry_title = inquiry.title
+        # inquiry_content = inquiry.content
 
-    # 비동기 구현중~
-    data = {
-        'isSuccess': True,
-    }
 
-    return JsonResponse(data)
+    # 페이지네이션하고 비동기 같이 하니까 이상해서 제거..ㅠㅠ
+    # data = {
+    #     'inquiryPk': inquiry_pk,
+    #     'inquiryUser': inquiry_user,
+    #     'inquiryCreatedAt': inquiry_created_at,
+    #     'inquiryTitle': inquiry_title,
+    #     'inquiryContent': inquiry_content,
+    #     'productImageUrl': product_image_url,
+    #     'productName': product_name,
+    #     'productContent': product_content,
+    # }
 
-    # return redirect('products:detail', product_pk)
+    # return JsonResponse(data)
+
+    return redirect('products:detail', product_pk)
 
 
 # 상품 문의 수정
@@ -340,22 +359,32 @@ def update_inquiry(request, product_pk, inquiry_pk):
     product = get_object_or_404(Product, pk=product_pk)
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
 
+    inquiry_title = ''
+    inquiry_content = ''
+
     if request.user == inquiry.user:
         # 모델폼이 아니어도 유효성검사가 된다.
         if request.method == 'POST':
             inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
             if inquiry_form.is_valid():
-                inquiry = inquiry_form.save(commit=False)
-                inquiry.user = request.user
-                inquiry.product = product
-                inquiry.save()
+                new_inquiry = inquiry_form.save(commit=False)
+                new_inquiry.user = request.user
+                new_inquiry.product = product
+                new_inquiry.save()
+
+                inquiry_title = new_inquiry.title
+                inquiry_content = new_inquiry.content
 
         else:
             inquiry_form = InquiryForm(instance=inquiry)
 
-    # 나중에 비동기?
+    data = {
+        'inquiryTitle': inquiry_title,
+        'inquiryContent': inquiry_content,
+    }
 
-    return redirect('products:detail', product_pk)
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(data)
 
 
 # 상품 문의 삭제
@@ -363,12 +392,18 @@ def update_inquiry(request, product_pk, inquiry_pk):
 def delete_inquiry(request, product_pk, inquiry_pk):
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
 
+    is_deleted = -1 # False
+
     if request.user == inquiry.user:
         inquiry.delete()
+        is_deleted = inquiry.pk
 
-    # 나중에 비동기?
+    data = {
+        'isDeleted': is_deleted,
+    }
 
-    return redirect('products:detail', product_pk)
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(data)
 
 
 @login_required
@@ -377,6 +412,8 @@ def create_reply(request, product_pk, inquiry_pk):
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
     reply_form = ReplyForm(request.POST)    # POST 아닌 건 detail에
 
+    reply_content = ''
+
     if request.user.is_superuser == 1:
         if reply_form.is_valid():
             reply = reply_form.save(commit=False)
@@ -384,7 +421,11 @@ def create_reply(request, product_pk, inquiry_pk):
             reply.inquiry = inquiry
             reply.product = product
             reply.save()
+            reply_content = reply.content
 
-    # 나중에 비동기
+    data = {
+        'replyContent': reply_content,
+    }
 
-    return redirect('products:detail', product_pk)
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(data)

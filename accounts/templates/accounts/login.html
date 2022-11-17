@@ -83,7 +83,7 @@
     {% for message in messages %}
     <div class="d-flex justify-content-center my-3"
       style="background-color: #fdeaee; border-radius: 3px; padding: 5px;">
-      <div class=" {{ message.tags }}" ">
+      <div class="{{ message.tags }}" >
         {{ message }}</div>
       </div>
       {% endfor %}

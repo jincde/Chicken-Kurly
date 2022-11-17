@@ -16,11 +16,10 @@ class Product(models.Model):
             MaxValueValidator(10),
             MinValueValidator(1)
         ])   # 구입할 상품 갯수
-    hit = models.IntegerField(default=0)
+    hit = models.PositiveIntegerField(default=0) # 조회수는 음수일 수 없음
     brand = models.CharField(max_length=20)
     category = models.CharField(max_length=20)
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-
 
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

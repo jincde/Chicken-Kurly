@@ -19,4 +19,6 @@ urlpatterns = [
     path("rec_detail_create/<int:c_pk>/<int:a_pk>", views.rec_detail_create, name="rec_detail_create"),
     path("rec_detail/<int:c_pk>/<int:a_pk>", views.rec_detail, name="rec_detail"),
     path("search/", views.search, name="search"),
+    path("recomment/<int:c_pk>/delete/<int:a_pk>", views.recomment_delete, name="recomment_delete"),    
+    path("rec_delete/<int:rec_pk>/<int:c_pk>/<int:a_pk>", views.rec_delete, name="rec_delete"),    
 ] 

@@ -8,7 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
-from .models import OrderItem, WatchItem, Products
+from .models import OrderItem, WatchItem, Product, User
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from .forms import ProductBuyForm
@@ -16,6 +16,10 @@ from products.models import *
 from products.forms import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+import json
+from django.db.models import Q
+
+
 
 
 # Create your views here.
@@ -35,6 +39,20 @@ def signup(request):
     }
     return render(request, "accounts/signup.html", context)
 
+def isValidId(request):
+    data = json.loads(request.body)
+    username = data.get("username")
+    print(data)
+
+    if User.objects.filter(Q(username = data['username'])).exists():
+        flag = 1
+    else:
+        flag = 0
+
+    context = {
+        "flag": flag,
+        }
+    return JsonResponse(context)
 
 def index(request):
     members = get_user_model().objects.all()
@@ -276,3 +294,27 @@ def cart_update(request):
 
     # return redirect('accounts:cart')
     return JsonResponse(data, safe=False)
+
+def tocart(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+
+    if request.method == 'POST':
+        cartitem = CartItem()
+        cartitem.quantity = request.POST['checkquantity']
+       
+        cartitem.cart = Cart.objects.get(pk=request.user.pk)
+        cartitem.product = product
+        
+        cartitem.save()
+        
+    return redirect('accounts:cart')
+
+
+def payment(request):
+    print('###########', request.POST)
+    selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
+    quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
+    print(selected_items)
+    print(quantities)
+    
+    return redirect('accounts:cart')

@@ -78,12 +78,13 @@ def rec_detail(request, c_pk, a_pk):
     recomment_form = ReCommentForm()
 
     page = request.GET.get('page', '1')
-    paginator = Paginator(recomments, 10)
+    paginator = Paginator(recomments, 5)
     paginated_recomments = paginator.get_page(page)
     max_index = len(paginator.page_range)
 
     context = {
         'comment': comment,
+        'recomments': recomments,
         'paginated_recomments': paginated_recomments,
         'recomment_form': recomment_form,
         'max_index': max_index,
@@ -172,6 +173,23 @@ def c_delete(request, c_pk, a_pk):
     comment.delete()
 
     return redirect("articles:detail", a_pk)
+
+@login_required
+def recomment_delete(request, c_pk, a_pk):
+
+    recomment = ReComment.objects.get(pk=c_pk)
+    recomment.delete()
+
+    return redirect("articles:detail", a_pk)
+
+@login_required
+def rec_delete(request, rec_pk, c_pk, a_pk):
+
+    recomment = ReComment.objects.get(pk=rec_pk)
+    recomment.delete()
+
+    return redirect('articles:rec_detail', c_pk, a_pk)
+
 
 @login_required
 def like(request, pk):
