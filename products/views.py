@@ -47,7 +47,7 @@ def create(request):
                         img_instance.save()
 
                 product.save()
-                messages.success(request, '상품 등록이 완료되었습니다.')
+                # messages.success(request, '상품 등록이 완료되었습니다.')
                 return redirect('products:index')
         else:
             product_form = ProductForm()
@@ -231,7 +231,7 @@ def review_create(request, product_pk):
                     img_instance.save()
 
             review.save()
-            messages.success(request, '후기가 정상적으로 수정되었습니다..')
+            # messages.success(request, '후기가 정상적으로 수정되었습니다..')
             return redirect('products:detail', product_pk)
     else:
         review_form = ReviewForm()
@@ -277,7 +277,7 @@ def review_update(request, product_pk, review_pk):
                         img_instance.save()
 
                 review.save()
-                messages.success(request, '후기 수정이 완료되었습니다.')
+                # messages.success(request, '후기 수정이 완료되었습니다.')
                 # 후기 목록이 포함된 상품 상세 보기 페이지로
                 return redirect('products:detail', product_pk)
         else:

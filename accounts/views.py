@@ -293,3 +293,13 @@ def cart_update(request):
 
     # return redirect('accounts:cart')
     return JsonResponse(data, safe=False)
+
+
+def payment(request):
+    print('###########', request.POST)
+    selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
+    quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
+    print(selected_items)
+    print(quantities)
+    
+    return redirect('accounts:cart')
