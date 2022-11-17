@@ -20,7 +20,6 @@
           <div class="d-flex justify-content-start">
             <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
               {{ person.username }}</h3>
-              <h2>{{ usermember.membership_level }}</h2>
           </div>
           <div class="row mb-3">
             <div class="col d-flex flex-column align-items-center" style="height: 45px;">
@@ -116,6 +115,7 @@
     <div class="col-4 p-3 mx-auto my-auto w-50">
       <div class="row">
         <h2 class="fs-3 fw-bold">{{ person }}</h2>
+        <h2>{{ usermember.membership_level }}</h2>
         <div class="d-flex">
           <span class="fs-6 fw-light">팔로잉:
             {{ person.followings.count }}
