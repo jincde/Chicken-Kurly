@@ -7,10 +7,10 @@ from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from products.models import Cart, Ddib
 from .models import OrderItem, WatchItem, Product
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
+from .forms import ProductBuyForm
 from products.models import *
 from products.forms import *
 from django.http import JsonResponse
@@ -100,11 +100,11 @@ def profile(request, user_pk):
     inquiries = user.inquiry_set.order_by('-pk')
     
     reply_form = ReplyForm()
-    print(inquiries)
-
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
-
+    product_buy_form = ProductBuyForm() 
+    cart = Cart.objects.get(user=request.user)
+    cart_items = cart.cartitem_set.all()
     # 문의 페이지네이션
     inquiry_page = request.GET.get('inquiry_page', '1')
     inquiry_paginator = Paginator(inquiries, 5)
@@ -114,8 +114,11 @@ def profile(request, user_pk):
         "OrderItems": OrderItems,
         "person": person,
         "ddib_items": ddib_items,
+        'product_buy_form': product_buy_form,
         'order_items': order_items,
         'watch_items': watch_items,
+
+        'cart_items': cart_items,
         'inquiries': inquiries,
         'reply_form': reply_form,
         'inquiries': inquiry_page_obj,
