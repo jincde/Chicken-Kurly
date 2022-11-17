@@ -363,12 +363,18 @@ def update_inquiry(request, product_pk, inquiry_pk):
 def delete_inquiry(request, product_pk, inquiry_pk):
     inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
 
+    is_deleted = -1 # False
+
     if request.user == inquiry.user:
-        inquiry.delete()
+    #     inquiry.delete()
+        is_deleted = inquiry.pk
 
-    # 나중에 비동기?
+    data = {
+        'isDeleted': is_deleted,
+    }
 
-    return redirect('products:detail', product_pk)
+    # return redirect('products:detail', product_pk)
+    return JsonResponse(data)
 
 
 @login_required
