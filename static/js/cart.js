@@ -8,7 +8,7 @@ const totalPriceField = document.querySelector('#total-price') // = productsPric
 checkBoxes.forEach(checkBox => {
   const itemId = checkBox.getAttribute('data-item-id')
   const quantityField = document.querySelector(`#quantity-${itemId}`)
-  console.log(`${checkBox.checked} ${itemId}`)
+  // console.log(`${checkBox.checked} ${itemId}`)
   
   const defaultItemPrice = document.querySelector(`#price-${itemId}`).innerText // 각 상품의 기본 가격 (1개 가격)
   const itemPriceField = document.querySelector(`#price-${itemId}-field`)  // 각 상품 가격 * 수량 표시 필드
@@ -86,7 +86,7 @@ cartUpdateForm.onkeypress = function(event) {
 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
 cartUpdateForm.addEventListener('submit', event => {
   event.preventDefault()
-  console.log(event.submitter)
+  // console.log(event.submitter)
 
   // view로 넘겨줄 formData 생성
   let formData = new FormData(cartUpdateForm)
@@ -94,7 +94,7 @@ cartUpdateForm.addEventListener('submit', event => {
   // submit input들의 name:value 쌍 저장
   formData.append('kindOfSubmit', event.submitter.name)
   if (event.submitter.name === 'delete') {
-    console.log(event.submitter.value)
+    // console.log(event.submitter.value)
     formData.append('productPk', event.submitter.value)
   }
 
@@ -106,7 +106,7 @@ cartUpdateForm.addEventListener('submit', event => {
   })
   .then(response => {
     const deletedItemList = response.data.deletedItemList
-    console.log(deletedItemList)
+    // console.log(deletedItemList)
     
     for (let value of deletedItemList) {
       const productBox = document.querySelector(`#product-${value}-box`)
