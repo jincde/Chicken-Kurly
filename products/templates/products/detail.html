@@ -17,7 +17,7 @@
   {% endif %}
 
   <div class="row">
-    <div class="col">
+    <div class="col-md-7">
       <!-- carousel 사진 영역 -->
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
         <div class="carousel-indicators">
@@ -51,13 +51,19 @@
     </div>
 
     <!-- 상품 정보 -->
-    <div class="col">
+    <div class="col-md-5">
       <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
       <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
       <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
       <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
         <span style="font-size: 18px;">원</span>
       </p>
+
+      <div class="d-flex">
+        <p class="m-0 me-3">탄수화물 {{ product.carbohydrate }}</p>
+        <p class="m-0 me-3">단백질 {{ product.protein }}</p>
+        <p class="m-0">지방 {{ product.fat }}</p>
+      </div>
     </div>
     
     {% if request.user.is_authenticated %}
@@ -283,15 +289,15 @@
               </div>
 
               <!-- 문의 생성 폼 -->
+              {% comment %} <form id="inquiry-create-form-{{ product.pk }}" onsubmit="event.preventDefault(); create_inquiry(this, '{{ product.pk }}')"> {% endcomment %}
               <form action="{% url 'products:create_inquiry' product.pk %}" method="POST">
-              {% comment %} <form id="inquiry-create-form-{{ product.pk }}" onsubmit="create_inquiry(this, '{{ product.pk }}')"> {% endcomment %}
                 {% csrf_token %}
                 {% bootstrap_form inquiry_form %}
 
                 <div class="text-center">
                   <button type="button" class="btn me-2" data-bs-dismiss="modal"
                     style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                  <button type="submit" class="btn"
+                  <button type="submit" class="btn" data-bs-dismiss="modal"
                     style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
                 </div>
               </form>
@@ -329,105 +335,113 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody id="inquiryTableBody">
         {% for inquiry in inquiries %}
-          <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+          <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
             style="vertical-align: middle;">
-            <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+            <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
             <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
             <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
             {% if inquiry.reply %}
               <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
             {% else %}
-              <td style="width: 100px;" class="text-center">-</td>
+              <td id="reply-status-{{ inquiry.pk }}" style="width: 100px;" class="text-center">-</td>
             {% endif %}
           </tr>
 
-          <!-- 답변 Collapse -->
-          <tr class="collapse" id="collapse-inquiry-{{ inquiry.pk }}">
+          <!-- 문의 내용 및 답변 Collapse -->
+          <tr class="collapse inquiry-{{ inquiry.pk }}" id="collapse-inquiry-{{ inquiry.pk }}">
             <td colspan="4" class="text-bg-light px-3">
               <div>
                 <div class="d-flex">
                   <div class="me-3">Q.</div>
-                  <div>{{ inquiry.content }}</div>
+                  <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
                 </div>
                 <div>
+                  <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
+                  </div>
+
                   {% if inquiry.reply %}
-                  <div class="d-flex mt-3">
-                    <div class="me-3">A.</div>
-                    <div>{{ inquiry.reply.content }}</div>
-                  </div>
+                    <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
+                      <div class="me-3">A.</div>
+                      <div>{{ inquiry.reply.content }}</div>
+                    </div>
                   {% else %}
-                  <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
-                  {% if request.user == inquiry.user %}
-                  <div class="d-flex justify-content-end mt-3">
-                    <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry">수정</a>
-                    
-                    {% comment %} <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
-                    <form id="inquiry-delete-form-{{ product.pk }}" onsubmit="delete_inquiry('{{ product.pk }}', '{{ inquiry.pk }}')">
-                      <input type="submit" class="btn-none text-muted" value="삭제">
-                    </form>
-                  </div>
+                    <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
+                    {% if request.user == inquiry.user %}
+                      <div id="inquiry-update-delete-btns-{{ inquiry.pk }}" class="d-flex justify-content-end mt-3">
+                        <a href="" class="text-muted me-2" data-bs-toggle="modal" data-bs-target="#updateInquiry{{ inquiry.pk }}">수정</a>
+                        
+                        {% comment %} <form action="{% url 'products:delete_inquiry' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
+                        <form id="inquiry-delete-form-{{ inquiry.pk }}" onsubmit="event.preventDefault(); delete_inquiry(this, '{{ product.pk }}', '{{ inquiry.pk }}')">
+                          <input type="submit" class="btn-none text-muted" value="삭제">
+                        </form>
+                      </div>
+                      <hr id="inquiry-hr-{{ inquiry.pk }}">
 
-                  <!-- 문의 수정 모달 -->
-                  <div class="modal fade" id="updateInquiry" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
+                      <!-- 문의 수정 모달 -->
+                      <div class="modal fade" id="updateInquiry{{ inquiry.pk }}" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="staticBackdropLabel">상품 문의하기</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
 
-                        <div class="modal-body">
-                          <div class="d-flex align-items-center mb-3">
-                            <img src="{{ product.image_set.all.0.image.url }}" alt="" class="rounded-1" width="64px"
-                              height="64px">
-                            <p class="m-0 ms-4 fw-bold">{{ product.product_name }}</p>
+                            <div class="modal-body">
+                              <div class="d-flex align-items-center mb-3">
+                                <img src="{{ product.image_set.all.0.image.url }}" alt="" class="rounded-1" width="64px" height="64px">
+                                <div class="ms-3">
+                                  <p class="fs-5 fw-bold mb-1">{{ product.product_name }}</p>
+                                  <p class="text-muted m-0">{{ product.content }}</p>
+                                </div>
+                              </div>
+
+                              <!-- 문의 수정 폼 -->
+                              {% comment %} <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
+                              <form id="inquiry-update-form-{{ inquiry.pk }}" onsubmit="event.preventDefault(); update_inquiry(this, '{{ product.pk }}', '{{ inquiry.pk }}')">
+                                {% csrf_token %}
+
+                                <!-- inquiry_form -->
+                                <div class="mb-3">
+                                  <label class="form-label" for="id_title">제목</label>
+                                  <input type="text" name="title" maxlength="50" class="form-control" placeholder="제목"
+                                    required id="id_title" value={{ inquiry.title }}>
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label" for="id_content">내용</label>
+                                  <textarea name="content" cols="40" rows="10" class="form-control" placeholder="내용" required
+                                    id="id_content">{{ inquiry.content }}</textarea>
+                                </div>
+
+                                <div class="text-center">
+                                  <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                                    style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                                  <button type="submit" class="btn" data-bs-dismiss="modal"
+                                    style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
+                                </div>
+                              </form>
+                            </div>
                           </div>
-
-                          <form action="{% url 'products:update_inquiry' product.pk inquiry.pk %}" method="POST">
-                            {% csrf_token %}
-
-                            <!-- inquiry_form -->
-                            <div class="mb-3">
-                              <label class="form-label" for="id_title">제목</label>
-                              <input type="text" name="title" maxlength="50" class="form-control" placeholder="제목"
-                                required id="id_title" value={{ inquiry.title }}>
-                            </div>
-                            <div class="mb-3">
-                              <label class="form-label" for="id_content">내용</label>
-                              <textarea name="content" cols="40" rows="10" class="form-control" placeholder="내용" required
-                                id="id_content">{{ inquiry.content }}</textarea>
-                            </div>
-
-                            <div class="text-center">
-                              <button type="button" class="btn me-2" data-bs-dismiss="modal"
-                                style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                              <button type="submit" class="btn"
-                                style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">등록</button>
-                            </div>
-                          </form>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  {% endif %}
+                    {% endif %}
 
-                  {% if request.user.is_superuser == 1 %}
-                  <hr>
-                  <form action="{% url 'products:create_reply' product.pk inquiry.pk %}" method="POST">
-                    {% csrf_token %}
-                    {{ reply_form.content|add_class:'form-control my-3'|attr:'rows:3'|attr:'placeholder:답변을 작성해주세요.' }}
+                    {% if request.user.is_superuser == 1 %}
+                      {% comment %} <form action="{% url 'products:create_reply' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
+                      <form id="reply-create-form-{{ inquiry.pk }}" onsubmit="event.preventDefault(); create_reply(this, '{{ product.pk }}', '{{ inquiry.pk }}')"> 
+                        {% csrf_token %}
+                        {{ reply_form.content|add_class:'form-control my-3'|attr:'rows:3'|attr:'placeholder:답변을 작성해주세요.' }}
 
-                    <div class="text-center mb-3">
-                      <button type="reset" class="btn me-2" data-bs-dismiss="modal"
-                        style="border:solid 1px #d3d3d3; border-radius:3px; height:40px; width:120px; background-color: white;">취소</button>
-                      <button type="submit" class="btn"
-                        style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">등록</button>
-                    </div>
-                  </form>
-                  {% endif %}
+                        <div class="text-center mb-3">
+                          <button type="reset" class="btn me-2" data-bs-dismiss="modal"
+                            style="border:solid 1px #d3d3d3; border-radius:3px; height:40px; width:120px; background-color: white;">취소</button>
+                          <button type="submit" class="btn"
+                            style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">등록</button>
+                        </div>
+                      </form>
+                    {% endif %}
                   {% endif %}
                 </div>
               </div>

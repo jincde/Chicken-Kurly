@@ -4,35 +4,43 @@
 {% block content %}
 <div class='container'>
   <h1 class='text-center'>게시글 상세 페이지</h1>
+  
   <!-- 수정, 삭제 모달 -->
-  {% if request.user == article.user %}
-  <div class='text-end'>
-    <button type="button" class="btn btn-outline-primary fs-4" data-bs-toggle="modal" data-bs-target="#exampleModal" style="border: 0px;">
-      <i class="bi bi-three-dots"></i>
-    </button>
-  </div>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-      <div class="modal-content">
-        <div class="modal-dody">
-          <table class="table text-center table-hover">
-            <tbody>
-              <tr class='text-danger' onclick='location.href="{% url 'articles:delete' article.pk %}"'>
-                <td>삭제</td>
-              </tr>
-              <tr onclick='location.href="{% url 'articles:update' article.pk %}"'>
-                <td>수정</td>
-              </tr>
-              <tr>
-                <td data-bs-dismiss="modal">닫기</td>
-              </tr>
-            </tbody>
-          </table>
+  <div class='d-flex justify-content-between'>
+    <div>
+      {% if request.user == article.user %}
+      <div class='text-end'>
+        <button type="button" class="btn btn-outline-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" style="border: 0px;">
+          <i class="bi bi-three-dots"></i>
+        </button>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-dody">
+              <table class="table text-center table-hover">
+                <tbody>
+                  <tr class='text-danger' onclick='location.href="{% url 'articles:delete' article.pk %}"'>
+                    <td>삭제</td>
+                  </tr>
+                  <tr onclick='location.href="{% url 'articles:update' article.pk %}"'>
+                    <td>수정</td>
+                  </tr>
+                  <tr>
+                    <td data-bs-dismiss="modal">닫기</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
+      {% endif %}
+    </div>
+    <div>
+      <a href="{% url 'articles:index' %}" class="btn btn-outline-primary fs-6">목록으로</a>
     </div>
   </div>
-  {% endif %}
   
   <hr>
   <!-- 게시글 제목 -->
@@ -59,6 +67,15 @@
       <div class="flex-grow-1">
         <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
         <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
+        {% if request.user == comment.user %}
+        <span>
+          <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+            <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+              <i class="bi bi-x"></i>
+            </span>
+          </a>
+        </span>
+        {% endif %}
       </div>
       <!-- 댓글 좋아요 -->
       <div>
@@ -72,16 +89,7 @@
       </div>
     </div>
     <!-- 댓글 내용 -->
-    <p class='fs-6'>{{ comment.content }}
-      {% if request.user == comment.user %}
-      <span>
-        <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
-          <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-            <i class="bi bi-x"></i>
-          </span>
-        </a>
-      </span>
-      {% endif %}
+    <p class="fs-6 text-break">{{ comment.content }}
     </p>
     <!-- 대댓글 -->
     <p>
@@ -91,27 +99,40 @@
     </p>
     <div class="collapse" id="collapseExample-{{ comment.pk }}">
       <div class="card card-body">
-        <div class='p-1' >
-          <!-- 대댓글 목록 -->
+        <div class='p-1'>
+          <div style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 12; overflow: hidden;" >
+            <!-- 대댓글 목록 -->
+            {{ recomments.comment.id }}
             {% for recomment in recomments %}
 
                 {% if recomment.comment.pk == comment.pk %}
-
-                  {{ forloop.counter }}
-
-                <p>
-                  {{ recomment.comment.user }}
-                  {{ recomment.content }}
-                </p>
-                <span>{{ recomment.created_at }}</span>
+                <div class='my-2'>
+                  <div>
+                    <span>{{ recomment.comment.user }}</span>
+                    <span>{{ recomment.created_at }}</span>
+                    {% if request.user == recomment.user %}
+                    <span>
+                      <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
+                        <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                          <i class="bi bi-x"></i>
+                        </span>
+                      </a>
+                    </span>
+                    {% endif %}
+                  </div>
+                  <div class="text-break">
+                    {{ recomment.content }}
+                  </div>
+                </div>
                 {% endif %}
               
-            {% endfor %}    
+            {% endfor %}
+          </div>
           <p class="text-end">
-            <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">더보기..</a>
+            <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">자세히보기..</a>
           </p>
           <!-- 대댓글 입력창 -->
-          <form action="{% url 'articles:rec_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
+          <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
             {% csrf_token %}
             {% bootstrap_form recomment_form %}
             {% bootstrap_button button_type='submit' content='글쓰기' %}
