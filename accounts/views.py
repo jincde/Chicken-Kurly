@@ -17,6 +17,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 
 
+
 # Create your views here.
 def signup(request):
     if request.method == "POST":
@@ -271,3 +272,22 @@ def cart_update(request):
 
     # return redirect('accounts:cart')
     return JsonResponse(data, safe=False)
+
+def tocart(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+
+    if request.method == 'POST':
+        cartitem = CartItem()
+        cartitem.quantity = request.POST['checkquantity']
+        # quantity = cart.quantity
+        # cart.quantity = quantity + int(checkquantity)
+
+        cartitem.cart = Cart.objects.get(pk=request.user.pk)
+        cartitem.product = product
+        
+        cartitem.save()
+        # cart.save()
+
+    return redirect('accounts:cart')
+
+    

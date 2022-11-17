@@ -2,7 +2,9 @@
 {% load django_bootstrap5 %}
 {% load mathfilters %}
 {% load widget_tweaks %}
+{% load social_share %}
 {% load static %}
+
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/products/review.css' %}">
@@ -102,6 +104,21 @@
     {% endif %}
   </div>
 
+  {% comment %} sns 공유
+  <div class='sns float-end'>
+    <span class="sociallink ml-1">
+      <a href="javascript:sendLinkFacebook()" title="페이스북으로 공유">
+        <img src="https://windybay.net/static/images/facebook.png" width=36 alt="Facebook">
+      </a>
+    </span>
+    
+    <span class="sociallink ml-1">
+      <a href="javascript:sendLinkNaver()" title="네이버로 공유">
+        <img src="https://windybay.net/static/images/naver.png" width=36 alt="Naver">
+      </a>
+    </span>
+  </div> {% endcomment %}
+                  
 
   <!-- 상품 후기 -->
   <div class='product-review position-relative' style='padding: bottom 100px;'>
@@ -426,11 +443,15 @@
     <!-- 이전 페이지 -->
     {% if inquiries.has_previous %}
 			<li class="page-item">
-				<a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">이전</a>
+				<a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
 			</li>
     {% else %}
 			<li class="page-item disabled">
-				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
 			</li>
     {% endif %}
 
@@ -438,11 +459,11 @@
     {% for page_number in inquiries.paginator.page_range %}
 			{% if page_number == inquiries.number %}
 				<li class="page-item active" aria-current="page">
-					<a class="page-link" href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
 				</li>
 			{% else %}
 				<li class="page-item">
-					<a class="page-link" href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
 				</li>
 			{% endif %}
     {% endfor %}
@@ -450,11 +471,15 @@
     <!-- 다음페이지 -->
     {% if inquiries.has_next %}
 			<li class="page-item">
-				<a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">다음</a>
+				<a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
 			</li>
     {% else %}
 			<li class="page-item disabled">
-				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
 			</li>
     {% endif %}
 	</ul>
@@ -532,7 +557,9 @@
         // } 
         })
     })
+  
 </script>
 
+<script src="{% static 'js/sns.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/product_inquiries.js' %}"></script>
 {% endblock script %}
