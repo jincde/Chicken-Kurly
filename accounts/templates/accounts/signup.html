@@ -161,8 +161,8 @@
       headers: { 'X-CSRFToken': '{{ csrf_token }}' },
       data: { 'username': USER_ID }
     }).then(response => {
-      if (USER_ID.length < 5) {
-        modalBody.innerText = "5자 이상 영문 혹은 영문과 숫자를 조합"
+      if (USER_ID.length < 5 || USER_ID.length > 16) {
+        modalBody.innerText = "5~16자 영문 혹은 영문과 숫자를 조합"
       }
       else if (response.data.flag == false) {
         modalBody.innerText = "사용 가능한 아이디입니다"

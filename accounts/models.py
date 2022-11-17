@@ -7,6 +7,7 @@ from products.models import Product, DdibItem
 from products.models import Product, Ddib
 from django.views.generic.dates import timezone_today
 from collections import defaultdict
+from django.core.validators import MinLengthValidator
 
 
 
@@ -24,7 +25,7 @@ class User(AbstractUser):
         options={"quality": 90},
     )
     address = models.CharField(max_length=50)
-    username = models.CharField(min_lenghth=5, max_length=50, unique=True)
+    username = models.CharField(validators=[MinLengthValidator(11)], max_length=16, unique=True)
 
     @property
     def full_name(self):
