@@ -4,11 +4,43 @@
 {% block content %}
 <div class='container'>
   <h1 class='text-center'>게시글 상세 페이지</h1>
+  <!-- 수정, 삭제 모달 -->
+  {% if request.user == article.user %}
+  <div class='text-end'>
+    <button type="button" class="btn btn-outline-primary fs-4" data-bs-toggle="modal" data-bs-target="#exampleModal" style="border: 0px;">
+      <i class="bi bi-three-dots"></i>
+    </button>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-dody">
+          <table class="table text-center table-hover">
+            <tbody>
+              <tr class='text-danger' onclick='location.href="{% url 'articles:delete' article.pk %}"'>
+                <td>삭제</td>
+              </tr>
+              <tr onclick='location.href="{% url 'articles:update' article.pk %}"'>
+                <td>수정</td>
+              </tr>
+              <tr>
+                <td data-bs-dismiss="modal">닫기</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
   <hr>
+  <!-- 게시글 제목 -->
   <div class="p-2">
     제목 : {{ article.title }}
   </div>
   <hr>
+  <!-- 게시글 내용 -->
   <div class="p-2">
     내용 : {{ article.content }}
   </div>
@@ -18,28 +50,28 @@
   </div>
   {% endif %}
   <hr>
-  <!-- 댓글창 -->
+  <!-- 댓글목록 -->
   {% if comments %}
-
   {% for comment in paginated_comments %}
   <div class='mx-2' sytle='margin: -2px;'>
     <div class='d-flex'>
+      <!-- 댓글 작성자, 시간 -->
       <div class="flex-grow-1">
         <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
         <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
       </div>
+      <!-- 댓글 좋아요 -->
       <div>
         {% if request.user in comment.like_users.all %}
         <span><a href="{% url 'articles:c_like' comment.pk article.pk %}" style="color: red;"><i
-              class="bi bi-hand-thumbs-up-fill"></i></a></span><span style="color: red;">{{ comment.like_users.count
-          }}</span>
+              class="bi bi-hand-thumbs-up-fill"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
         {% else %}
         <span><a href="{% url 'articles:c_like' comment.pk article.pk %}" style="color: red;"><i
-              class="bi bi-hand-thumbs-up"></i></a></span><span style="color: red;">{{ comment.like_users.count
-          }}</span>
+              class="bi bi-hand-thumbs-up"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
         {% endif %}
       </div>
     </div>
+    <!-- 댓글 내용 -->
     <p class='fs-6'>{{ comment.content }}
       {% if request.user == comment.user %}
       <span>
@@ -51,60 +83,93 @@
       </span>
       {% endif %}
     </p>
-    <div class='p-3'>
-      <!-- 대댓글 목록 -->
-      {% for recomment in recomments%}
-      <p>
-        {{ recomment.comment.pk }}
-        {{ recomment.content }}
-      </p>
-      {% endfor %}
+    <!-- 대댓글 -->
+    <p>
+      <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample-{{ comment.pk }}" aria-expanded="false" aria-controls="collapseExample">
+        답글
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample-{{ comment.pk }}">
+      <div class="card card-body">
+        <div class='p-1' >
+          <!-- 대댓글 목록 -->
+            {% for recomment in recomments %}
 
-      <!-- 대댓글 입력창 -->
-      <form action="{% url 'articles:rec_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
-        {% csrf_token %}
-        {% bootstrap_form recomment_form %}
-        {% bootstrap_button button_type='submit' content='글쓰기' %}
-      </form>
+                {% if recomment.comment.pk == comment.pk %}
+
+                  {{ forloop.counter }}
+
+                <p>
+                  {{ recomment.comment.user }}
+                  {{ recomment.content }}
+                </p>
+                <span>{{ recomment.created_at }}</span>
+                {% endif %}
+              
+            {% endfor %}    
+          <p class="text-end">
+            <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">더보기..</a>
+          </p>
+          <!-- 대댓글 입력창 -->
+          <form action="{% url 'articles:rec_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
+            {% csrf_token %}
+            {% bootstrap_form recomment_form %}
+            {% bootstrap_button button_type='submit' content='글쓰기' %}
+          </form>
+        </div>
+      </div>
+      </div>
     </div>
-  </div>
   {% endfor %}
-  {% else %}
-  <li class="page-item disabled">
-    <a class="page-link" href="#">&#60;</a>
-  </li>
   {% endif %}
 
-  <!-- 페이지리스트 -->
-  <!-- //페이지 범위를 하나씩 리턴 -->
-  {% for page_number in paginated_comments.paginator.page_range %}
-  {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %} <!-- // 현재
-    페이지일 때는 active -->
-    {% if page_number == paginated_comments.number %}
-    <li class="page-item" aria-current="page">
-      <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
-        href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
-    {% else %}
-    <li class="page-item text-color-warning">
-      <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{
-        page_number }}</a>
-    </li>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
-
-    <!-- 다음페이지 -->
-    {% if paginated_comments.has_next %}
+<!-- 댓글 페이지네이션 -->
+{% if paginated_comments %}
+  <ul class="pagination justify-content-center">
+    <!-- 첫 페이지 -->
+    {% if paginated_comments.has_previous %}
+    <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
     <li class="page-item">
-      <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
+      <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
     </li>
     {% else %}
     <li class="page-item disabled">
-      <a class="page-link" tabindex="-1" href="#">&#62;</a>
+      <a class="page-link" href="#">&#60;</a>
     </li>
     {% endif %}
-    </ul>
+
+    <!-- 페이지리스트 -->
+    <!-- //페이지 범위를 하나씩 리턴 -->
+    {% for page_number in paginated_comments.paginator.page_range %}
+      {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %}
+          <!-- // 현재 페이지일 때는 active -->
+            {% if page_number == paginated_comments.number %}
+            <li class="page-item" aria-current="page">
+              <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
+                href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item text-color-warning">
+              <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+            {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <!-- 다음페이지 -->
+      {% if paginated_comments.has_next %}
+      <li class="page-item">
+        <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" href="#">&#62;</a>
+      </li>
+      {% endif %}
+  </ul>
+{% else%}
+<h3 class="text-center">댓글이 없습니다. ㅠㅠ</h3>
+{% endif %}
 
 
 

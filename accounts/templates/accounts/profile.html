@@ -5,131 +5,144 @@
 {% bootstrap_javascript %}
 {% block content %}
 
-  <div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
-    <div class="container test-grid" style="max-width: 1070px; display: grid;">
-      <div class="profile" style="max-width: 100%; background-color: white;">
-        <div class="px-4 py-3 contentcard" style="border-radius: 15px; ">
-          <div class="d-flex justify-content-center pb-3">
-            {% if person.image %}
-              <img src="{{ person.image.url }}" alt="">
+<div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
+  <div class="container test-grid" style="max-width: 1070px; display: grid;">
+    <div class="profile" style="max-width: 100%; background-color: white;">
+      <div class="px-4 py-3" style="border-radius: 15px; ">
+        <div class="d-flex justify-content-center pb-3">
+          {% if person.image %}
+          <img src="{{ person.image.url }}" alt="">
+          {% else %}
+          <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
+          {% endif %}
+        </div>
+        <div>
+          <div class="d-flex justify-content-start">
+            <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
+              {{ person.username }}</h3>
+          </div>
+          <div class="row mb-3">
+            <div class="col d-flex flex-column align-items-center" style="height: 45px;">
+              <p class=" mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">팔로워</p>
+              <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followers.count }}</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center border-start" style="height: 45px;">
+              <p class="mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">팔로잉</p>
+              <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followings.count }}</p>
+            </div>
+            <div class="col d-flex flex-column align-items-center border-start" style="height: 45px;">
+              <p class="mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">리뷰</p>
+              <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followers.count }}</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="px-4">
+            {% if person.username == user.username %}
+            <a href="{% url 'accounts:profile_update' %}"><input class="form-control btn text-white"
+                style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;"
+                type="submit" value='프로필 편집'></a>
             {% else %}
-              <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
+            <form action="{% url 'accounts:follow' person.pk %}" method='POST'>
+              {% csrf_token %}
+              {% if user in person.followers.all %}
+              <input class="form-control btn text-white"
+                style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;"
+                type="submit" value='팔로우 취소'>
+              {% else %}
+              <input class="form-control btn text-white"
+                style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;"
+                type="submit" value='팔로우'>
+              {% endif %}
+            </form>
             {% endif %}
           </div>
-          <div>
-            <div class="d-flex justify-content-start">
-              <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
-                {{ person.username }}</h3>
-            </div>
-            <div class="row mb-3">
-              <div class="col d-flex flex-column align-items-center" style="height: 45px;">
-                <p class=" mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">팔로워</p>
-                <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followers.count }}</p>
-              </div>
-              <div class="col d-flex flex-column align-items-center border-start" style="height: 45px;">
-                <p class="mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">팔로잉</p>
-                <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followings.count }}</p>
-              </div>
-              <div class="col d-flex flex-column align-items-center border-start" style="height: 45px;">
-                <p class="mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">리뷰</p>
-                <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followers.count }}</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div class="px-4">
-              {% if person.username == user.username %}
-                <a href="{% url 'accounts:profile_update' %}"><input class="form-control btn text-white" style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;" type="submit" value='프로필 편집'></a>
-              {% else %}
-                <form action="{% url 'accounts:follow' person.pk %}" method='POST'>
-                  {% csrf_token %}
-                  {% if user in person.followers.all %}
-                    <input class="form-control btn text-white" style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;" type="submit" value='팔로우 취소'>
-                  {% else %}
-                    <input class="form-control btn text-white" style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;" type="submit" value='팔로우'>
-                  {% endif %}
-                </form>
-              {% endif %}
-            </div>
-          </div>
         </div>
       </div>
-      <section class="d-flex flex-column" style="gap: 4px">
-        <div class="d-flex d-grid" style="width: 100%; height: 200px; gap: 4px;">
-          <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
-            <p class="m-0">누적 구매 금액</p>
-            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">100,000,000
-              <span style="font-size: 1rem;">원</span></p>
-          </div>
-          <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
-            <p class="m-0">포인트
-              <i class="bi bi-arrow-right-short"></i>
-            </p>
-            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">2,555,330
-              <span style="font-size: 1rem;">P</span></p>
-          </div>
-          <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
-            <p class="m-0">누적 구매 횟수</p>
-            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">1,211
-              <span style="font-size: 1rem;">회</span></p>
-          </div>
-        </div>
-        <div class="d-flex d-grid" style="width: 100%; height: 100%; gap: 4px;">
-          <div class="d-flex flex-column justify-content-center" style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
-            <p class="m-0">작성 게시글</p>
-            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">25
-              <span style="font-size: 1rem;">개</span></p>
-          </div>
-          <div class="d-flex flex-column justify-content-center" style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
-            <p class="m-0">작성 댓글</p>
-            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">312
-              <span style="font-size: 1rem;">개</span></p>
-          </div>
-        </div>
-      </section>
     </div>
-  </div>
-
-  <div class="container d-flex justify-content-center">
-    <div class="row">
-      <div class="col-4 p-3">
-        {% if person.image %}
-          <img src="{{ person.image.url }}" alt="">
-        {% else %}
-          <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
-        {% endif %}
+    <section class="d-flex flex-column" style="gap: 4px">
+      <div class="d-flex d-grid" style="width: 100%; height: 200px; gap: 4px;">
+        <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
+          <p class="m-0">누적 구매 금액</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">100,000,000
+            <span style="font-size: 1rem;">원</span>
+          </p>
+        </div>
+        <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
+          <p class="m-0">포인트
+            <i class="bi bi-arrow-right-short"></i>
+          </p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">2,555,330
+            <span style="font-size: 1rem;">P</span>
+          </p>
+        </div>
+        <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
+          <p class="m-0">누적 구매 횟수</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">1,211
+            <span style="font-size: 1rem;">회</span>
+          </p>
+        </div>
       </div>
-      <div class="col-4 p-3 mx-auto my-auto w-50">
-        <div class="row">
-          <h2 class="fs-3 fw-bold">{{ person }}</h2>
-          <div class="d-flex">
-            <span class="fs-6 fw-light">팔로잉:
-              {{ person.followings.count }}
+      <div class="d-flex d-grid" style="width: 100%; height: 100%; gap: 4px;">
+        <div class="d-flex flex-column justify-content-center"
+          style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
+          <p class="m-0">작성 게시글</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">25
+            <span style="font-size: 1rem;">개</span>
+          </p>
+        </div>
+        <div class="d-flex flex-column justify-content-center"
+          style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
+          <p class="m-0">작성 댓글</p>
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">312
+            <span style="font-size: 1rem;">개</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
 
-            </span>
-            <span class="fs-6 fw-light mx-3">팔로워:
-              {{ person.followers.count }}
-            </span>
-          </div>
+<div class="container d-flex justify-content-center">
+  <div class="row">
+    <div class="col-4 p-3">
+      {% if person.image %}
+      <img src="{{ person.image.url }}" alt="">
+      {% else %}
+      <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
+      {% endif %}
+    </div>
+    <div class="col-4 p-3 mx-auto my-auto w-50">
+      <div class="row">
+        <h2 class="fs-3 fw-bold">{{ person }}</h2>
+        <div class="d-flex">
+          <span class="fs-6 fw-light">팔로잉:
+            {{ person.followings.count }}
+
+          </span>
+          <span class="fs-6 fw-light mx-3">팔로워:
+            {{ person.followers.count }}
+          </span>
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
 
 <!-- 회원정보 수정-->
-  <div class="d-flex justify-content-center">
-    <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
-    {% if request.user.is_authenticated %}
-      <p class="ms-3">
-        <form action="{% url 'accounts:follow' person.pk %}" method="POST">
-          {% csrf_token %}
-          <input type="submit" value="팔로우" class="btn btn-outline-primary btn-sm">
-        </form>
-      </p>
-    {% endif %}
-  </div>
-  
+<div class="d-flex justify-content-center">
+  <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
+  {% if request.user.is_authenticated %}
+  <p class="ms-3">
+  <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="팔로우" class="btn btn-outline-primary btn-sm">
+  </form>
+  </p>
+  {% endif %}
+</div>
+
 {% comment %} 찜한 상품 {% endcomment %}
 <div style="padding: 40px 0;">
   <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
@@ -184,11 +197,7 @@
                           <div class="col-2">
                           <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="quantities" min="1" value="1">
                           </div>
-                          {% comment %} <!-- 수량 증감 -->
-                          <input type='button' onclick='count("plus")' value='+'/>
-                          <div id='result'>0</div>
-                          <input type='button' onclick='count("minus")' value='-'/> {% endcomment %}
-                        
+                          
                           <div class="col-2 d-flex justify-content-end align-items-center">
                             <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
                             <div class="fw-bold"><span class="price-fields m-0" id="price-{{ item.pk }}-field">{{ item.product.price }}원</span></div>
@@ -196,6 +205,7 @@
                         </div>
                       </div> 
                   </div>
+                  
                   <div class="text-center mb-3">
                     <button type="button" class="btn me-2 " data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
                     <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
@@ -232,7 +242,9 @@
   </div>
 </div>
 
-<!-- 구매한 식품 -->
+
+<!-- 구매한 상품들입니다 -->
+{% comment %} 찜한 상품 {% endcomment %}
 <div style="padding: 40px 0;">
   <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
     <h3 style="color: rgb(51, 51, 51)">구매한 상품</h3>
@@ -242,143 +254,209 @@
       <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         <!-- Slides -->
-        {% for product in products %}
+        {% for item in order_items %}
         <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-          {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-            <div class="product-img" style="">
-              <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+          <a href="{% url 'products:detail' item.product.pk %}">
+            <div class="product-img position-relative overflow-hidden">
+              <img src="{{ item.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
                 style="object-fit: cover">
-            </div>
-            <div style="padding: 12px 10px 0 0">
-              <div class="d-flex justify-content-between">
-                <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
-                  style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
-              </div>
-              <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
-              <p class="m-0" style="font-weight: 800;">{{ product.price }} 원</p>
-            </div>
-        {% endfor %}
-
-  <!-- 구매한 식품 -->
-  <div style="padding: 40px 0;">
-    <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-      <h3 style="color: rgb(51, 51, 51)">구매한 상품</h3>
-    </div>
-    <div class="swiper-box" style="position: relative; padding:0 40px;">
-      <section class="swiper" id="test-slide">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-          <!-- Slides -->
-          {% for item in order_items %}
-          <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-            {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
-              <div class="product-img" style="">
-                <img src="{{ item.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
-                style="object-fit: cover">
-              </div>
-              <div style="padding: 12px 10px 0 0">
-                <div class="d-flex justify-content-between">
-                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-0"
-                    style="color: #FA622F; font-weight: 700;">{{ item.product.category }}</span>
-                </div>
-                <p class="m-0" style="font-weight: 400;">{{ item.product.product_name }}</p>
-                <p class="m-0" style="font-weight: 800;">{{ item.product.price }} 원</p>
-                        {{ item.product.price }}
-              </div>
-          </div>
-          {% endfor %}
+          </a>
+          <!-- 상품 이미지 안에 장바구니 담기 기능 -->
+          <a href="https://www.kurly.com/main">
+            <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex'>
+              <img class='cart-img position-absolute bottom-0 end-0 mx-2 my-2'
+                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg=="
+                alt="">
+            </button>
+          </a>
         </div>
-  
-        <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-            style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+        <div style="padding: 12px 10px 0 0">
+          {% comment %} <div class="d-flex justify-content-between">
+            <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-0"
+              style="color: #FA622F; font-weight: 700;">{{ item.product.category }}</span>
+          </div> {% endcomment %}
+          <a href="{% url 'products:detail' item.product.pk %}">
+            <p class="m-0" style="font-weight: 400; color:black">{{ item.product.product_name }}</p>
+            <p class="m-0" style="font-weight: 800; color:black">{{ item.product.price }} 원</p>
+          </a>
+          <a href="{% url 'accounts:ddib_delete' item.product.pk %}">
+            <button type='button'
+              style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right'
+              class=''>
+              삭제
+            </button>
+          </a>
         </div>
-        <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-            style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
-        </div>
-      </section>
-    </div>
+      </div>
+      {% endfor %}
   </div>
 
+  <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
+      style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+  </div>
+  <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
+      style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+  </div>
+  </section>
+</div>
+</div>
 
-  <!-- 문의한 글  -->
-      <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
-        {% for review in reviews %}
-        <div class='review-detail d-flex'
-          style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
-          <div class='review-writer' style='flex:0 0 225px;'>
-            <div class='d-flex'>
-              <span>{{ review.user }}
-              </span>
-            </div>
+<!-- 문의한 글 실험 -->
+<div style="padding: 40px 0;">
+  <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
+    <h3 style="color: rgb(51, 51, 51)"></h3>
+  </div>
+  <div class="swiper-box" style="position: relative; padding:0 40px;">
+    <section class="swiper" id="test-slide">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        <!-- 상품 문의 등록 버튼 & 모달 -->
+        <div class="row">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
+            <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
+              style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
           </div>
-          <article class='review-content' style='flex:1 1 0%;'>
-            <div>
-              <div>
-                <h3 class="mb-0" style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
-                  {{ review.product.product_name }}</h3>
-              </div>
-              <p class="mb-0" style='white-space:pre-line; font-weight: 600;'>
-                {{ review.title }}</p>
 
-              <p style='white-space:pre-line; line-height:19px;'>
-                {{ review.content }}</p>
-              <div class='review-img d-flex' style='padding:15px 0px 2px; gap:3px; overflow:auto; flex-wrap:nowrap;'>
-                {% for photo in review.reviewimage_set.all %}
-                <div class='d-flex'>
-                  <img src="{{ photo.review_img.url }}" alt="{{ photo.review_img }}" class='review-img'
-                    style="width:93px; height:93px; flex-shrink:0; border-radius:2px">
-                </div>
+
+
+          <!-- 상품 문의 목록 -->
+          <div class="row px-3" style="border-top:1px solid black;">
+            <table class="table">
+              <thead class="text-center">
+                <tr>
+                  <th scope="col" style="width: 710px;">제목</th>
+                  <th scope="col" style="width: 100px;">작성자</th>
+                  <th scope="col" style="width: 100px;">작성일</th>
+                  <th scope="col" style="width: 100px;">답변상태</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for inquiry in inquiries %}
+                <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+                  style="vertical-align: middle;">
+                  <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+                  <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+                  <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+                  {% if inquiry.reply %}
+                  <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+                  {% else %}
+                  <td style="width: 100px;" class="text-center">-</td>
+                  {% endif %}
+                </tr>
                 {% endfor %}
-              </div>
-            </div>
-            <footer class='review-date w-100 d-flex justify-content-between w-100'
-              style='align-items:center; padding-top:19px; padding-right:20px'>
-              <div>
-                <span style='color: rgb(153, 153, 153);'>{{ review.created_at|date:"Y.m.d" }}</span>
-              </div>
-              {% if request.user == review.user %}
-              <div>
-                <form class='d-flex' action="{% url 'products:review_update' product.pk review.pk %}" method="GET">
-                  {% csrf_token %}
-                  <input type="submit" class="btn fw-bold form-control"
-                    style="border-radius:3px; height:36px; width:96px; border:1px solid rgb(221, 221, 221); font-size:12px; text-align:center;"
-                    value="후기수정">
-                </form>
-              </div>
-              {% endif %}
-            </footer>
-          </article>
-        </div>
-        {% endfor %}
-      </div>
-      {% if request.user.is_authenticated %}
-      {% endif %}
+              </tbody>
+            </table>
+          </div>
+         
+                          
 
-      <div class='page d-flex justify-content-center' style='padding-top:20px'>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
+          <!-- pagination -->
+          <!-- 상품 문의 페이지네이션 -->
+          <ul class="pagination justify-content-center">
+          <!-- 이전 페이지 -->
+          {% if inquiries.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
+              <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">이전</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+            </li>
+          {% endif %}
+
+          <!-- 페이지 리스트 -->
+          {% for page_number in inquiries.paginator.page_range %}
+            {% if page_number == inquiries.number %}
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          <!-- 다음페이지 -->
+          {% if inquiries.has_next %}
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
+              <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">다음</a>
             </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+            </li>
+          {% endif %}
           </ul>
-        </nav>
-      </div>
+          </div>
+
+
+          <!-- slides end -->
+          <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
+              style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+          </div>
+          <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
+              style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+          </div>
     </section>
   </div>
+</div>
 
+
+
+
+
+
+
+
+
+<!-- 문의한 글 -->
+<!-- 상품 문의 등록 버튼 & 모달 
+<div class="row">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
+    <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
+      style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
+  </div>
+-->
+
+
+  <!-- 상품 문의 목록 
+<div class="row px-3" style="border-top:1px solid black;">
+  <table class="table">
+    <thead class="text-center">
+      <tr>
+        <th scope="col" style="width: 710px;">제목</th>
+        <th scope="col" style="width: 100px;">작성자</th>
+        <th scope="col" style="width: 100px;">작성일</th>
+        <th scope="col" style="width: 100px;">답변상태</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for inquiry in inquiries %}
+      <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+        style="vertical-align: middle;">
+        <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+        <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+        <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+        {% if inquiry.reply %}
+        <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+        {% else %}
+        <td style="width: 100px;" class="text-center">-</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+-->
 
   {% if request.user.is_superuser == 1 %}
-    <a href="{% url 'accounts:create' %}" class="btn btn-primary">상품등록</a>
+  <a href="{% url 'accounts:create' %}" class="btn btn-primary">상품등록</a>
   {% endif %}
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>

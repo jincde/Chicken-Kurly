@@ -54,6 +54,39 @@ label:focus,
   gap: 4px;
 }
 
+.large-font {
+  font-size: xxx-large;
+}
+
+ion-icon.active {
+  animation: like 0.5s 4;
+  fill: red;
+  stroke: none;
+  color: transparent;
+}
+
+ion-icon {
+  fill: transparent;
+  stroke: black;
+  stroke-width: 20;
+  transition: all 0.5s;
+}
+
+
+@-webkit-keyframes like {
+  0% {
+    transform: scale(1);
+  }
+
+  90% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1.1);
+  }
+}
+
 
 
 .non_a {
@@ -166,6 +199,10 @@ section .wave.wave2 {
   cursor: pointer;
 }
 
+.contentcard {
+  transition: all ease-in-out .3s;
+}
+
 .contentcard:hover {
   border-radius: 15px;
   transform: translateY(-10px);
@@ -173,7 +210,40 @@ section .wave.wave2 {
   box-shadow: 4px 12px 30px 6px rgb(0 0 0 / 9%);
 }
 
-
 .modal-backdrop {
   z-index: 0;
+}
+
+.bi-heart {
+  fill: transparent;
+  stroke: black;
+  stroke-width: 20;
+  transition: all 0.5s;
+}
+
+.bi-heart.active {
+  fill: transparent;
+  stroke: red;
+  stroke-width: 20;
+  transition: all 0.5s;
+}
+
+/* <div class='large-font text-center top-20'><ion-icon name="heart" style="font-size: 1.2rem;"><div class='red-bg'></div></ion-icon></div> */
+
+bi-heart.active {
+  animation: like 0.5s 4;
+  fill: red;
+  stroke: none;
+  color: transparent;
+}
+
+bi-heart {
+  fill: transparent;
+  stroke: black;
+  stroke-width: 20;
+  transition: all 0.5s;
+}
+
+.warning {
+  color: #eb5373;
 }
