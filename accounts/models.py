@@ -13,6 +13,14 @@ from django.core.validators import MinLengthValidator
 
 # Create your models here.
 class User(AbstractUser):
+    BRONZE, SILVER, GOLD = "Bronze", "Silver", "Gold"
+    
+    rating_choices = (
+        (BRONZE, "Bronze"),
+        (SILVER, "Silver"),
+        (GOLD, "Gold"),
+    )
+
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
     )
@@ -25,10 +33,47 @@ class User(AbstractUser):
     )
     address = models.CharField(max_length=50)
     username = models.CharField(validators=[MinLengthValidator(5)], max_length=16, unique=True)
+    name = models.CharField(max_length=200, null=True)
+    email = models.EmailField(unique=True, null=True)
+    is_email_verified = models.BooleanField(default=False)
+    current_rating = models.IntegerField(default=500, verbose_name="Current Rating")
+    rating = models.CharField(max_length=255, choices=rating_choices, default=BRONZE, verbose_name="rating")
+    xp = models.IntegerField(default=10, verbose_name="XP")
 
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
+
+    RATING_THRESHOLDS = {
+        BRONZE: 10000,
+        SILVER: 30000,
+        GOLD: 50000,
+    }
+    
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+        
+
+    def get_current_choice(self):
+        rating = self.current_rating
+        if rating < self.RATING_THRESHOLDS[self.BRONZE]:
+            return self.BRONZE
+        elif rating < self.RATING_THRESHOLDS[self.SILVER]:
+            return self.SILVER
+        elif rating < self.RATING_THRESHOLDS[self.GOLD]:
+            return self.GOLD
+        
+
+    PARTICIPATION_XP, VIP_XP, V_VIP_XP = 10000, 30000, 50000
+
+    def get_current_level_and_xp_threshold(self):
+        current_xp = self.xp
+        xp_threshold = 10000
+        level = 1
+        while current_xp > xp_threshold:
+            level += 1
+            xp_threshold += xp_threshold
+        return level, xp_threshold
 
 
 class Profile(models.Model):
