@@ -57,3 +57,16 @@ class ImageForm(ModelForm):
         widgets = {
             'image': ClearableFileInput(attrs={'multiple': True})
         }
+
+# class ProductBuyForm(ModelForm):
+#     class Meta:
+#         model = Product
+#         fields = ['quantity']
+#         label = '수량'
+        
+
+class ProductBuyForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ['quantity']
+        labels = {'quantity': '수량'}

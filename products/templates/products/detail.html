@@ -184,25 +184,52 @@
         </form>
       </div> -->
       {% endif %}
-      {% comment %} 후기 페이지네이션 {% endcomment %}
       <div class='page d-flex justify-content-center' style='padding-top:20px'>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
+        <!-- 후기 페이지네이션 -->
+        <ul class="pagination justify-content-center">
+          <!-- 이전 페이지 -->
+          {% if reviews.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
+              <a class="page-link" href="?review_page={{ reviews.previous_page_number }}" aria-label="Previous">
+                <i class="bi bi-chevron-double-left"></i>
               </a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+                <i class="bi bi-chevron-double-left"></i>
               </a>
             </li>
-          </ul>
-        </nav>
+          {% endif %}
+
+          <!-- 페이지 리스트 -->
+          {% for page_number in reviews.paginator.page_range %}
+            {% if page_number == reviews.number %}
+              <li class="page-item active" aria-current="page">
+                <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?review={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?review_page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          <!-- 다음페이지 -->
+          {% if reviews.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?review_page={{ reviews.next_page_number }}">
+                <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+                <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
       </div>
     </section>
   </div>
