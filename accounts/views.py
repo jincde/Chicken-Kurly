@@ -8,7 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
-from .models import OrderItem, WatchItem, Product, UserMember
+from .models import OrderItem, WatchItem, Product, User, UserMember
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from .forms import ProductBuyForm
@@ -16,6 +16,9 @@ from products.models import *
 from products.forms import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+import json
+from django.db.models import Q
+
 
 
 # Create your views here.
@@ -35,6 +38,20 @@ def signup(request):
     }
     return render(request, "accounts/signup.html", context)
 
+def isValidId(request):
+    data = json.loads(request.body)
+    username = data.get("username")
+    print(data)
+
+    if User.objects.filter(Q(username = data['username'])).exists():
+        flag = 1
+    else:
+        flag = 0
+
+    context = {
+        "flag": flag,
+        }
+    return JsonResponse(context)
 
 def index(request):
     members = get_user_model().objects.all()
