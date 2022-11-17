@@ -21,6 +21,7 @@ class User(AbstractUser):
         options={"quality": 90},
     )
     address = models.CharField(max_length=50)
+    username = models.CharField(min_lenghth=5, max_length=50, unique=True)
 
     @property
     def full_name(self):
