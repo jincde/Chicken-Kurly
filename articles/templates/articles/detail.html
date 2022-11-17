@@ -59,6 +59,15 @@
       <div class="flex-grow-1">
         <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
         <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
+        {% if request.user == comment.user %}
+        <span>
+          <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+            <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+              <i class="bi bi-x"></i>
+            </span>
+          </a>
+        </span>
+        {% endif %}
       </div>
       <!-- 댓글 좋아요 -->
       <div>
@@ -72,16 +81,7 @@
       </div>
     </div>
     <!-- 댓글 내용 -->
-    <p class='fs-6'>{{ comment.content }}
-      {% if request.user == comment.user %}
-      <span>
-        <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
-          <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-            <i class="bi bi-x"></i>
-          </span>
-        </a>
-      </span>
-      {% endif %}
+    <p class="fs-6 text-break">{{ comment.content }}
     </p>
     <!-- 대댓글 -->
     <p>
@@ -91,24 +91,23 @@
     </p>
     <div class="collapse" id="collapseExample-{{ comment.pk }}">
       <div class="card card-body">
-        <div class='p-1' >
-          <!-- 대댓글 목록 -->
+        <div class='p-1'>
+          <div style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 12; overflow: hidden;" >
+            <!-- 대댓글 목록 -->
             {% for recomment in recomments %}
 
                 {% if recomment.comment.pk == comment.pk %}
-
-                  {{ forloop.counter }}
-
-                <p>
+                <div class='my-2'>
                   {{ recomment.comment.user }}
                   {{ recomment.content }}
-                </p>
+                </div>
                 <span>{{ recomment.created_at }}</span>
                 {% endif %}
               
-            {% endfor %}    
+            {% endfor %}
+          </div>
           <p class="text-end">
-            <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">더보기..</a>
+            <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">자세히보기..</a>
           </p>
           <!-- 대댓글 입력창 -->
           <form action="{% url 'articles:rec_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
