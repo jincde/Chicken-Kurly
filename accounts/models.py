@@ -50,7 +50,7 @@ class User(AbstractUser):
         GOLD: 50000,
     }
     
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
         
 
