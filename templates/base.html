@@ -87,8 +87,8 @@
       </div>
     </div>
   </nav>
-  <nav class="d-flex align-items-center justify-content-center"
-    style="height: 56px; color: rgb(51, 51, 51); font-weight: 500; position: sticky; top: 0; z-index: 100; background-color: white;">
+    <nav class="d-flex align-items-center justify-content-center"
+      style="height: 56px; color: rgb(51, 51, 51); font-weight: 500; position: sticky; top: 0; z-index: 0; background-color: white;">
     <div class="d-grid" style="grid-template-columns: 25fr 50fr 25fr; max-width: 1050px; padding: 0 12px;">
       <div style="width: 262px;"></div>
       <div class="container d-flex justify-content-between" style="max-width: 1050px;">
@@ -101,6 +101,49 @@
     </div>
   </nav>
   {% block content %} {% endblock %}
+
+  <!-- Channel Plugin Scripts -->
+  <script>
+    (function () {
+      var w = window;
+      if (w.ChannelIO) {
+        return (window.console.error || window.console.log || function () { })('ChannelIO script included twice.');
+      }
+      var ch = function () {
+        ch.c(arguments);
+      };
+      ch.q = [];
+      ch.c = function (args) {
+        ch.q.push(args);
+      };
+      w.ChannelIO = ch;
+      function l() {
+        if (w.ChannelIOInitialized) {
+          return;
+        }
+        w.ChannelIOInitialized = true;
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+        s.charset = 'UTF-8';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+      if (document.readyState === 'complete') {
+        l();
+      } else if (window.attachEvent) {
+        window.attachEvent('onload', l);
+      } else {
+        window.addEventListener('DOMContentLoaded', l, false);
+        window.addEventListener('load', l, false);
+      }
+    })();
+    ChannelIO('boot', {
+      "pluginKey": "ce57ca97-109b-4151-b12e-89a8b4f56f69"
+    });
+  </script>
+  <!-- End Channel Plugin -->
   <footer>
     <div class="container" style="max-width: 1070px; height: 580px; padding: 30px 0 0; border-top:1px solid #dfdfdf;">
       <div class="d-flex justify-content-between">

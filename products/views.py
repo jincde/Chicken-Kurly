@@ -84,15 +84,19 @@ def detail(request, product_pk):
     inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
 
     
+    # 후기 페이지네이션
+    review_page = request.GET.get('review_page', '1')
+    review_paginator = Paginator(reviews, 5)
+    review_page_obj = review_paginator.get_page(review_page)
     context = {
         'product': product,
         'image_cnt': product.image_set.count(),
         'product_buy_form': product_buy_form,
         'inquiry_form': inquiry_form,
         'reply_form': reply_form,
-
+        'inquiries': inquiries,
         'inquiries': inquiry_page_obj,  # 문의 페이지네이션
-        'reviews': reviews,
+        'reviews': review_page_obj, # 후기 페이지네이션
     }
 
     return render(request, 'products/detail.html', context)

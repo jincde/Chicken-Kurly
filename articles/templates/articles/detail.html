@@ -4,6 +4,36 @@
 {% block content %}
 <div class='container'>
   <h1 class='text-center'>게시글 상세 페이지</h1>
+  <!-- 수정, 삭제 모달 -->
+  {% if request.user == article.user %}
+  <div class='text-end'>
+    <button type="button" class="btn btn-outline-primary fs-4" data-bs-toggle="modal" data-bs-target="#exampleModal" style="border: 0px;">
+      <i class="bi bi-three-dots"></i>
+    </button>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-dody">
+          <table class="table text-center table-hover">
+            <tbody>
+              <tr class='text-danger' onclick='location.href="{% url 'articles:delete' article.pk %}"'>
+                <td>삭제</td>
+              </tr>
+              <tr onclick='location.href="{% url 'articles:update' article.pk %}"'>
+                <td>수정</td>
+              </tr>
+              <tr>
+                <td data-bs-dismiss="modal">닫기</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
   <hr>
   <!-- 게시글 제목 -->
   <div class="p-2">

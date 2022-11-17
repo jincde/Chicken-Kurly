@@ -15,7 +15,7 @@ def index(request):
     comments = Comment.objects.order_by('-pk')
 
     page = request.GET.get('page', '1')
-    paginator = Paginator(articles, 12)
+    paginator = Paginator(articles, 9)
     paginated_articles = paginator.get_page(page)
     max_index = len(paginator.page_range)
 
