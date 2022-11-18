@@ -1,27 +1,105 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block content %}
   <!-- profile update -->
   <!-- 비밀번호 변경 -->
-  <section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
-    <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;">
-      {% csrf_token %}
-      {% bootstrap_form form %}
-      <h1 class="mb-5 text-center" style='color:#5e0080;'>개인정보 수정</h1>
-      <input type="submit" class="btn" style='background-color: #5e0080; border-color: #5e0080; color:white' value="수정">
-      <a href="{% url 'accounts:change_password' %}" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>비밀번호 수정</a>
-      <a href="" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>돌아가기</a>
-      <a href="{% url 'accounts:delete' %}" class="btn float-end" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>회원탈퇴</a>
-    </fieldset>
-  </form>
+
+<section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
+  <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" enctype="multipart/form">
+    {% csrf_token %}
+    <h1 class="mb-5 text-center" style='color:#5e0080;' >개인정보 수정</h1>
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4"></legend>
+      <div>
+        <h6>아이디</h6>
+        <p class="form-control" style="background-color: rgb(221, 225, 227); color:#212529">{{ user.username }}</p>
+        
+        {% bootstrap_form password_form %}
+
+        <div class="d-flex justify-content-between">
+        <h6 class="my-3" style="width:123px; color: rgb(51, 51, 51); font-size:14px;">배송받을 주소</h6>
+        <div class="my-3">
+          <input type="text" name="address" style='width:333px' class="signup-input form-control"
+            placeholder="주소를 입력해주세요" id="sample6_address">
+        </div>
+        <div>
+          <input class="btn my-3" type="button"
+            style="border: 1px solid #5e0080; color: #5e0080; margin-left: 8px; font-weight: 500;"
+            value="주소검색" onclick="sample6_execDaumPostcode()">
+        </div>
+      </div>
+          {% bootstrap_form form %}
+          <input type="submit" class="btn" style='background-color: #5e0080; border-color: #5e0080; color:white' value="수정">
+          {% comment %} <a href="{% url 'accounts:change_password' %}" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>비밀번호 수정</a> {% endcomment %}
+          <a href="" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>돌아가기</a>
+          <a href="{% url 'accounts:delete' %}" class="btn float-end" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>회원탈퇴</a>
+        </fieldset>
+      </form>
 
   <!-- code for use <button type="button" class="btn btn-outline-dark" href="{% url 'accounts:profile' request.user.pk %}">돌아가기</button> </form> 배송지 <form class="mx-3" action="{% url 'accounts:profile_update' %}" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" method="POST"> {% csrf_token %} <div class="d-flex align-items-center"> <h6 class="my-3">배송지</h6> <div class="my-3"> <input type="text" name="" class="signup-input form-control" placeholder="주소를 입력해주세요"> </div> <div> <input class="btn" value="주소검색"> </div> </div> </form>-->
   <!-- buttons copied <form action="" method="POST" enctype="multipart/form-data"> <div class="container"> <div class="row"> <div class="col-4 p-3"> <div class="d-flex align-items-center"> {% if request.user.image %} <img src="{{ request.user.image.url }}" alt="" style="width: 150px; height: 150px; border-radius: 50%"> {% else %} <img src="" alt=""> {% endif %}-->
   <!-- <p class="fs-3 my-2 ms-5">{{ user.username }}</p> -->
   <!-- </div> </div> </div> <form action="{% url "accounts:profile_update" %}" method="POST"> {% csrf_token %} {% bootstrap_form form %} <input type="submit" class="btn btn-outline-dark" value="수정"> <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">비밀번호 수정</a> <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a> <a href="" class="btn btn-secondary">돌아가기</a> </form>-->
 </section>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  const oldPW = document.querySelector('#id_old_password')
+  const newPW1 = document.querySelector('#id_new_password1')
+  const newPW2 = document.querySelector('#id_new_password2')
+
+  oldPW.removeAttribute('required')
+  newPW1.removeAttribute('required')
+  newPW2.removeAttribute('required')
+
+  function sample6_execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+        
+        // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+        var addr = ''; // 주소 변수
+        var extraAddr = ''; // 참고항목 변수
+
+        //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+        if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+          addr = data.roadAddress;
+        } else { // 사용자가 지번 주소를 선택했을 경우(J)
+          addr = data.jibunAddress;
+        } 
+
+        // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+        if (data.userSelectedType === 'R') {
+          // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+          // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+          if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+            extraAddr += data.bname;
+          }
+          // 건물명이 있고, 공동주택일 경우 추가한다.
+          if (data.buildingName !== '' && data.apartment === 'Y') {
+            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+          }
+          // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+          if (extraAddr !== '') {
+            extraAddr = ' (' + extraAddr + ')';
+          }
+          // 조합된 참고항목을 해당 필드에 넣는다.
+          document.getElementById("sample6_extraAddress").value = extraAddr;
+
+        } else {
+          document.getElementById("sample6_extraAddress").value = '';
+        }
+
+        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+        document.getElementById('sample6_postcode').value = data.zonecode;
+        document.getElementById("sample6_address").value = addr;
+        // 커서를 상세주소 필드로 이동한다.
+        document.getElementById("sample6_detailAddress").focus();
+      }
+    }).open();
+  }
 {% endblock content %}
