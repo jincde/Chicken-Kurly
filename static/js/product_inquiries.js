@@ -145,7 +145,8 @@ function create_inquiry(form, product_pk) {
 /* 4. 답글 생성 비동기 */
 function create_reply(form, product_pk, inquiry_pk) {
   const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-  
+  console.log(form)
+
   axios({
     method: 'post',
     url: `/products/${product_pk}/inquiry/${inquiry_pk}/reply/`,
@@ -169,7 +170,9 @@ function create_reply(form, product_pk, inquiry_pk) {
     replyStatus.style.color = '#5e0080'
 
     hr.remove()
-    updateDeleteBtns.remove()
     form.remove()
+    if (updateDeleteBtns) {
+      updateDeleteBtns.remove()
+    }
   })
 }
