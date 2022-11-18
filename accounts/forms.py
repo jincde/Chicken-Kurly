@@ -3,9 +3,6 @@ from django.contrib.auth import get_user_model
 from django import forms
 from .models import Profile, OrderItem, User
 from products.models import Product, Image
-
-
-
 from django.forms import ModelForm, ClearableFileInput
 
 
@@ -34,12 +31,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile()
         fields = ["image",]
-
-
-class OrderItemForm(ModelForm):
-    class Meta:
-        model = OrderItem
-        fields = ['product', 'ordered']
+        labels = {
+            'image': '프로필 사진'
+        }
 
 
 # admin이 사용자의 구매상품 정보를 등록할 때의 form
@@ -57,12 +51,6 @@ class ImageForm(ModelForm):
         widgets = {
             'image': ClearableFileInput(attrs={'multiple': True})
         }
-
-# class ProductBuyForm(ModelForm):
-#     class Meta:
-#         model = Product
-#         fields = ['quantity']
-#         label = '수량'
         
 
 class ProductBuyForm(ModelForm):

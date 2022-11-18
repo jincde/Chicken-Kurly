@@ -2,123 +2,129 @@
 {% load static %}
 
 {% block content %}
-  <!-- 체크박스로 상품 선택 후 주문 버튼을 누르면 -->
-  <!-- OrderItem에 선택된 상품들의 정보만 저장하기 -->
-  <!-- 선택된 상품이 없으면, 주문 버튼 비활성화 -->
-  <!-- 1. 체크박스의 값을 view로 가져가는 방법? -->
-  <!-- 2. 장바구니에서 수량을 선택하는 방법? (실시간 감지 → 버튼 활성 및 가격 변경 必) -->
-  <div class="container my-5">
-    <h2 class="text-center mb-5">장바구니</h2>
+<!-- 체크박스로 상품 선택 후 주문 버튼을 누르면 -->
+<!-- OrderItem에 선택된 상품들의 정보만 저장하기 -->
+<!-- 선택된 상품이 없으면, 주문 버튼 비활성화 -->
+<!-- 1. 체크박스의 값을 view로 가져가는 방법? -->
+<!-- 2. 장바구니에서 수량을 선택하는 방법? (실시간 감지 → 버튼 활성 및 가격 변경 必) -->
+<div class="container my-5">
+  <h2 class="text-center mb-5">장바구니</h2>
 
-    <form id="cart-update-form">  
-      {% csrf_token %}
+  <form id="cart-update-form">
+    {% csrf_token %}
 
-      <div class="row">
-        <div class="col-12 col-md-9">    
-          {% for item in cart_items %}
-            <div class="row" id="product-{{ item.pk }}-box">
-              <div class="d-flex align-items-center form-check mb-4">
-                <!-- 체크박스 -->
-                <input data-item-id="{{ item.pk }}" class="item-checkboxes form-check-input me-3" type="checkbox" name="selected_items" value="{{ item.pk }}" id="check-{{ item.pk }}">
-                <!-- 상품 정보 -->
-                <div class="col-7 d-flex justify-content-start">  
-                  <div class="d-flex align-items-center">
-                    <img src="{{ item.product.image_set.all.0.image.url }}" alt="{{ item.product.image_set.all.0.image }}" class="rounded-1" width="72px" height="72px">
-                    <div class="ms-3">
-                      <p class="fs-5 mb-1">{{ item.product.product_name }}</p>
-                      <p class="text-muted m-0">{{ item.product.content }}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <!-- 수량 입력 -->
-                <div class="col-2">
-                  <input data-item-id="{{ item.pk }}" data-is-disabled="true" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="quantities" min="1" value="{{ item.quantity }}" disabled>
-                </div>
-
-                <div class="col-2 d-flex justify-content-end align-items-center">
-                  <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-                  <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price }}</span>원</div>
-                  <!-- 장바구니에서 삭제 -->
-                  <input type="submit" class="btn-close" name="delete" value="{{ item.pk }}"  style="color:transparent;">
+    <div class="row">
+      <div class="col-12 col-md-9">
+        {% for item in cart_items %}
+        <div class="row" id="product-{{ item.pk }}-box">
+          <div class="d-flex align-items-center form-check mb-4">
+            <!-- 체크박스 -->
+            <input data-item-id="{{ item.pk }}" class="item-checkboxes form-check-input me-3" type="checkbox"
+              name="selected_items" value="{{ item.pk }}" id="check-{{ item.pk }}">
+            <!-- 상품 정보 -->
+            <div class="col-7 d-flex justify-content-start">
+              <div class="d-flex align-items-center">
+                <img src="{{ item.product.image_set.all.0.image.url }}" alt="{{ item.product.image_set.all.0.image }}"
+                  class="rounded-1" width="72px" height="72px">
+                <div class="ms-3">
+                  <p id="product-name-{{ item.pk }}" class="fs-5 mb-1">{{ item.product.product_name }}</p>
+                  <p class="text-muted m-0">{{ item.product.content }}</p>
                 </div>
               </div>
             </div>
-          {% endfor %}
 
-          <input type="submit" class="" name="select_delete" value="선택삭제">
-        </div>
+            <!-- 수량 입력 -->
+            <div class="col-2">
+              <input data-item-id="{{ item.pk }}" data-is-disabled="true" id="quantity-{{ item.pk }}"
+                class="form-control quantity-input" type="number" name="quantities" min="1" value="{{ item.quantity }}"
+                disabled>
+            </div>
 
-        <!-- 주소 및 가격 정보 -->
-        <div class="col-12 col-md-3">
-          <!-- 주소 정보 -->
-          <div class="p-3 mb-4">
-            <div class="d-flex align-items-center mb-2">
-              <span class="bi bi-geo-alt fs-5"></span>
-              <div class="ms-2">배송지</div>
-            </div>
-            <div class="mb-3">서울특별시 용산구 독서당로 111</div>
-            <button type="button" class="btn w-100"
-            style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">배송지 변경</button>
-          </div>
-
-          <!-- 가격 정보 -->
-          <div class="bg-light p-3" style="border-radius:3px">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div>상품금액</div>
-              <div id="products-price">0원</div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div>상품할인금액</div>
-              <div>0원</div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <div>배송비</div>
-              <div>0원</div>
-            </div>
-            <hr>
-            <div class="d-flex justify-content-between align-items-center">
-              <div>결제금액</div>
-              <div class="fw-bold"><p id="total-price" class="m-0">0원</p></div>
+            <div class="col-2 d-flex justify-content-end align-items-center">
+              <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
+              <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price
+                  }}</span>원</div>
+              <!-- 장바구니에서 삭제 -->
+              <input type="submit" class="btn-close" name="delete" value="{{ item.pk }}" style="color:transparent;">
             </div>
           </div>
-
-          <input type="submit" name="purchase" value="주문하기" class="btn w-100 fs-5 my-3"
-            style="border-radius:3px; height:60px; background-color:#5e0080; color:white"
-            data-bs-toggle="modal" data-bs-target="#purchase">
-          
-          <!-- 결제버튼 클릭 시 PG사의 결제 페이지가 열림 -->
-          <button onclick="requestPay();" name="purchase" value="결제하기" class="btn w-100 fs-5 my-3"
-          style="border-radius:3px; height:60px; background-color:#5e0080; color:white"></button>
         </div>
+        {% endfor %}
+
+        <input type="submit" class="" name="select_delete" value="선택삭제">
       </div>
-    </form>
 
-    <!-- 구매 완료 Modal -->
-    <div class="modal fade" id="purchase" tabindex="-1" aria-hidden="true" style="border: 0px solid black;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header" style="border: 0px solid black;">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <!-- 주소 및 가격 정보 -->
+      <div class="col-12 col-md-3">
+        <!-- 주소 정보 -->
+        <div class="p-3 mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <span class="bi bi-geo-alt fs-5"></span>
+            <div class="ms-2">배송지</div>
           </div>
-          <div class="modal-body">
-            주문이 완료되었습니다.
+          <div class="mb-3">{{ request.user.address }}</div>
+          <button type="button" class="btn w-100"
+            style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">배송지
+            변경</button>
+        </div>
+
+        <!-- 가격 정보 -->
+        <div class="bg-light p-3" style="border-radius:3px">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>상품금액</div>
+            <div id="products-price">0원</div>
           </div>
-          <div class="modal-footer" style="border: 0px solid black">
-            <button type="submit" class="btn" data-bs-dismiss="modal"
-              style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>상품할인금액</div>
+            <div>0원</div>
           </div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>배송비</div>
+            <div>0원</div>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>결제금액</div>
+            <div class="fw-bold"><span id="total-price" class="m-0">0</span>원</div>
+          </div>
+        </div>
+
+        <input type="submit" name="purchase" value="주문하기" class="btn w-100 fs-5 my-3"
+          style="border-radius:3px; height:60px; background-color:#5e0080; color:white" data-bs-toggle="modal"
+          data-bs-target="#purchase">
+
+        <!-- 결제버튼 클릭 시 PG사의 결제 페이지가 열림 -->
+        <button id="btn-payment" onclick="requestPay();" value="결제하기" class="btn w-100 fs-5 my-3"
+          style="border-radius:3px; height:60px; background-color:#5e0080; color:white" disabled>결제하기</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- 구매 완료 Modal -->
+  <div class="modal fade" id="purchase" tabindex="-1" aria-hidden="true" style="border: 0px solid black;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="border: 0px solid black;">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          주문이 완료되었습니다.
+        </div>
+        <div class="modal-footer" style="border: 0px solid black">
+          <button type="submit" class="btn" data-bs-dismiss="modal"
+            style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 {% endblock content %}
 
 {% block script %}
-  <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 
-  <!-- Iamport -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-  <script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+<!-- Iamport -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
 {% endblock script %}
