@@ -32,7 +32,7 @@ checkBoxes.forEach(checkBox => {
         }
         totalPrice = tmp
         productsPriceField.innerText = totalPrice + '원'
-        totalPriceField.innerText = totalPrice + '원'
+        totalPriceField.innerText = totalPrice
       }
 
       // 수량 입력 이벤트
@@ -48,7 +48,7 @@ checkBoxes.forEach(checkBox => {
           }
           totalPrice = tmp
           productsPriceField.innerText = totalPrice + '원'
-          totalPriceField.innerText = totalPrice + '원'
+          totalPriceField.innerText = totalPrice
         }
       })
     } else {
@@ -66,7 +66,7 @@ checkBoxes.forEach(checkBox => {
         }
         totalPrice = tmp
         productsPriceField.innerText = totalPrice + '원'
-        totalPriceField.innerText = totalPrice + '원'
+        totalPriceField.innerText = totalPrice
       }
     }
   })
