@@ -167,6 +167,7 @@ def profile(request, user_pk, product_pk, inquiry_pk):
         
         'inquiryTitle': inquiry_title,
         'inquiryContent': inquiry_content,
+    }
 
     return render(request, "accounts/profile.html", context)
 
