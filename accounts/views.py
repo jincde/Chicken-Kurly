@@ -140,7 +140,6 @@ def profile(request, user_pk):
         'inquiries': inquiries,
         'reply_form': reply_form,
         'inquiries': inquiry_page_obj,
-        
         }
     return render(request, "accounts/profile.html", context)
 
@@ -293,16 +292,28 @@ def cart_update(request):
 
 def tocart(request, product_pk):
     product = Product.objects.get(pk=product_pk)
+    cart = Cart.objects.get(user=request.user)
+
+    cart_items = cart.cartitem_set.all()
+
+    # if request.method == 'POST':
+    #     cartitem = CartItem()
+    #     cartitem.quantity = request.POST['checkquantity']
+       
+    #     cartitem.cart = Cart.objects.get(pk=request.user.pk)
+    #     cartitem.product = product
+        
+    #     cartitem.save()
 
     if request.method == 'POST':
-        cartitem = CartItem()
-        cartitem.quantity = request.POST['checkquantity']
-       
-        cartitem.cart = Cart.objects.get(pk=request.user.pk)
-        cartitem.product = product
-        
-        cartitem.save()
-        
+        for item in cart_items:
+            if item.product.pk == product_pk:
+                item.quantity += int(request.POST['checkquantity'])
+                item.save()
+                break
+        else:
+            CartItem.objects.create(cart=cart, product=product, quantity=int(request.POST['checkquantity']))
+            
     return redirect('accounts:cart')
 
 
