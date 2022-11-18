@@ -1,8 +1,5 @@
-@font-face {
-  font-family: 'SpoqaHanSansNeo-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
+* {
+  font-family: 'Spoqa Han Sans Neo', 'Spoqa Han Sans JP', sans-serif;
 }
 
 textarea:hover,
@@ -278,4 +275,10 @@ bi-heart {
 ::-webkit-scrollbar {
   display: none;
   /* Chrome, Safari, Opera*/
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: 64px 4fr 1.3fr;
+  gap: 20px;
 }

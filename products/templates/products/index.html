@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
 <div id="carouselExampleInterval" style="max-width:1900px; margin:0 auto 0;" class="carousel slide"
   data-bs-ride="carousel">
@@ -60,7 +61,7 @@
                   style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
               </div>
               <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
-              <p class="m-0" style="font-weight: 800;">{{ product.price }} 원</p>
+              <p class="m-0" style="font-weight: 800;">{{ product.price|intcomma }} 원</p>
             </div>
           </a>
         </div>
@@ -108,7 +109,7 @@
                   style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
               </div>
               <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
-              <p class="m-0" style="font-weight: 600;">{{ product.price }} 원</p>
+              <p class="m-0" style="font-weight: 600;">{{ product.price|intcomma}} 원</p>
             </div>
           </a>
         </div>
@@ -151,7 +152,7 @@
                   style="color: #FA622F; font-weight: 700;">{{ hit.category }}</span>
               </div>
               <p class="m-0" style="font-weight: 400;">{{ hit.product_name }}</p>
-              <p class="m-0" style="font-weight: 600; line-height: 24px;">{{ hit.price }} 원</p>
+              <p class="m-0" style="font-weight: 600; line-height: 24px;">{{ hit.price|intcomma }} 원</p>
             </div>
           </a>
         </div>

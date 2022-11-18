@@ -1,259 +1,286 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load filter %}
+{% load static %}
 
 {% block content %}
-<div class='container'>
-  
-  <!-- 수정, 삭제 모달 -->
-  <div class='d-flex justify-content-between'>
+
+<body style="background-color: rgb(245, 245, 245)">
+  <div class='article-grid container' style="width: 1070px; padding: 40px 0;">
+    <!-- 11 -->
     <div>
-      {% if request.user == article.user %}
-      <div class='text-end'>
-        <button type="button" class="btn btn-outline-primary fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal" style="border: 0px;">
-          <i class="bi bi-three-dots"></i>
-        </button>
+      <div class='d-flex flex-column align-items-center' style="position: sticky; top: 100px">
+        <div>
+          <a class="non_a" style="font-size: 1.4rem;" href="{% url 'articles:index' %}"><i
+              class="bi bi-backspace"></i></a>
+        </div>
+        <form class='like-forms' data-article-id="{{ article.pk }}">
+          {% csrf_token %}
+          {% if request.user in article.like_users.all %}
+          <div class="d-flex align-items-center justify-content-end">
+            <button type="submit" class="d-flex flex-column align-items-center"
+              style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
+              <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;"
+                class="ion-icon active align-items-center" name="heart">
+              </ion-icon>
+              <span id='like-count-{{ article.pk }}' style="font-size: 1rem">
+                {{ article.like_users.count }}</span>
+            </button>
+          </div>
+          {% else %}
+          <div class="d-flex flex-column align-items-center justify-content-end">
+            <button type=" submit" class="d-flex flex-column align-items-center"
+              style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
+              <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;"
+                class="ion-icon d-flex align-items-center" name="heart"></ion-icon>
+              <div style="font-size: 1rem" id='like-count-{{ article.pk }}'>
+                {{ article.like_users.count }}</div>
+            </button>
+          </div>
+          {% endif %}
+        </form>
+        <div>
+          {% if request.user == article.user %}
+          <div class='text-end'>
+            <button type="button" class="btn btn-outline-primary fs-5" data-bs-toggle="modal"
+              data-bs-target="#exampleModal" style="border: 0px;">
+              <i class="bi bi-three-dots"></i>
+            </button>
+          </div>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+              <div class="modal-content">
+                <div class="modal-dody">
+                  <table class="table text-center table-hover">
+                    <tbody>
+                      <tr class='text-danger' onclick='location.href="{% url ' articles:delete' article.pk %}"'>
+                      <tr class='text-danger' onclick="location.href='{% url 'articles:delete' article.pk %}'">
+
+                        <td>삭제</td>
+                      </tr>
+                      <tr onclick='location.href="{% url ' articles:update' article.pk %}'">
+                        <td>수정</td>
+                      </tr>
+                      <tr>
+                        <td data-bs-dismiss="modal">닫기</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
       </div>
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-          <div class="modal-content">
-            <div class="modal-dody">
-              <table class="table text-center table-hover">
-                <tbody>
-                  <tr class='text-danger' onclick='location.href="{% url 'articles:delete' article.pk %}"'>
-                    <td>삭제</td>
-                  </tr>
-                  <tr onclick='location.href="{% url 'articles:update' article.pk %}"'>
-                    <td>수정</td>
-                  </tr>
-                  <tr>
-                    <td data-bs-dismiss="modal">닫기</td>
-                  </tr>
-                </tbody>
-              </table>
+    </div>
+
+    <!-- 22 -->
+    <div style="background-color: white;">
+      <div style="padding: 0 36px">
+        <div class="text-center">
+          {% if article.image %}
+          <img class="rounded" style="width: 20rem; height: 20rem" src="{{ article.image.url }}" alt="image">
+          {% else %}
+          <img class="rounded" style="width: 20rem; height: 20rem"
+            src="https://dummyimage.com/400/821db5/ffffff&text=+">
+          {% endif %}
+        </div>
+        <h1 class="text-start my-5" style="font-weight: 800;">{{ article.title }}</h1>
+        <div>
+          {{ article.content|mark }}
+        </div>
+      </div>
+      <hr style="margin: 3rem auto;">
+      <!-- 댓글목록 -->
+      {% if comments %}
+      {% for comment in paginated_comments %}
+      <div>
+        <div class='d-flex' style="padding: 0 36px;">
+          <!-- 댓글 작성자, 시간 -->
+          <div class="flex-grow-1">
+            <span class='fs-5 fw-semibold'><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}"
+                style="text-decoration: none; color: #5e0080;">{{ comment.user }}</a></span>
+            <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
+            {% if request.user == comment.user %}
+            <span>
+              <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+                <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                  <i class="bi bi-x"></i>
+                </span>
+              </a>
+            </span>
+            {% endif %}
+            <!-- 댓글 좋아요 -->
+            <div>
+              <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
+                {% if request.user in comment.like_users.all %}
+                <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+                  id='comment-like-btn-{{ comment.pk }}'>
+                  <div class="fs-6" style="color: red;">
+                    <span>
+                      <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up-fill"></i>
+                    </span>
+                    <span id='comment-like-count-{{ comment.pk }}'>
+                      {{ comment.like_users.count }}
+                    </span>
+                  </div>
+                </button>
+                {% else %}
+                <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+                  id='comment-like-btn-{{ comment.pk }}'>
+                  <div class="fs-6" style="color: red;">
+                    <span>
+                      <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up"></i>
+                    </span>
+                    <span id='comment-like-count-{{ comment.pk }}'>
+                      {{ comment.like_users.count }}
+                    </span>
+                  </div>
+                </button>
+                {% endif %}
+              </form>
+            </div>
+          </div>
+          <!-- 댓글 내용 -->
+          <p class="fs-6 text-break">{{ comment.content }}
+          </p>
+          <!-- 대댓글 -->
+          <p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseExample-{{ comment.pk }}" aria-expanded="false" aria-controls="collapseExample">
+              답글
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample-{{ comment.pk }}">
+            <div class="card card-body">
+              <div class='p-1'>
+                <div
+                  style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 12; overflow: hidden;">
+                  <!-- 대댓글 목록 -->
+                  {% for recomment in recomments %}
+
+                  {% if recomment.comment.pk == comment.pk %}
+                  <div class='my-2'>
+                    <div>
+                      <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}"
+                          style="text-decoration: none; color: #5e0080;">{{ recomment.user }}</a></span>
+                      <span>{{ recomment.created_at }}</span>
+                      {% if request.user == recomment.user %}
+                      <span>
+                        <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
+                          <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                            <i class="bi bi-x"></i>
+                          </span>
+                        </a>
+                      </span>
+                      {% endif %}
+                    </div>
+                    <div class="text-break">
+                      {{ recomment.content }}
+                    </div>
+                  </div>
+                  {% endif %}
+
+                  {% endfor %}
+                </div>
+                <p class="text-end">
+                  <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">자세히보기..</a>
+                </p>
+                <!-- 대댓글 입력창 -->
+                <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST'
+                  enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  {% bootstrap_form recomment_form %}
+                  {% bootstrap_button button_type='submit' content='글쓰기' %}
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      {% endif %}
-    </div>
-    <div>
-      <a href="{% url 'articles:index' %}" class="btn btn-outline-primary fs-6">목록으로</a>
-    </div>
-  </div>
-  
-  <hr>
-  <div class='text-end' style="font-size: 1.2rem; margin-top: 1.2rem;">
-    <form class='like-forms' data-article-id="{{ article.pk }}">
-      {% csrf_token %}
-      {% if request.user in article.like_users.all %}
-      <div class="d-flex align-items-center justify-content-end">
-        <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-          id='like-btn-{{ article.pk }}'>
-          <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" class="ion-icon active me-2"
-            name="heart">
-          </ion-icon>
-          <span id='like-count-{{ article.pk }}' style="font-size: 1rem">
-            {{ article.like_users.count }}</span>
-        </button>
-      </div>
-      {% else %}
-      <div class="d-flex align-items-center justify-content-end">
-        <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-          id='like-btn-{{ article.pk }}'>
-          <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" class="ion-icon me-2"
-            name="heart"></ion-icon>
-          <span style="font-size: 1rem" id='like-count-{{ article.pk }}'>
-            {{ article.like_users.count }}</span>
-        </button>
-      </div>
-      {% endif %}
-    </form>
-  </div>
-  <!-- 게시글 제목 -->
-  <div class="p-2">
-    <h1 class="text-center">{{ article.title }}</h1>
-  </div>
-  <!-- 게시글 내용 -->
-  <div class="p-2">
-   {{ article.content }}
-  </div>
-  {% if article.image %}
-  <div class="my-4 mx-2 text-center">
-    <img class="rounded me-3" style="width: 20rem; height: 20rem" src="{{ article.image.url }}" alt="image">
-  </div>
-  {% endif %}
-  <hr>
-  <!-- 댓글목록 -->
-  {% if comments %}
-  {% for comment in paginated_comments %}
-  <div class='mx-2' sytle='margin: -2px;'>
-    <div class='d-flex'>
-      <!-- 댓글 작성자, 시간 -->
-      <div class="flex-grow-1">
-        <span class='fs-5 fw-semibold'><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ comment.user }}</a></span>
-        <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
-        {% if request.user == comment.user %}
-        <span>
-          <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
-            <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-              <i class="bi bi-x"></i>
-            </span>
-          </a>
-        </span>
-        {% endif %}
-      </div>
-      <!-- 댓글 좋아요 -->
-      <div>
-        <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
-          {% if request.user in comment.like_users.all %}
-            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
-              <div class="fs-6" style="color: red;">
-                <span>
-                  <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up-fill"></i>
-                </span>
-                <span id='comment-like-count-{{ comment.pk }}'>
-                  {{ comment.like_users.count }}
-                </span>
-              </div>
-            </button>
-          {% else %}
-          <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
-            <div class="fs-6" style="color: red;">
-              <span>
-                  <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up"></i>
-              </span>
-              <span id='comment-like-count-{{ comment.pk }}'>
-                {{ comment.like_users.count }}
-              </span>
-          </div>
-          </button>
-          {% endif %}
-        </form>
-      </div>
-    </div>
-    <!-- 댓글 내용 -->
-    <p class="fs-6 text-break">{{ comment.content }}
-    </p>
-    <!-- 대댓글 -->
-    <p>
-      <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample-{{ comment.pk }}" aria-expanded="false" aria-controls="collapseExample">
-        답글
-      </button>
-    </p>
-    <div class="collapse" id="collapseExample-{{ comment.pk }}">
-      <div class="card card-body">
-        <div class='p-1'>
-          <div style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 12; overflow: hidden;" >
-            <!-- 대댓글 목록 -->
-            {% for recomment in recomments %}
-
-                {% if recomment.comment.pk == comment.pk %}
-                <div class='my-2'>
-                  <div>
-                    <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ recomment.user }}</a></span>
-                    <span>{{ recomment.created_at }}</span>
-                    {% if request.user == recomment.user %}
-                    <span>
-                      <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
-                        <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-                          <i class="bi bi-x"></i>
-                        </span>
-                      </a>
-                    </span>
-                    {% endif %}
-                  </div>
-                  <div class="text-break">
-                    {{ recomment.content }}
-                  </div>
-                </div>
-                {% endif %}
-              
-            {% endfor %}
-          </div>
-          <p class="text-end">
-            <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">자세히보기..</a>
-          </p>
-          <!-- 대댓글 입력창 -->
-          <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data'>
-            {% csrf_token %}
-            {% bootstrap_form recomment_form %}
-            {% bootstrap_button button_type='submit' content='글쓰기' %}
-          </form>
-        </div>
-      </div>
-      </div>
-    </div>
-  {% endfor %}
-  {% endif %}
-
-<!-- 댓글 페이지네이션 -->
-{% if paginated_comments %}
-  <ul class="pagination justify-content-center">
-    <!-- 첫 페이지 -->
-    {% if paginated_comments.has_previous %}
-    <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
-    <li class="page-item">
-      <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-      <a class="page-link" href="#">&#60;</a>
-    </li>
-    {% endif %}
-
-    <!-- 페이지리스트 -->
-    <!-- //페이지 범위를 하나씩 리턴 -->
-    {% for page_number in paginated_comments.paginator.page_range %}
-      {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %}
-          <!-- // 현재 페이지일 때는 active -->
-            {% if page_number == paginated_comments.number %}
-            <li class="page-item" aria-current="page">
-              <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
-                href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-            {% else %}
-            <li class="page-item text-color-warning">
-              <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-            {% endif %}
-        {% endif %}
       {% endfor %}
-
-      <!-- 다음페이지 -->
-      {% if paginated_comments.has_next %}
-      <li class="page-item">
-        <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
-      </li>
-      {% else %}
-      <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" href="#">&#62;</a>
-      </li>
       {% endif %}
-  </ul>
-{% else%}
-<h3 class="text-center">댓글이 없습니다. ㅠㅠ</h3>
-{% endif %}
+      <!-- 댓글 페이지네이션 -->
+      {% if paginated_comments %}
+      <ul class="pagination justify-content-center">
+        <!-- 첫 페이지 -->
+        {% if paginated_comments.has_previous %}
+        <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+        <li class="page-item">
+          <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">&#60;</a>
+        </li>
+        {% endif %}
+
+        <!-- 페이지리스트 -->
+        <!-- //페이지 범위를 하나씩 리턴 -->
+        {% for page_number in paginated_comments.paginator.page_range %}
+        {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %} <!--
+          // 현재 페이지일 때는 active -->
+          {% if page_number == paginated_comments.number %}
+          <li class="page-item" aria-current="page">
+            <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
+              href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% else %}
+          <li class="page-item text-color-warning">
+            <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">
+              {{ page_number }}</a>
+          </li>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+
+          <!-- 다음페이지 -->
+          {% if paginated_comments.has_next %}
+          <li class="page-item">
+            <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" href="#">&#62;</a>
+          </li>
+          {% endif %}
+      </ul>
+      {% else%}
+      <h3 class="text-center">댓글이 없습니다. ㅠㅠ</h3>
+      {% endif %}
 
 
 
-    <!-- 댓글 입력 폼 -->
-    <form action="{% url 'articles:c_create' article.pk %}" method="POST" id="comment-form"
-      data-article-id="{{ article.pk }}">
-      {% csrf_token %}
-      <div class="d-flex justify-content-center">
-        <div class="p-2 flex-grow-1">
-          <input style="width: 100%; border: 1px solid; padding: 0.4rem 0;" type="text" placeholder="댓글을 입력해주세요"
-            name="comment" id="comment" maxlength="300" required>
+      <!-- 댓글 입력 폼 -->
+      <form action="{% url 'articles:c_create' article.pk %}" method="POST" id="comment-form"
+        data-article-id="{{ article.pk }}">
+        {% csrf_token %}
+        <div class="d-flex justify-content-center">
+          <div class="p-2 flex-grow-1">
+            <input style="width: 100%; border: 1px solid; padding: 0.4rem 0;" type="text" placeholder="댓글을 입력해주세요"
+              name="comment" id="comment" maxlength="300" required>
+          </div>
+          <div class="p-2">
+            <button class="btn mb-1 ms-1" style="background-color: #5e0080; color: white; text-decoration: none;"
+              type="submit">등록</button>
+          </div>
         </div>
-        <div class="p-2">
-          <button class="btn mb-1 ms-1" style="background-color: #5e0080; color: white; text-decoration: none;"
-            type="submit">등록</button>
-        </div>
-      </div>
-</div>
-</div>
-</form>
-</div>
+      </form>
+    </div>
+    <!-- 33 -->
+    <div style="background-color: white;">
+      <p>{{ article.user.username }}</p>
+      <p>{{ article.created_at }}</p>
+      {% if article.user.image %}
+      <img src="{{ article.user.image }}">
+      {% else %}
+      <img src="{% static 'images/android-icon-72x72.png' %}">
+      {% endif %}
+    </div>
+  </div>
+</body>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -339,7 +366,8 @@
         })
     })
   })
- 
+
+
 
 </script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
