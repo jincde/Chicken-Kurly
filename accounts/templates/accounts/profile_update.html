@@ -6,6 +6,7 @@
 {% block content %}
   <!-- profile update -->
   <!-- 비밀번호 변경 -->
+
 <section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
   <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" enctype="multipart/form">
     {% csrf_token %}

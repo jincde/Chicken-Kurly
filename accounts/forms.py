@@ -30,7 +30,7 @@ class CustomUserChangeForm(UserChangeForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile()
-        fields = ["user", "image",]
+        fields = ["image",]
         labels = {
             'image': '프로필 사진'
         }
