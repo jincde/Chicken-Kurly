@@ -362,6 +362,23 @@
           </ul>
           </div>
 
+          <!-- 다음페이지 -->
+          {% if inquiries.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+                <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+                <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+          {% endif %}
+          </ul>
+          </div>
+
 
           <!-- slides end -->
           <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
