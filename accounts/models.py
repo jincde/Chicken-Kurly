@@ -86,26 +86,6 @@ class Profile(models.Model):
     )
 
 
-class Order(models.Model):
-  first_name = models.CharField(max_length=50)
-  last_name = models.CharField(max_length=50)
-  created = models.DateTimeField(auto_now_add=True)
-  paid = models.BooleanField(default=False)
-
-  class Meta:
-    ordering = ['-created']
-
-  def __str__(self):
-    return 'Order {}'.format(self.id)
-
-  def get_total_product(self):
-    return sum(item.get_item_price() for item in self.items.all())
-
-  def get_total_price(self):
-    total_product = self.get_total_product()
-    return total_product - self.discount
-
-
 class OrderItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')

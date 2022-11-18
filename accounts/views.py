@@ -108,7 +108,9 @@ def change_password(request):
     return render(request, "accounts/change_password.html", context)
 
 
-def profile(request, user_pk):
+def profile(request, user_pk, product_pk, inquiry_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
     products = Product.objects.order_by('-pk')
     ddib = Ddib.objects.get(user=request.user) # 요청한 사용자의 찜(가방)을 가져와라.
     ddib_items = ddib.ddibitem_set.all() # 찜한 목록(가방 안에 있는 물건들)을 가져와라.
@@ -116,6 +118,7 @@ def profile(request, user_pk):
     order_items = OrderItem.objects.filter(user=request.user)
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
+    inquiry_form = InquiryForm()
     inquiries = user.inquiry_set.order_by('-pk')
     reply_form = ReplyForm()
     person = get_user_model()
@@ -128,6 +131,25 @@ def profile(request, user_pk):
     inquiry_paginator = Paginator(inquiries, 5)
     inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
 
+    inquiry_title = ''
+    inquiry_content = ''
+
+    if request.user == inquiry.user:
+        # 모델폼이 아니어도 유효성검사가 된다.
+        if request.method == 'POST':
+            inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
+            if inquiry_form.is_valid():
+                new_inquiry = inquiry_form.save(commit=False)
+                new_inquiry.user = request.user
+                new_inquiry.product = product
+                new_inquiry.save()
+
+                inquiry_title = new_inquiry.title
+                inquiry_content = new_inquiry.content
+
+        else:
+            inquiry_form = InquiryForm(instance=inquiry)
+
     context = {
         "OrderItems": OrderItems,
         "person": person,
@@ -135,11 +157,16 @@ def profile(request, user_pk):
         'product_buy_form': product_buy_form,
         'order_items': order_items,
         'watch_items': watch_items,
-
+        'inquiry_form': inquiry_form,
         'cart_items': cart_items,
         'inquiries': inquiries,
         'reply_form': reply_form,
         'inquiries': inquiry_page_obj,
+        'product': product,
+        'inquiry': inquiry,
+        
+        'inquiryTitle': inquiry_title,
+        'inquiryContent': inquiry_content,
         
         }
     return render(request, "accounts/profile.html", context)
@@ -199,32 +226,7 @@ def delete(request):
 
 
 # admin의 판매 상품 등록
-@login_required
-def create(request):
-    # 요청한 user의 is_superuser가 1이면(admin이면)
-    if request.user.is_superuser == 1: 
-        if request.method == 'POST':
-            OrderItem_form = OrderItemForm(request.POST, request.FILES)
-            # form에 image 폼 추가      
-            # 상품 정보에 대한 폼과 이미지 폼이 유효하면
-            if OrderItem_form.is_valid():
-                OrderItem = OrderItem_form.save(commit=False)
-                OrderItem.admin = request.user
-                OrderItem.user = request.user
-                OrderItem.save()
-                messages.success(request, '상품 등록이 완료되었습니다.')
-                return redirect('accounts:profile', request.user.pk)
-        else:
-            OrderItem_form = OrderItemForm()         
-        
-        context = {
-            'OrderItem_form': OrderItem_form,
-        }
 
-        return render(request, 'accounts/create.html', context)
-    
-    else:
-        return redirect('products:index')    # admin 아니면 index로 리다이렉트
 
 
 # 로그인한 유저의 장바구니 페이지
@@ -314,3 +316,47 @@ def payment(request):
     print(quantities)
     
     return redirect('accounts:cart')
+
+
+@login_required
+def create_inquiry(request, product_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry_form = InquiryForm(request.POST)    # POST 아닌 건 detail에
+
+    # inquiry_pk = -1
+    # inquiry_user = ''
+    # inquiry_created_at = ''
+    # inquiry_title = ''
+    # inquiry_content = ''
+    # product_image_url = product.image_set.all()[0].image.url
+    # product_name = product.product_name
+    # product_content = product.content
+
+    if inquiry_form.is_valid():
+        inquiry = inquiry_form.save(commit=False)
+        inquiry.user = request.user
+        inquiry.product = product
+        inquiry.save()
+
+        # inquiry_pk = inquiry.pk
+        # inquiry_user = inquiry.user.username
+        # inquiry_created_at = inquiry.created_at.strftime('%Y.%m.%d')
+        # inquiry_title = inquiry.title
+        # inquiry_content = inquiry.content
+
+
+    # 페이지네이션하고 비동기 같이 하니까 이상해서 제거..ㅠㅠ
+    # data = {
+    #     'inquiryPk': inquiry_pk,
+    #     'inquiryUser': inquiry_user,
+    #     'inquiryCreatedAt': inquiry_created_at,
+    #     'inquiryTitle': inquiry_title,
+    #     'inquiryContent': inquiry_content,
+    #     'productImageUrl': product_image_url,
+    #     'productName': product_name,
+    #     'productContent': product_content,
+    # }
+
+    # return JsonResponse(data)
+
+    return redirect('products:detail', product_pk)
