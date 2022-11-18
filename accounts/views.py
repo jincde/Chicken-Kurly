@@ -106,7 +106,7 @@ def change_password(request):
     return render(request, "accounts/change_password.html", context)
 
 
-def profile(request, user_pk, product_pk, inquiry_pk):
+def profile(request, user_pk):
     products = Product.objects.order_by('-pk')
     ddib = Ddib.objects.get(user=request.user) # 요청한 사용자의 찜(가방)을 가져와라.
     ddib_items = ddib.ddibitem_set.all() # 찜한 목록(가방 안에 있는 물건들)을 가져와라.
