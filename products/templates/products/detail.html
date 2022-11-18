@@ -377,7 +377,6 @@
                           <input type="submit" class="btn-none text-muted" value="삭제">
                         </form>
                       </div>
-                      <hr id="inquiry-hr-{{ inquiry.pk }}">
 
                       <!-- 문의 수정 모달 -->
                       <div class="modal fade" id="updateInquiry{{ inquiry.pk }}" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -429,13 +428,14 @@
                     {% endif %}
 
                     {% if request.user.is_superuser == 1 %}
+                      <hr id="inquiry-hr-{{ inquiry.pk }}">
                       {% comment %} <form action="{% url 'products:create_reply' product.pk inquiry.pk %}" method="POST"> {% endcomment %}
                       <form id="reply-create-form-{{ inquiry.pk }}" onsubmit="event.preventDefault(); create_reply(this, '{{ product.pk }}', '{{ inquiry.pk }}')"> 
                         {% csrf_token %}
                         {{ reply_form.content|add_class:'form-control my-3'|attr:'rows:3'|attr:'placeholder:답변을 작성해주세요.' }}
 
                         <div class="text-center mb-3">
-                          <button type="reset" class="btn me-2" data-bs-dismiss="modal"
+                          <button type="reset" class="btn me-2"
                             style="border:solid 1px #d3d3d3; border-radius:3px; height:40px; width:120px; background-color: white;">취소</button>
                           <button type="submit" class="btn"
                             style="border-radius:3px; height:40px; width:120px; background-color: #5e0080; color: white">등록</button>

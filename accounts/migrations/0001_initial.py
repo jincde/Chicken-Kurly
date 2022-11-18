@@ -1,4 +1,5 @@
 
+
 import django.contrib.auth.models
 import django.core.validators
 from django.db import migrations, models
@@ -45,25 +46,13 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Order',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=50)),
-                ('last_name', models.CharField(max_length=50)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('paid', models.BooleanField(default=False)),
-            ],
-            options={
-                'ordering': ['-created'],
-            },
-        ),
-        migrations.CreateModel(
             name='OrderItem',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.IntegerField()),
-                ('ordered', models.BooleanField(default=False)),
                 ('order_date', models.DateTimeField(auto_now_add=True)),
+                ('imp_uid', models.CharField(max_length=50)),
+                ('merchant_uid', models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
