@@ -137,6 +137,7 @@ def profile(request, user_pk):
         'cart_items': cart_items,
         'inquiries': inquiries,
         'inquiries': inquiry_page_obj,
+    }
 
     return render(request, "accounts/profile.html", context)
 
