@@ -9,8 +9,6 @@ from django.core.validators import MinLengthValidator
 
 
 
-
-
 # Create your models here.
 class User(AbstractUser):
     BRONZE, SILVER, GOLD = "Bronze", "Silver", "Gold"
