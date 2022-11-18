@@ -250,114 +250,122 @@
     <h3 style="color: rgb(51, 51, 51)"></h3>
   </div>
   <div class="swiper-box" style="position: relative; padding:0 40px;">
-    <section class="swiper" id="test-slide">
-      <!-- Additional required wrapper -->
+    <section class="swiper" id="test-slide">  
+  <!-- Additional required wrapper -->
       <div class="swiper-wrapper">
         <!-- Slides -->
+
+
         <!-- 상품 문의 등록 버튼 & 모달 -->
-        <div class="row">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="fw-bold m-0" style='font-size: 18px;'>나의 질문 내역</h2>
-          </div>
+  <div class="row">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
+      <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
+        style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
+    </div>
+  </div>
 
+  <!-- 상품 문의 목록 -->
+  <div class="row px-3" style="border-top:1px solid black;">
+    <table class="table">
+      <thead class="text-center">
+        <tr>
+          <th scope="col" style="width: 710px;">제목</th>
+          <th scope="col" style="width: 100px;">작성자</th>
+          <th scope="col" style="width: 100px;">작성일</th>
+          <th scope="col" style="width: 100px;">답변상태</th>
+        </tr>
+      </thead>
 
-
-          <!-- 상품 문의 목록 -->
-          <div class="row px-3" style="border-top:1px solid black;">
-            <table class="table">
-              <thead class="text-center">
-                <tr>
-                  <th scope="col" style="width: 710px;">제목</th>
-                  <th scope="col" style="width: 100px;">작성자</th>
-                  <th scope="col" style="width: 100px;">작성일</th>
-                  <th scope="col" style="width: 100px;">답변상태</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {% for inquiry in inquiries %}
-                <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
-                  style="vertical-align: middle;">
-                  <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
-                  <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
-                  <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
-                  {% if inquiry.reply %}
-                  <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
-                  {% else %}
-                  <td style="width: 100px;" class="text-center">-</td>
-                  {% endif %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-         
-                          
-
-          <!-- pagination -->
-          <!-- 상품 문의 페이지네이션 -->
-          <ul class="pagination justify-content-center">
-          <!-- 이전 페이지 -->
-          {% if inquiries.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
-                <i class="bi bi-chevron-double-left"></i>
-              </a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-                <i class="bi bi-chevron-double-left"></i>
-              </a>
-            </li>
-          {% endif %}
-
-          <!-- 페이지 리스트 -->
-          {% for page_number in inquiries.paginator.page_range %}
-            {% if page_number == inquiries.number %}
-              <li class="page-item  " aria-current="page">
-                <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6; color:white' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
-              </li>
+      <tbody id="inquiryTableBody">
+        {% for inquiry in inquiries %}
+          <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+            style="vertical-align: middle;">
+            <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+            <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+            <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+            {% if inquiry.reply %}
+              <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
             {% else %}
-              <li class="page-item">
-                <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6; color:white' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
-              </li>
+              <td id="reply-status-{{ inquiry.pk }}" style="width: 100px;" class="text-center">-</td>
             {% endif %}
-          {% endfor %}
+          </tr>
 
-          <!-- 다음페이지 -->
-          {% if inquiries.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
-                <i class="bi bi-chevron-double-right"></i>
-              </a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-                <i class="bi bi-chevron-double-right"></i>
-              </a>
-            </li>
-          {% endif %}
-          </ul>
-          </div>
+          <!-- 문의 내용 및 답변 Collapse -->
+          <tr class="collapse inquiry-{{ inquiry.pk }}" id="collapse-inquiry-{{ inquiry.pk }}">
+            <td colspan="4" class="text-bg-light px-3">
+              <div>
+                <div class="d-flex">
+                  <div class="me-3">Q.</div>
+                  <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
+                </div>
+                <div>
+                  <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
+                  </div>
 
-          <!-- 다음페이지 -->
-          {% if inquiries.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
-                <i class="bi bi-chevron-double-right"></i>
-              </a>
-            </li>
-          {% else %}
-            <li class="page-item disabled">
-              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-                <i class="bi bi-chevron-double-right"></i>
-              </a>
-            </li>
-          {% endif %}
-          </ul>
-          </div>
+                  {% if inquiry.reply %}
+                    <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
+                      <div class="me-3">A.</div>
+                      <div>{{ inquiry.reply.content }}</div>
+                    </div>
+                  {% else %}
+                    <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 상품 문의 페이지네이션 -->
+  <ul class="pagination justify-content-center">
+    <!-- 이전 페이지 -->
+    {% if inquiries.has_previous %}
+			<li class="page-item">
+				<a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
+			</li>
+    {% else %}
+			<li class="page-item disabled">
+				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
+			</li>
+    {% endif %}
+
+    <!-- 페이지 리스트 -->
+    {% for page_number in inquiries.paginator.page_range %}
+			{% if page_number == inquiries.number %}
+				<li class="page-item active" aria-current="page">
+					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+				</li>
+			{% else %}
+				<li class="page-item">
+					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+				</li>
+			{% endif %}
+    {% endfor %}
+
+    <!-- 다음페이지 -->
+    {% if inquiries.has_next %}
+			<li class="page-item">
+				<a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
+			</li>
+    {% else %}
+			<li class="page-item disabled">
+				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
+			</li>
+    {% endif %}
+	</ul>
+</div>
 
 
           <!-- slides end -->
@@ -370,7 +378,6 @@
     </section>
   </div>
 </div>
-
 
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
