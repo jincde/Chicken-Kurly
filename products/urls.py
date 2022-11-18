@@ -16,4 +16,5 @@ urlpatterns = [
     path('<int:product_pk>/inquiry/<int:inquiry_pk>/update/', views.update_inquiry, name='update_inquiry'),   # 문의 수정
     path('<int:product_pk>/inquiry/<int:inquiry_pk>/delete/', views.delete_inquiry, name='delete_inquiry'),   # 문의 삭제
     path('<int:product_pk>/inquiry/<int:inquiry_pk>/reply/', views.create_reply, name='create_reply'),   # 답변 등록
+    path('<int:product_pk>/payment/', views.payment, name='payment'),
 ]
