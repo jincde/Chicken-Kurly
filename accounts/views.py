@@ -7,6 +7,8 @@ from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
+from products.models import Cart, Ddib
+from .models import OrderItem, WatchItem, Product, User
 from django.contrib import messages
 from .models import OrderItem, WatchItem, Product, User
 from products.models import Cart, Ddib
@@ -186,8 +188,6 @@ def delete(request):
     return redirect("accounts:login")
 
 
-# admin의 판매 상품 등록
-
 # 로그인한 유저의 장바구니 페이지
 @login_required
 def cart(request):
@@ -208,31 +208,16 @@ def cart(request):
     return render(request, 'accounts/cart.html', context)
 
 
-# 장바구니에서 구매 & 삭제
+# 장바구니에서 삭제
 @login_required
 def cart_update(request):
     cart = Cart.objects.get(user=request.user)
     selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
-    quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
     
     # print(request.POST)
     deleted_item_pk_list = []
-    
-    # axios 아니면 그냥 request.POST로 해도 OK
-    if 'purchase' in request.POST.get('kindOfSubmit'):
-        # 선택된 아이템의 개수만큼 반복
-        for i in range(len(selected_items)):
-            # 1. 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
-            cart_item = cart.cartitem_set.get(pk=selected_items[i])
-            # 2. 장바구니 페이지에서 수정된 수량으로 변경
-            quantity = quantities[i]
-            
-            # 위 2개의 정보를 바탕으로 주문서 작성
-            OrderItem.objects.create(ordered=True, product=cart_item.product, quantity=quantity, user=request.user)
-            cart_item.product.sold_count += 1
-            cart_item.product.save()
-    
-    elif 'select_delete' in request.POST.get('kindOfSubmit'):
+
+    if 'select_delete' in request.POST.get('kindOfSubmit'):
         for i in range(len(selected_items)):
             # 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
             cart_item = cart.cartitem_set.get(pk=selected_items[i])
@@ -279,11 +264,24 @@ def tocart(request, product_pk):
     return redirect('accounts:cart')
 
 
+# 장바구니 결제
 def payment(request):
-    print('###########', request.POST)
+    cart = Cart.objects.get(user=request.user)
+
+    imp_uid = request.POST.get('imp_uid')
+    merchant_uid = request.POST.get('merchant_uid')
     selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
     quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
-    print(selected_items)
-    print(quantities)
     
+    for i in range(len(selected_items)):
+        # 1. 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
+        cart_item = cart.cartitem_set.get(pk=selected_items[i])
+        # 2. 장바구니 페이지에서 수정된 수량으로 변경
+        quantity = quantities[i]
+        
+        # 위의 정보를 바탕으로 주문서 작성
+        OrderItem.objects.create(product=cart_item.product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid)
+        cart_item.product.sold_count += 1
+        cart_item.product.save()
+
     return redirect('accounts:cart')

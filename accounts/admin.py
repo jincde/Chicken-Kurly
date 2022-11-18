@@ -5,5 +5,3 @@ from .models import OrderItem, WatchItem, User
 admin.site.register(OrderItem)
 admin.site.register(WatchItem)
 admin.site.register(User)
-
-

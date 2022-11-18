@@ -91,21 +91,22 @@ class OrderItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
   quantity = models.IntegerField()
-  ordered = models.BooleanField(default=False)
   order_date = models.DateTimeField(auto_now_add=True)
+  imp_uid = models.CharField(max_length=50)
+  merchant_uid = models.CharField(max_length=50)
   
   def __str__(self):
     return '{}'.format(self.id)
 
   def get_item_price(self):
-    return self.price * self.quantity
+    return self.product.price * self.quantity
+
 
 # 찜한 상품
 class WatchItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   ddib = models.ForeignKey(Ddib, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
 
 
 # 등급
