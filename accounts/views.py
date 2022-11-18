@@ -156,20 +156,20 @@ def ddib_delete(request, product_pk):
 def profile_update(request):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
-        forms = PasswordChangeForm(request.user, request.POST)
-        if form and forms.is_valid():
+        
+        if form.is_valid():
             form.save()
-            forms.save()
+            
             return redirect("accounts:profile", request.user.pk)
     else:
         form = ProfileForm(instance=request.user)
-        forms = PasswordChangeForm(request.user)
+        
     return render(
         request,
         "accounts/profile_update.html",
         {
             "form": form,
-            "forms": forms,
+            
         },
     )
 
