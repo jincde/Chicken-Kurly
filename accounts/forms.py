@@ -31,6 +31,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile()
         fields = ["image",]
+        labels = {
+            'image': '프로필 사진'
+        }
 
 
 # admin이 사용자의 구매상품 정보를 등록할 때의 form
