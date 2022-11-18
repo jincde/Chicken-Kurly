@@ -3,10 +3,8 @@
 {% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
-{% load widget_tweaks %}
-
-
 {% block content %}
+
 <div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
   <div class="container test-grid" style="max-width: 1070px; display: grid;">
     <div class="profile" style="max-width: 100%; background-color: white;">
@@ -107,6 +105,51 @@
 </div>
 
 
+
+<!-- profile --> 
+<div class="container d-flex justify-content-center">
+  <div class="row">
+    <div class="col-4 p-3">
+      {% if person.image %}
+      <img src="{{ person.image.url }}" alt="">
+      {% else %}
+      <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
+      {% endif %}
+    </div>
+    <div class="col-4 p-3 mx-auto my-auto w-50">
+      <div class="row">
+        <h2 class="fs-3 fw-bold">{{ person }}</h2>
+        <h2>{{ user.rating }}</h2>
+        <div class="d-flex">
+          <span class="fs-6 fw-light">팔로잉:
+            {{ person.followings.count }}
+
+          </span>
+          <span class="fs-6 fw-light mx-3">팔로워:
+            {{ person.followers.count }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- 회원정보 수정 -->
+<div class="d-flex justify-content-center">
+  <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
+  {% if request.user.is_authenticated %}
+  <p class="ms-3">
+  <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="팔로우" class="btn btn-outline-primary btn-sm">
+  </form>
+  </p>
+  {% endif %}
+</div>
+
+
 {% comment %} 찜한 상품 {% endcomment %}
 <div style="padding: 40px 0;">
   <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
@@ -154,29 +197,51 @@
                   </div> {% endcomment %}
                   <div class="modal-body item-cart-modals" data-item-id="{{ item.pk }}"> 
                   {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
-                    <span class='d-flex justify-content-center'>{{ item.product.product_name }}</span>
+                    {{ item.product.product_name }}
                       <div class="row">
                         <div class="d-flex justify-content-center mb-3 mt-3">
                           <!-- 수량 입력 -->
                           <div class="col-2">
-                            <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
-                            {% csrf_token %}  
-                              <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" class="form-control quantity-input text-center me-" type="number" name="checkquantity" min="1" value="1">
+                          <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
+                          {% csrf_token %}
+                            <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="checkquantity" min="1" value="1">
+                            <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
+                          </form>
                           </div>
-                          <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-                          <div class="fw-bold my-2 mx-3"><span class="price-fields m-0" id="price-{{ item.pk }}-field">{{ item.product.price}}</span>원</div>
-                        </div> 
+                          
+                          <div class="col-2 d-flex justify-content-end align-items-center">
+                            <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
+                            <div class="fw-bold"><span class="price-fields m-0" id="price-{{ item.pk }}-field">{{ item.product.price }}원</span></div>
+                          </div>
+                        </div>
+                      </div> 
+                  </div>
+                  
+                  <div class="text-center mb-3">
+                    <button type="button" class="btn me-2 " data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                  
+                    <!-- 장바구니로 담았다는 멘트 모달 -->
+                    <div class="modal fade" id="cartModal-{{ item.pk }}" tabindex="-1" aria-hidden="true" style="border: 0px solid black;">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header" style="border: 0px solid black;">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            장바구니에 상품을 담았습니다. <span id="product-existing"></span>
+                          </div>
+                          <div class="modal-footer" style="border: 0px solid black">
+                            <button type="submit" class="btn" data-bs-dismiss="modal"
+                              style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
+                          </div>
+                        </div>
                       </div>
-                      <div class="text-center mb-2">
-                        <button type="button" class="btn me-2 " data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                        <button button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
-                            </form>
-                      </div>  
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          {% endfor %}
+        {% endfor %}
       </div>
       {% comment %} <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
           style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
@@ -243,6 +308,115 @@
 </div>
 </div>
 
+<!-- 문의한 글 실험 -->
+<div style="padding: 40px 0;">
+  <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
+    <h3 style="color: rgb(51, 51, 51)"></h3>
+  </div>
+  <div class="swiper-box" style="position: relative; padding:0 40px;">
+    <section class="swiper" id="test-slide">
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        <!-- 상품 문의 등록 버튼 & 모달 -->
+        <div class="row">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold m-0" style='font-size: 18px;'>나의 질문 내역</h2>
+          </div>
+
+
+
+          <!-- 상품 문의 목록 -->
+          <div class="row px-3" style="border-top:1px solid black;">
+            <table class="table">
+              <thead class="text-center">
+                <tr>
+                  <th scope="col" style="width: 710px;">제목</th>
+                  <th scope="col" style="width: 100px;">작성자</th>
+                  <th scope="col" style="width: 100px;">작성일</th>
+                  <th scope="col" style="width: 100px;">답변상태</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for inquiry in inquiries %}
+                <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+                  style="vertical-align: middle;">
+                  <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+                  <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+                  <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+                  {% if inquiry.reply %}
+                  <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+                  {% else %}
+                  <td style="width: 100px;" class="text-center">-</td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+         
+                          
+
+          <!-- pagination -->
+          <!-- 상품 문의 페이지네이션 -->
+          <ul class="pagination justify-content-center">
+          <!-- 이전 페이지 -->
+          {% if inquiries.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
+                <i class="bi bi-chevron-double-left"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+                <i class="bi bi-chevron-double-left"></i>
+              </a>
+            </li>
+          {% endif %}
+
+          <!-- 페이지 리스트 -->
+          {% for page_number in inquiries.paginator.page_range %}
+            {% if page_number == inquiries.number %}
+              <li class="page-item  " aria-current="page">
+                <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6; color:white' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% else %}
+              <li class="page-item">
+                <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6; color:white' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+
+          <!-- 다음페이지 -->
+          {% if inquiries.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+                <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+                <i class="bi bi-chevron-double-right"></i>
+              </a>
+            </li>
+          {% endif %}
+          </ul>
+          </div>
+
+
+          <!-- slides end -->
+          <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
+              style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+          </div>
+          <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
+              style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+          </div>
+    </section>
+  </div>
+</div>
 
 
 
@@ -252,10 +426,53 @@
 
 
 
-{% endblock content %}
+<!-- 문의한 글 -->
+<!-- 상품 문의 등록 버튼 & 모달 
+<div class="row">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
+    <button type="button" class="btn fw-bold" data-bs-toggle="modal" data-bs-target="#inquiry"
+      style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">문의하기</button>
+  </div>
+-->
 
-{% block script %}
-  
+
+  <!-- 상품 문의 목록 
+<div class="row px-3" style="border-top:1px solid black;">
+  <table class="table">
+    <thead class="text-center">
+      <tr>
+        <th scope="col" style="width: 710px;">제목</th>
+        <th scope="col" style="width: 100px;">작성자</th>
+        <th scope="col" style="width: 100px;">작성일</th>
+        <th scope="col" style="width: 100px;">답변상태</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for inquiry in inquiries %}
+      <tr data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+        style="vertical-align: middle;">
+        <td class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+        <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+        <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+        {% if inquiry.reply %}
+        <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+        {% else %}
+        <td style="width: 100px;" class="text-center">-</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+-->
+
+  {% if request.user.is_superuser == 1 %}
+  <a href="{% url 'accounts:create' %}" class="btn btn-primary">상품등록</a>
+  {% endif %}
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('#test-slide', {
       // Optional parameters
@@ -282,8 +499,11 @@
     });
 
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-  <script src="{% static 'js/sns.js' %}"></script>
+  
+
+{% endblock content %}
+
+{% block script %}
   <script type="text/javascript" src="{% static 'js/ddibtocart.js' %}"></script>
   <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 {% endblock script %}
