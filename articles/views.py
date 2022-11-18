@@ -48,7 +48,6 @@ def create(request):
 
 @login_required
 def detail(request, pk):
-
     article = Article.objects.get(pk=pk)
     comments = Comment.objects.filter(article=article).order_by('-pk')
     recomment_form = ReCommentForm()

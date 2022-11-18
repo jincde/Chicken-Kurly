@@ -14,3 +14,4 @@ python-dotenv==0.21.0
 pytz==2022.6
 six==1.16.0
 sqlparse==0.4.3
+markdown==3.4.1
