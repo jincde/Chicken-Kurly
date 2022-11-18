@@ -1,6 +1,6 @@
 {% load static %}
 {% load django_bootstrap5 %}
-
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,8 +16,8 @@
 
   <!-- bootstrap icon -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
-    rel="stylesheet">
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
   <link rel="icon" type="image/png" sizes="72x72" href="{% static 'images/android-icon-72x72.png' %}">
@@ -81,14 +81,15 @@
           <div class="icons d-flex justify-content-between" style="width: 130px;">
             <div><i class="bi bi-github" style="font-size: 1.4rem"></i></div>
             <div><a class='non_a' href=""><i class="bi bi-heart" style="font-size: 1.4rem"></i></a></div>
-            <div><a class='non_a' href="{% url 'accounts:cart' %}"><i class="bi bi-cart" style="font-size: 1.4rem"></i></a></div>
+            <div><a class='non_a' href="{% url 'accounts:cart' %}"><i class="bi bi-cart"
+                  style="font-size: 1.4rem"></i></a></div>
           </div>
         </div>
       </div>
     </div>
   </nav>
-    <nav class="d-flex align-items-center justify-content-center"
-      style="height: 56px; color: rgb(51, 51, 51); font-weight: 500; position: sticky; top: 0; z-index: 0; background-color: white;">
+  <nav class="d-flex align-items-center justify-content-center"
+    style="height: 56px; color: rgb(51, 51, 51); font-weight: 500; position: sticky; top: 0; z-index: 0; background-color: white;">
     <div class="d-grid" style="grid-template-columns: 25fr 50fr 25fr; max-width: 1050px; padding: 0 12px;">
       <div style="width: 262px;"></div>
       <div class="container d-flex justify-content-between" style="max-width: 1050px;">
