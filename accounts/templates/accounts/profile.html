@@ -153,46 +153,27 @@
                   </div> {% endcomment %}
                   <div class="modal-body item-cart-modals" data-item-id="{{ item.pk }}"> 
                   {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
+                    <div class='text-center mb-2'>
                     {{ item.product.product_name }}
+                    </div>
                       <div class="row">
-                        <div class="d-flex justify-content-center mb-3 mt-3">
                           <!-- 수량 입력 -->
-                          <div class="col-2">
+                          <div class="">
                           <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
                           {% csrf_token %}
-                            <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="checkquantity" min="1" value="1">
-                            <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
+                            <div class='d-flex justify-content-center'>
+                              <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" style='width:80px; height:30px' class="form-control quantity-input me-2 text-center" type="number" name="checkquantity" min="1" value="1">
+                              <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
+                              <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price }}</span>원</div>
+                            </div>
+                            <div class='d-flex justify-content-center'>
+                              <button type="button" class="btn me-2" data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                              <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
+                            </div>
                           </form>
-                          </div>
-                          
-                          <div class="col-2 d-flex justify-content-end align-items-center">
-                            <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-                            <div class="fw-bold"><span class="price-fields m-0" id="price-{{ item.pk }}-field">{{ item.product.price }}원</span></div>
                           </div>
                         </div>
                       </div> 
-                  </div>
-                  
-                  <div class="text-center mb-3">
-                    <button type="button" class="btn me-2 " data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                  
-                    <!-- 장바구니로 담았다는 멘트 모달 -->
-                    <div class="modal fade" id="cartModal-{{ item.pk }}" tabindex="-1" aria-hidden="true" style="border: 0px solid black;">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header" style="border: 0px solid black;">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            장바구니에 상품을 담았습니다. <span id="product-existing"></span>
-                          </div>
-                          <div class="modal-footer" style="border: 0px solid black">
-                            <button type="submit" class="btn" data-bs-dismiss="modal"
-                              style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

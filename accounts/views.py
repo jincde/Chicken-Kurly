@@ -18,7 +18,6 @@ import json
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-
 # Create your views here.
 def signup(request):
     if request.method == "POST":
