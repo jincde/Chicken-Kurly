@@ -5,15 +5,22 @@ from imagekit.processors import Thumbnail
 from django.conf import settings
 from products.models import Product, DdibItem
 from products.models import Product, Ddib
-from django.views.generic.dates import timezone_today
-from collections import defaultdict
 from django.core.validators import MinLengthValidator
+
 
 
 
 
 # Create your models here.
 class User(AbstractUser):
+    BRONZE, SILVER, GOLD = "Bronze", "Silver", "Gold"
+    
+    rating_choices = (
+        (BRONZE, "Bronze"),
+        (SILVER, "Silver"),
+        (GOLD, "Gold"),
+    )
+
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
     )
@@ -26,10 +33,45 @@ class User(AbstractUser):
     )
     address = models.CharField(max_length=50)
     username = models.CharField(validators=[MinLengthValidator(5)], max_length=16, unique=True)
+    name = models.CharField(max_length=200, null=True)
+    current_rating = models.IntegerField(default=500, verbose_name="Current Rating")
+    rating = models.CharField(max_length=255, choices=rating_choices, default=BRONZE, verbose_name="rating")
+    xp = models.IntegerField(default=10, verbose_name="XP")
 
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
+
+    RATING_THRESHOLDS = {
+        BRONZE: 10000,
+        SILVER: 30000,
+        GOLD: 50000,
+    }
+    
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+        
+
+    def get_current_choice(self):
+        rating = self.current_rating
+        if rating < self.RATING_THRESHOLDS[self.BRONZE]:
+            return self.BRONZE
+        elif rating < self.RATING_THRESHOLDS[self.SILVER]:
+            return self.SILVER
+        elif rating < self.RATING_THRESHOLDS[self.GOLD]:
+            return self.GOLD
+        
+
+    PARTICIPATION_XP, VIP_XP, V_VIP_XP = 10000, 30000, 50000
+
+    def get_current_level_and_xp_threshold(self):
+        current_xp = self.xp
+        xp_threshold = 10000
+        level = 1
+        while current_xp > xp_threshold:
+            level += 1
+            xp_threshold += xp_threshold
+        return level, xp_threshold
 
 
 class Profile(models.Model):
@@ -86,79 +128,3 @@ class WatchItem(models.Model):
 
 
 # 등급
-BRONZE_MEMBERSHIP = 1
-SILVER_MEMBERSHIP = 2
-GOLD_MEMBERSHIP = 3
-
-
-MEMBERSHIP_AMOUNTS = {
-    'gold': 50000,
-    'silver': 30000,
-    'bronze': 0,
-}
-
-MEMBERSHIP_LEVELS = (
-    (BRONZE_MEMBERSHIP, 'Bronze'),
-    (SILVER_MEMBERSHIP, 'Silver'),
-    (GOLD_MEMBERSHIP, 'Gold'),
-)
-
-MEMBERSHIP_TO_KEY = dict((k, v.lower()) for k, v in MEMBERSHIP_LEVELS)
-
-class UserMember(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    display_name = models.CharField(max_length=250)
-    billing_name = models.CharField(
-        max_length=250,
-        blank=True,
-        help_text='If different from display name.',
-    )
-    contact_name = models.CharField(max_length=250)
-    contact_email = models.EmailField()
-    billing_email = models.EmailField(blank=True, help_text='If different from contact email.',)
-    membership_level = models.IntegerField(choices=MEMBERSHIP_LEVELS)
-    address = models.TextField(blank=True)
-    django_usage = models.TextField(blank=True, help_text='Not displayed publicly.')
-    inactive = models.BooleanField(default=False, help_text='No longer renewing.')
-
-    def for_public_display(self):
-        objs = self.get_queryset().filter(
-            invoice__expiration_date__gte=timezone_today(),
-        ).annotate(purchased_amount=models.Sum('invoice__amount'))
-        return objs.order_by('-purchased_amount', 'display_name')
-
-    def by_membership_level(self):
-        members_by_type = defaultdict(list)
-        members = self.for_public_display()
-        for member in members:
-            key = MEMBERSHIP_TO_KEY[member.membership_level]
-            members_by_type[key].append(member)
-        return members_by_type
-    
-    def _is_invoiced(self):
-        invoices = self.invoice_set.all()
-        return bool(invoices) and all(invoice.sent_date is not None for invoice in invoices)
-    _is_invoiced.boolean = True
-    is_invoiced = property(_is_invoiced)
-
-    def _is_paid(self):
-        invoices = self.invoice_set.all()
-        return bool(invoices) and all(invoice.paid_date is not None for invoice in invoices)
-    _is_paid.boolean = True
-    is_paid = property(_is_paid)
-
-    def get_expiry_date(self):
-        expiry_date = None
-        for invoice in self.invoice_set.all():
-            if expiry_date is None:
-                expiry_date = invoice.expiration_date
-            elif invoice.expiration_date and invoice.expiration_date > expiry_date:
-                expiry_date = invoice.expiration_date
-        return expiry_date
-
-class Invoice(models.Model):
-    sent_date = models.DateField(blank=True, null=True)
-    amount = models.IntegerField(help_text='In integer dollars')
-    paid_date = models.DateField(blank=True, null=True)
-    expiration_date = models.DateField(blank=True, null=True)
-    member = models.ForeignKey(UserMember, on_delete=models.CASCADE)

@@ -190,6 +190,40 @@
   </div>
 </div>
 
+<div class='d-flex row' style="margin: 0 auto; width: 1070px; height: 170px; overflow-x: scroll; overflow: hidden;">
+  <div id="instafeed-container" class="scrolling-wrapper"
+    style="width: 1070px; height: 170px; display: flex; gap: 5px; padding: 0px;">
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/gh/stevenschobert/instafeed.js@2.0.0rc1/src/instafeed.min.js"></script>
+<script type="text/javascript">
+  var userFeed = new Instafeed({
+    get: 'user',
+    target: "instafeed-container",
+    resolution: 'low_resolution',
+    accessToken: 'IGQVJWdTVLLWxVV0xjNm1VUlc2OGcxYkRCRnJ2bzZACWk5IYTQ5eXNQN0pEZAWMzLTlLVmtfTmNJU3RTVWlEb09fRGpWTHBwNVpVWjQ2ckEtMncyS2s1ZA09MRUNkQW80VnRDSUROVGt2YVRwQjdoRHk4MAZDZD',
+    template: '<div class="swiper-slide" style="width:174px;"><a class="animation" href="\{\{link\}\}"><img src="\{\{image\}\}" /></a></div>',
+    after: function () {
+
+      var swiper = new Swiper('.swiper-container', {
+
+        effect: 'cube',
+        grabCursor: true,
+        loop: true,
+        autoplay: 3000,
+        cube: {
+          shadow: false,
+          slideShadows: false,
+          shadowOffset: 20,
+          shadowScale: 0.94
+        }
+      });
+    }
+  });
+  userFeed.run();
+</script>
+
 {% if request.user.is_superuser == 1 %}
 <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
 {% endif %}
