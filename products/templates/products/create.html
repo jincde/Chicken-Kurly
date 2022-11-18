@@ -2,11 +2,12 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
+<section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
 <div class="container my-5">
   {% if request.resolver_match.url_name == 'create' %}
-  <h1 class="text-center mb-5">판매 상품 등록</h1>
+  <h1 class="mb-5 text-center" style='color:#5e0080;'>판매 상품 등록</h1>
   {% else %}
-  <h1 class="text-center mb-5">판매 상품 수정</h1>
+  <h1 class="mb-5 text-center" style='color:#5e0080;'>판매 상품 수정</h1>
   {% endif %}
 
   <form action="" method="POST" enctype="multipart/form-data">
@@ -15,13 +16,13 @@
     {% bootstrap_form image_form %}
 
     <div class="text-end">
-
       {% if request.resolver_match.url_name == 'create' %}
-      <input type="submit" value="등록" class="btn btn-primary">
+      <input type="submit" value="등록" style='background-color: #5e0080; border-color: #5e0080; color:white' class="btn btn-primary">
       {% else %}
-      <input type="submit" value="수정" class="btn btn-primary">
+      <input type="submit" value="수정" style='background-color: #5e0080; border-color: #5e0080; color:white' class="btn btn-primary">
       {% endif %}
     </div>
   </form>
 </div>
+</section>
 {% endblock content %}
