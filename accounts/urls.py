@@ -16,7 +16,6 @@ urlpatterns = [
     path("profile_update/", views.profile_update, name="profile_update"),
     path("delete/", views.delete, name="delete"),
     path("<int:user_pk>/follow/", views.follow, name="follow"),
-    path('create/', views.create, name='create'),
     path('cart/', views.cart, name='cart'), # 장바구니 페이지
     path('cart/update/', views.cart_update, name='cart_update'), # 장바구니 구매 및 삭제
     path('cart/payment/', views.payment, name='payment'),
