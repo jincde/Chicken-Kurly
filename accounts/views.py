@@ -10,8 +10,6 @@ from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
 from .models import OrderItem, WatchItem, Product, User
 from django.contrib import messages
-from .models import OrderItem, WatchItem, Product, User
-from products.models import Cart, Ddib
 from .forms import ProductBuyForm
 from products.models import *
 from products.forms import *
