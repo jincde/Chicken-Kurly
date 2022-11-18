@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-12 col-md-9">
         {% for item in cart_items %}
-        <div class="row" id="product-{{ item.pk }}-box">
+        <div class="product-boxes row" id="product-{{ item.pk }}-box">
           <div class="d-flex align-items-center form-check mb-4">
             <!-- 체크박스 -->
             <input data-item-id="{{ item.pk }}" class="item-checkboxes form-check-input me-3" type="checkbox"
@@ -42,8 +42,7 @@
 
             <div class="col-2 d-flex justify-content-end align-items-center">
               <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-              <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price
-                  }}</span>원</div>
+              <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price}}</span>원</div>
               <!-- 장바구니에서 삭제 -->
               <input type="submit" class="btn-close" name="delete" value="{{ item.pk }}" style="color:transparent;">
             </div>
@@ -89,10 +88,6 @@
           </div>
         </div>
 
-        <input type="submit" name="purchase" value="주문하기" class="btn w-100 fs-5 my-3"
-          style="border-radius:3px; height:60px; background-color:#5e0080; color:white" data-bs-toggle="modal"
-          data-bs-target="#purchase">
-
         <!-- 결제버튼 클릭 시 PG사의 결제 페이지가 열림 -->
         <button id="btn-payment" onclick="requestPay();" value="결제하기" class="btn w-100 fs-5 my-3"
           style="border-radius:3px; height:60px; background-color:#5e0080; color:white" disabled>결제하기</button>
@@ -126,5 +121,5 @@
 <!-- Iamport -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment_cart.js' %}"></script>
 {% endblock script %}

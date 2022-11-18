@@ -435,3 +435,7 @@ def create_reply(request, product_pk, inquiry_pk):
 
     # return redirect('products:detail', product_pk)
     return JsonResponse(data)
+
+
+def payment(request, product_pk):
+    pass

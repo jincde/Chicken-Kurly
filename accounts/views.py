@@ -107,47 +107,27 @@ def change_password(request):
     return render(request, "accounts/change_password.html", context)
 
 
-def profile(request, user_pk, product_pk, inquiry_pk):
-    product = get_object_or_404(Product, pk=product_pk)
-    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
+def profile(request, user_pk):
     products = Product.objects.order_by('-pk')
     ddib = Ddib.objects.get(user=request.user) # 요청한 사용자의 찜(가방)을 가져와라.
     ddib_items = ddib.ddibitem_set.all() # 찜한 목록(가방 안에 있는 물건들)을 가져와라.
+    
     OrderItems = OrderItem.objects.order_by('-pk')
     order_items = OrderItem.objects.filter(user=request.user)
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
-    inquiry_form = InquiryForm()
     inquiries = user.inquiry_set.order_by('-pk')
-    reply_form = ReplyForm()
+
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
     product_buy_form = ProductBuyForm() 
     cart = Cart.objects.get(user=request.user)
     cart_items = cart.cartitem_set.all()
+
     # 문의 페이지네이션
     inquiry_page = request.GET.get('inquiry_page', '1')
     inquiry_paginator = Paginator(inquiries, 5)
     inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
-
-    inquiry_title = ''
-    inquiry_content = ''
-
-    if request.user == inquiry.user:
-        # 모델폼이 아니어도 유효성검사가 된다.
-        if request.method == 'POST':
-            inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
-            if inquiry_form.is_valid():
-                new_inquiry = inquiry_form.save(commit=False)
-                new_inquiry.user = request.user
-                new_inquiry.product = product
-                new_inquiry.save()
-
-                inquiry_title = new_inquiry.title
-                inquiry_content = new_inquiry.content
-
-        else:
-            inquiry_form = InquiryForm(instance=inquiry)
 
     context = {
         "OrderItems": OrderItems,
@@ -156,17 +136,9 @@ def profile(request, user_pk, product_pk, inquiry_pk):
         'product_buy_form': product_buy_form,
         'order_items': order_items,
         'watch_items': watch_items,
-        'inquiry_form': inquiry_form,
         'cart_items': cart_items,
         'inquiries': inquiries,
-        'reply_form': reply_form,
         'inquiries': inquiry_page_obj,
-
-        'product': product,
-        'inquiry': inquiry,
-        
-        'inquiryTitle': inquiry_title,
-        'inquiryContent': inquiry_content,
     }
 
     return render(request, "accounts/profile.html", context)

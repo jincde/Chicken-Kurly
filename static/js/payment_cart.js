@@ -61,7 +61,10 @@ function requestPay() {
         data: formData
       })
       .then(response => {
-
+        const productBoxes = document.querySelectorAll('.product-boxes')
+        productBoxes.forEach(productBox => {
+          productBox.remove()
+        })
       })
     } else {
       // 결제 실패 시 로직,
