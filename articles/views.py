@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from products.models import Product
 from django.db.models import Q
+from django.core.paginator import Paginator
 # Create your views here.
 
 
