@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load widget_tweaks %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block content %}
   <!-- profile update -->
   <!-- 비밀번호 변경 -->
 <section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
-  <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;"  >
+  <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" enctype="multipart/form">
     {% csrf_token %}
     <h1 class="mb-5 text-center" style='color:#5e0080;' >개인정보 수정</h1>
     <fieldset class="form-group">
@@ -14,7 +15,9 @@
       <div>
         <h6>아이디</h6>
         <p class="form-control" style="background-color: rgb(221, 225, 227); color:#212529">{{ user.username }}</p>
-        {% bootstrap_form forms %}
+        
+        {% bootstrap_form password_form %}
+
         <div class="d-flex justify-content-between">
         <h6 class="my-3" style="width:123px; color: rgb(51, 51, 51); font-size:14px;">배송받을 주소</h6>
         <div class="my-3">
@@ -29,7 +32,7 @@
       </div>
           {% bootstrap_form form %}
           <input type="submit" class="btn" style='background-color: #5e0080; border-color: #5e0080; color:white' value="수정">
-          <a href="{% url 'accounts:change_password' %}" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>비밀번호 수정</a>
+          {% comment %} <a href="{% url 'accounts:change_password' %}" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>비밀번호 수정</a> {% endcomment %}
           <a href="" class="btn" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>돌아가기</a>
           <a href="{% url 'accounts:delete' %}" class="btn float-end" style='border: 1px solid #5e0080; color: #5e0080; font-weight: 500'>회원탈퇴</a>
         </fieldset>
@@ -42,6 +45,14 @@
 </section>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+  const oldPW = document.querySelector('#id_old_password')
+  const newPW1 = document.querySelector('#id_new_password1')
+  const newPW2 = document.querySelector('#id_new_password2')
+
+  oldPW.removeAttribute('required')
+  newPW1.removeAttribute('required')
+  newPW2.removeAttribute('required')
+
   function sample6_execDaumPostcode() {
     new daum.Postcode({
       oncomplete: function (data) {

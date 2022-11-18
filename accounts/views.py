@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SignupForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
@@ -74,19 +74,30 @@ def logout(request):
 
 
 @login_required
-def update(request):
+def profile_update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.POST, instance=request.user)
+        password_form = PasswordChangeForm(request.user, request.POST)
+
         if form.is_valid():
             form.save()
-            
-            return redirect("accounts:profile", request.user.pk)
+
+        if password_form.is_valid():
+            password_form.save()
+            update_session_auth_hash(request, password_form.user)
+
+        return redirect("accounts:profile", request.user.pk) 
+
     else:
         form = CustomUserChangeForm(instance=request.user)
+        password_form = PasswordChangeForm(request.user)
+
     context = {
         "form": form,
+        "password_form": password_form
     }
-    return render(request, "accounts/update.html", context)
+
+    return render(request, "accounts/profile_update.html", context)
 
 
 @login_required
@@ -95,6 +106,7 @@ def change_password(request):
         forms = PasswordChangeForm(request.user, request.POST)
         if forms.is_valid():
             forms.save()
+            update_session_auth_hash(request, forms.user)  # 로그인 유지
             return redirect("accounts:profile")
     else:
         forms = PasswordChangeForm(request.user)
@@ -151,27 +163,6 @@ def ddib_delete(request, product_pk):
             item.delete()
             break
     return redirect('accounts:profile', request.user.pk)
-
-@login_required
-def profile_update(request):
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=request.user)
-        forms = PasswordChangeForm(request.user, request.POST)
-        if form and forms.is_valid():
-            form.save()
-            forms.save()
-            return redirect("accounts:profile", request.user.pk)
-    else:
-        form = ProfileForm(instance=request.user)
-        forms = PasswordChangeForm(request.user)
-    return render(
-        request,
-        "accounts/profile_update.html",
-        {
-            "form": form,
-            "forms": forms,
-        },
-    )
 
 
 @login_required
