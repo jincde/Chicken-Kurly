@@ -104,29 +104,31 @@
       </div>
       <!-- 댓글 좋아요 -->
       <div>
-        {% if request.user in comment.like_users.all %}
+        <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
+          {% if request.user in comment.like_users.all %}
+            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
+              <div class="fs-6" style="color: red;">
+                <span>
+                  <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up-fill"></i>
+                </span>
+                <span id='comment-like-count-{{ comment.pk }}'>
+                  {{ comment.like_users.count }}
+                </span>
+              </div>
+            </button>
+          {% else %}
           <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
             <div class="fs-6" style="color: red;">
-              <span id='thumbs-up-{{ comment.pk }}'>
-                <i class="bi bi-hand-thumbs-up-fill"></i>
-              </span>
               <span>
+                  <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up"></i>
+              </span>
+              <span id='comment-like-count-{{ comment.pk }}'>
                 {{ comment.like_users.count }}
               </span>
-            </div>
+          </div>
           </button>
-        {% else %}
-        <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
-          <div class="fs-6" style="color: red;">
-            <span id='thumbs-up-{{ comment.pk }}'>
-                <i class="bi bi-hand-thumbs-up"></i>
-            </span>
-            <span>
-              {{ comment.like_users.count }}
-            </span>
-         </div>
-        </button>
-        {% endif %}
+          {% endif %}
+        </form>
       </div>
     </div>
     <!-- 댓글 내용 -->
@@ -255,6 +257,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+  // 게시글 좋아요 비동기 
   const forms = document.querySelectorAll('.like-forms')
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
@@ -295,12 +298,54 @@
         })
     })
   })
+
+  // 댓글 좋아요 비동기
+  const commentforms = document.querySelectorAll('.comment-like-forms')
+  const commentcsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  commentforms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const commentId = event.target.dataset.commentId
+
+      axios({
+        method: 'post',
+        url: `/articles/c_like/${event.target.dataset.commentId}/`,
+        headers: { 'X-CSRFToken': commentcsrftoken },
+      })
+        .then((response) => {
+          const commentlikeBtn = document.querySelector(`#comment-like-btn-${commentId}`)
+          const likeCount = document.querySelector(`#comment-like-count-${commentId}`)
+          const commentisLiked = response.data.comment_is_liked
+          const thumbsUp = document.querySelector(`#thumbs-up-${commentId}`)
+          console.log(likeCount)
+
+          if (commentisLiked === true) {
+            thumbsUp.classList.remove('bi-hand-thumbs-up')
+            thumbsUp.classList.add('bi-hand-thumbs-up-fill')
+            // heart.classList.remove('bi-heart')
+            // likeBtn.classList.remove('btn-outline-danger')
+            // likeBtn.classList.add('btn-danger')
+            likeCount.innerText = response.data.like_count
+          } else {
+            thumbsUp.classList.remove('bi-hand-thumbs-up-fill')
+            thumbsUp.classList.add('bi-hand-thumbs-up')
+            // heart.classList.add('bi-heart')
+            // likeBtn.classList.remove('btn-danger')
+            // likeBtn.classList.add('btn-outline-danger')
+            likeCount.innerText = response.data.like_count
+          }
+
+        })
+    })
+  })
+ 
+
 </script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 <script>
-
   // 댓글 비동기 구현 코드 ㅠㅠ 일단 보류..
   {% comment %} const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
   const commentForm = document.querySelector('#comment-form')
