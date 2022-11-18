@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
+from accounts.models import OrderItem
 from .forms import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator
@@ -437,5 +438,17 @@ def create_reply(request, product_pk, inquiry_pk):
     return JsonResponse(data)
 
 
+@login_required
 def payment(request, product_pk):
-    pass
+    product = Product.objects.get(pk=product_pk)
+
+    imp_uid = request.POST.get('imp_uid')
+    merchant_uid = request.POST.get('merchant_uid')
+    quantity = request.POST.get('quantity')
+    
+    # 위의 정보를 바탕으로 주문서 작성
+    OrderItem.objects.create(product=product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid)
+    product.sold_count += 1
+    product.save()
+
+    return redirect('products:detail', product_pk)
