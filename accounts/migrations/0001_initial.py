@@ -1,3 +1,4 @@
+
 import django.contrib.auth.models
 import django.core.validators
 from django.db import migrations, models
@@ -33,7 +34,6 @@ class Migration(migrations.Migration):
                 ('current_rating', models.IntegerField(default=500, verbose_name='Current Rating')),
                 ('rating', models.CharField(choices=[('Bronze', 'Bronze'), ('Silver', 'Silver'), ('Gold', 'Gold')], default='Bronze', max_length=255, verbose_name='rating')),
                 ('xp', models.IntegerField(default=10, verbose_name='XP')),
-
             ],
             options={
                 'verbose_name': 'user',
