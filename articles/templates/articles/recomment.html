@@ -2,7 +2,6 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-{{ recomments }}
 <div class='container'>
   <div class="text-end">
     <a href="{% url 'articles:detail' article.pk %}" class="btn btn-outline-primary fs-6">뒤로가기</a>
@@ -12,7 +11,7 @@
     <div class='d-flex'>
       <!-- 댓글 작성자, 시간 -->
       <div class="flex-grow-1">
-        <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
+        <span class='fs-5 fw-semibold'><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ comment.user }}</a></span>
         <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
         {% if request.user == comment.user %}
         <span>
@@ -46,7 +45,7 @@
       {% if recomment.comment.pk == comment.pk %}
         <div class='my-1'>
           <div>
-            <span>{{ recomment.comment.user }}</span>
+            <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ recomment.user }}</a></span>
             <span>{{ recomment.created_at }}</span>
             {% if request.user == recomment.user %}
             <span>
