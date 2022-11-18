@@ -104,6 +104,9 @@
   </div>
 </div>
 
+
+
+<!-- profile --> 
 <div class="container d-flex justify-content-center">
   <div class="row">
     <div class="col-4 p-3">
@@ -132,7 +135,8 @@
 </div>
 </div>
 
-<!-- 회원정보 수정-->
+
+<!-- 회원정보 수정 -->
 <div class="d-flex justify-content-center">
   <a href="{% url 'accounts:profile_update' %}">회원정보 수정</a>
   {% if request.user.is_authenticated %}
@@ -144,6 +148,7 @@
   </p>
   {% endif %}
 </div>
+
 
 {% comment %} 찜한 상품 {% endcomment %}
 <div style="padding: 40px 0;">
@@ -192,51 +197,29 @@
                   </div> {% endcomment %}
                   <div class="modal-body item-cart-modals" data-item-id="{{ item.pk }}"> 
                   {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
-                    {{ item.product.product_name }}
+                    <span class='d-flex justify-content-center'>{{ item.product.product_name }}</span>
                       <div class="row">
                         <div class="d-flex justify-content-center mb-3 mt-3">
                           <!-- 수량 입력 -->
                           <div class="col-2">
-                          <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
-                          {% csrf_token %}
-                            <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" class="form-control quantity-input" type="number" name="checkquantity" min="1" value="1">
-                            <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
-                          </form>
+                            <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
+                            {% csrf_token %}  
+                              <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" class="form-control quantity-input text-center me-" type="number" name="checkquantity" min="1" value="1">
                           </div>
-                          
-                          <div class="col-2 d-flex justify-content-end align-items-center">
-                            <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-                            <div class="fw-bold"><span class="price-fields m-0" id="price-{{ item.pk }}-field">{{ item.product.price }}원</span></div>
-                          </div>
-                        </div>
-                      </div> 
-                  </div>
-                  
-                  <div class="text-center mb-3">
-                    <button type="button" class="btn me-2 " data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                  
-                    <!-- 장바구니로 담았다는 멘트 모달 -->
-                    <div class="modal fade" id="cartModal-{{ item.pk }}" tabindex="-1" aria-hidden="true" style="border: 0px solid black;">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header" style="border: 0px solid black;">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            장바구니에 상품을 담았습니다. <span id="product-existing"></span>
-                          </div>
-                          <div class="modal-footer" style="border: 0px solid black">
-                            <button type="submit" class="btn" data-bs-dismiss="modal"
-                              style="border-radius:0px; height:40px; width:120px; background-color: #5e0080; color: white">확인</button>
-                          </div>
-                        </div>
+                          <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
+                          <div class="fw-bold my-2 mx-3"><span class="price-fields m-0" id="price-{{ item.pk }}-field">{{ item.product.price}}</span>원</div>
+                        </div> 
                       </div>
-                    </div>
+                      <div class="text-center mb-2">
+                        <button type="button" class="btn me-2 " data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                        <button button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
+                            </form>
+                      </div>  
                   </div>
                 </div>
               </div>
             </div>
-        {% endfor %}
+          {% endfor %}
       </div>
       {% comment %} <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
           style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
