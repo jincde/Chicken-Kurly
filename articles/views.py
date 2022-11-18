@@ -215,7 +215,7 @@ def like(request, pk):
     return redirect('accounts:login')
 
 @login_required
-def c_like(request, c_pk, a_pk):
+def c_like(request, c_pk):
 
     if request.user.is_authenticated:
 
@@ -223,10 +223,19 @@ def c_like(request, c_pk, a_pk):
 
         if request.user in comment.like_users.all():
             comment.like_users.remove(request.user)
+            comment_is_liked = False
         else:
             comment.like_users.add(request.user)
+            comment_is_liked = True
 
-        return redirect('articles:detail', a_pk)
+        like_count = comment.like_users.count()
+
+        context = {
+            'comment_is_liked': comment_is_liked,
+            'like_count': like_count,
+        }
+
+        return JsonResponse(context)
     return redirect('accounts:login')
 
 

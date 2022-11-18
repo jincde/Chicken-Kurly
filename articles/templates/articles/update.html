@@ -3,14 +3,78 @@
 
 {% block content %}
 
-<h1 class='text-center'>글 수정</h1><hr>
+<div class="container my-5" style="width: 1070px; padding-bottom: 100px;">
+  <div style="box-shadow: 4px 12px 30px 6px rgb(0 0 0 / 9%); border-radius: 0px;  margin-bottom: 100px;">
+    <form action="" method="POST" enctype="multipart/form-data">
+      <div class="">
+        <svg viewbox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <style type="text/css">
+              .wave {
+                animation: wave 8s linear infinite;
+                transform: rotate(180deg);
+              }
 
-<form action="" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
+              .wave1 {
+                animation: wave1 10s linear infinite;
+                transform: rotate(180deg);
+              }
 
-  {% bootstrap_form article_form %}
+              .wave2 {
+                animation: wave2 12s linear infinite;
+                transform: rotate(180deg);
+              }
 
-  <input type="submit" value="글수정">
-</form>
+              @keyframes wave {
+                0% {
+                  transform: translateX(0%);
+                }
+
+                100% {
+                  transform: translateX(100%);
+                }
+              }
+
+              @keyframes wave1 {
+                0% {
+                  transform: scaleY(1.2) translateX(0%);
+                }
+
+                100% {
+                  transform: scaleY(1.2) translateX(100%);
+                }
+              }
+
+              @keyframes wave2 {
+                0% {
+                  transform: scaleY(.8) translateX(0%);
+                }
+
+                100% {
+                  transform: scaleY(.8) translateX(100%);
+                }
+              }
+            </style>
+            <path id='sineWave' fill="#5e0080" fill-opacity="0.5"
+              d="M0,160 C320,300,420,300,740,160 C1060,20,1120,20,1440,160 V0 H0" />
+          </defs>
+          <use class="wave" href="#sineWave" />
+          <use class="wave" x="-100%" href="#sineWave" />
+          <use class="wave1" href="#sineWave" />
+          <use class="wave1" x="-100%" href="#sineWave" />
+          <use class="wave2" href="#sineWave" />
+          <use class="wave2" x="-100%" href="#sineWave" />
+        </svg>
+      </div>
+      <div class="p-5">
+        {% csrf_token %}
+        <div class=" d-flex justify-content-end">
+          <input class="btn" style="color: #5e0080; font-weight: 600;" type="submit" value="수정하기">
+        </div>
+      {% bootstrap_form article_form %}
+
+    </form>
+  </div>
+</div>
 
 {% endblock content %}

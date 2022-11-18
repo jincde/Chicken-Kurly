@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class='large-font text-center top-20'>
-  <ion-icon name="heart" style="font-size: 1.2rem;">
-    <!-- <div class='red-bg'></div> -->
-  </ion-icon>
-</div>
-
 
 <div class="d-flex justify-content-between flex-wrap"
   style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0">
@@ -14,7 +8,7 @@
     <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">최신 아티클 <span
         style="font-size: 26px;">📌</span></h3>
     <div>
-      <a class="non_a" style="text-decoration: none;" href="{% url 'articles:create' %}">글쓰기</a>
+      <a class="non_a" style="text-decoration: none; color: #5e0080; font-weight: 600;" href="{% url 'articles:create' %}">글쓰기</a>
     </div>
   </div>
 </div>
@@ -45,12 +39,12 @@
         {{ article.title }}
       </a>
       <div class='text-end' style="font-size: 1.2rem; margin-top: 1.2rem;">
+        {% if request.user.is_authenticated %}
         <form class='like-forms' data-article-id="{{ article.pk }}">
           {% csrf_token %}
           {% if request.user in article.like_users.all %}
           <div class="d-flex align-items-center justify-content-end">
-            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-              id='like-btn-{{ article.pk }}'>
+            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
               <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" class="ion-icon active me-2"
                 name="heart">
               </ion-icon>
@@ -70,6 +64,18 @@
           </div>
           {% endif %}
         </form>
+        {% else %}
+        <form>
+          <div class="d-flex align-items-center justify-content-end">
+            <a href="{% url 'accounts:login' %}" class="d-flex text-center" style="color: black;">
+              <ion-icon style="color: red; font-size: 1.5rem;" class="ion-icon me-2"
+                name="heart"></ion-icon>
+              <span style="font-size: 1rem">
+                {{ article.like_users.count }}</span>
+            </a>
+          </div>          
+        </form>
+        {% endif %}
       </div>
       <!-- 글 내용 요약 -->
       <!-- <p class='fs-6'

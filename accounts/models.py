@@ -38,6 +38,7 @@ class User(AbstractUser):
     rating = models.CharField(max_length=255, choices=rating_choices, default=BRONZE, verbose_name="rating")
     xp = models.IntegerField(default=10, verbose_name="XP")
 
+
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
@@ -86,26 +87,6 @@ class Profile(models.Model):
     )
 
 
-# class Order(models.Model):
-#   first_name = models.CharField(max_length=50)
-#   last_name = models.CharField(max_length=50)
-#   created = models.DateTimeField(auto_now_add=True)
-#   paid = models.BooleanField(default=False)
-
-#   class Meta:
-#     ordering = ['-created']
-
-#   def __str__(self):
-#     return 'Order {}'.format(self.id)
-
-#   def get_total_product(self):
-#     return sum(item.get_item_price() for item in self.items.all())
-
-#   def get_total_price(self):
-#     total_product = self.get_total_product()
-#     return total_product - self.discount
-
-# 구매한 물품의 주문서 정보
 class OrderItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
@@ -120,12 +101,12 @@ class OrderItem(models.Model):
   def get_item_price(self):
     return self.product.price * self.quantity
 
+
 # 찜한 상품
 class WatchItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   ddib = models.ForeignKey(Ddib, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
 
 
 # 등급

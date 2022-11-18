@@ -2,7 +2,6 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-{{ recomments }}
 <div class='container'>
   <div class="text-end">
     <a href="{% url 'articles:detail' article.pk %}" class="btn btn-outline-primary fs-6">뒤로가기</a>
@@ -12,7 +11,7 @@
     <div class='d-flex'>
       <!-- 댓글 작성자, 시간 -->
       <div class="flex-grow-1">
-        <span class='fs-5 fw-semibold' style="color: #5e0080;">{{ comment.user }}</span>
+        <span class='fs-5 fw-semibold'><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ comment.user }}</a></span>
         <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
         {% if request.user == comment.user %}
         <span>
@@ -26,11 +25,31 @@
       </div>
       <!-- 댓글 좋아요 -->
       <div>
-        {% if request.user in comment.like_users.all %}
-          <span><a href="{% url 'articles:rec_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up-fill"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
-        {% else %}
-          <span><a href="{% url 'articles:rec_like' comment.pk article.pk %}" style="color: red;"><i class="bi bi-hand-thumbs-up"></i></a></span><span style="color: red;">{{ comment.like_users.count }}</span>
-        {% endif %}
+        <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
+          {% if request.user in comment.like_users.all %}
+            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
+              <div class="fs-6" style="color: red;">
+                <span>
+                  <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up-fill"></i>
+                </span>
+                <span id='comment-like-count-{{ comment.pk }}'>
+                  {{ comment.like_users.count }}
+                </span>
+              </div>
+            </button>
+          {% else %}
+          <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='comment-like-btn-{{ comment.pk }}'>
+            <div class="fs-6" style="color: red;">
+              <span>
+                  <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up"></i>
+              </span>
+              <span id='comment-like-count-{{ comment.pk }}'>
+                {{ comment.like_users.count }}
+              </span>
+          </div>
+          </button>
+          {% endif %}
+        </form>
       </div>
     </div>
   </div>
@@ -46,7 +65,7 @@
       {% if recomment.comment.pk == comment.pk %}
         <div class='my-1'>
           <div>
-            <span>{{ recomment.comment.user }}</span>
+            <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ recomment.user }}</a></span>
             <span>{{ recomment.created_at }}</span>
             {% if request.user == recomment.user %}
             <span>
@@ -118,6 +137,53 @@
         </form>
   </div>
 </div>
+
+<script>
+  // 댓글 좋아요 비동기
+  const commentforms = document.querySelectorAll('.comment-like-forms')
+  const commentcsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  commentforms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const commentId = event.target.dataset.commentId
+
+      axios({
+        method: 'post',
+        url: `/articles/c_like/${event.target.dataset.commentId}/`,
+        headers: { 'X-CSRFToken': commentcsrftoken },
+      })
+        .then((response) => {
+          const commentlikeBtn = document.querySelector(`#comment-like-btn-${commentId}`)
+          const likeCount = document.querySelector(`#comment-like-count-${commentId}`)
+          const commentisLiked = response.data.comment_is_liked
+          const thumbsUp = document.querySelector(`#thumbs-up-${commentId}`)
+          console.log(likeCount)
+
+          if (commentisLiked === true) {
+            thumbsUp.classList.remove('bi-hand-thumbs-up')
+            thumbsUp.classList.add('bi-hand-thumbs-up-fill')
+            // heart.classList.remove('bi-heart')
+            // likeBtn.classList.remove('btn-outline-danger')
+            // likeBtn.classList.add('btn-danger')
+            likeCount.innerText = response.data.like_count
+          } else {
+            thumbsUp.classList.remove('bi-hand-thumbs-up-fill')
+            thumbsUp.classList.add('bi-hand-thumbs-up')
+            // heart.classList.add('bi-heart')
+            // likeBtn.classList.remove('btn-danger')
+            // likeBtn.classList.add('btn-outline-danger')
+            likeCount.innerText = response.data.like_count
+          }
+
+        })
+    })
+  })
+ 
+
+</script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 
 {% endblock content %}

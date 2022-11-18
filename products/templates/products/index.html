@@ -33,7 +33,7 @@
     <li>만두&nbsp</li>
     <li>샐러드&nbsp</li>
     <li>치킨&nbsp</li>
-    <li>소스&nbsp</li>
+    <li>소스1&nbsp</li>
   </ul>
 </div>
 
@@ -202,24 +202,8 @@
     get: 'user',
     target: "instafeed-container",
     resolution: 'low_resolution',
-    accessToken: 'IGQVJWdTVLLWxVV0xjNm1VUlc2OGcxYkRCRnJ2bzZACWk5IYTQ5eXNQN0pEZAWMzLTlLVmtfTmNJU3RTVWlEb09fRGpWTHBwNVpVWjQ2ckEtMncyS2s1ZA09MRUNkQW80VnRDSUROVGt2YVRwQjdoRHk4MAZDZD',
+    accessToken: '{{ ACCESS_TOKEN }}',
     template: '<div class="swiper-slide" style="width:174px;"><a class="animation" href="\{\{link\}\}"><img src="\{\{image\}\}" /></a></div>',
-    after: function () {
-
-      var swiper = new Swiper('.swiper-container', {
-
-        effect: 'cube',
-        grabCursor: true,
-        loop: true,
-        autoplay: 3000,
-        cube: {
-          shadow: false,
-          slideShadows: false,
-          shadowOffset: 20,
-          shadowScale: 0.94
-        }
-      });
-    }
   });
   userFeed.run();
 </script>
