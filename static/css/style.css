@@ -247,3 +247,32 @@ bi-heart {
 .warning {
   color: #eb5373;
 }
+
+.animation img {
+  width: 174px;
+  height: 174px;
+  object-fit: cover;
+}
+
+.swiper-slide {
+  width: auto;
+
+}
+
+.scrolling-wrapper {
+  width: 500px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card {
+  display: inline-block;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera*/
+}

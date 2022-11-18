@@ -2,7 +2,9 @@
 {% load django_bootstrap5 %}
 {% load mathfilters %}
 {% load widget_tweaks %}
+{% load social_share %}
 {% load static %}
+
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/products/review.css' %}">
@@ -15,7 +17,7 @@
   {% endif %}
 
   <div class="row">
-    <div class="col">
+    <div class="col-md-7">
       <!-- carousel 사진 영역 -->
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
         <div class="carousel-indicators">
@@ -49,13 +51,19 @@
     </div>
 
     <!-- 상품 정보 -->
-    <div class="col">
+    <div class="col-md-5">
       <p class="mb-1" style="color: rgb(153, 153, 153); font-weight: 500;">{{ product.category }}</p>
       <p class="mb-1" style="color: rgb(51, 51, 51); font-weight: 500;">{{ product.brand }}</p>
       <p class="mb-4" style="font-size: 24px; font-weight: 500;">{{ product.product_name }}</p>
       <p class="mb-1" style="font-size: 28px; font-weight: 700; color: rgb(51, 51, 51)">{{ product.price }}
         <span style="font-size: 18px;">원</span>
       </p>
+
+      <div class="d-flex">
+        <p class="m-0 me-3">탄수화물 {{ product.carbohydrate }}</p>
+        <p class="m-0 me-3">단백질 {{ product.protein }}</p>
+        <p class="m-0">지방 {{ product.fat }}</p>
+      </div>
     </div>
     
     {% if request.user.is_authenticated %}
@@ -102,6 +110,21 @@
     {% endif %}
   </div>
 
+  {% comment %} sns 공유
+  <div class='sns float-end'>
+    <span class="sociallink ml-1">
+      <a href="javascript:sendLinkFacebook()" title="페이스북으로 공유">
+        <img src="https://windybay.net/static/images/facebook.png" width=36 alt="Facebook">
+      </a>
+    </span>
+    
+    <span class="sociallink ml-1">
+      <a href="javascript:sendLinkNaver()" title="네이버로 공유">
+        <img src="https://windybay.net/static/images/naver.png" width=36 alt="Naver">
+      </a>
+    </span>
+  </div> {% endcomment %}
+                  
 
   <!-- 상품 후기 -->
   <div class='product-review position-relative' style='padding: bottom 100px;'>
@@ -434,11 +457,15 @@
     <!-- 이전 페이지 -->
     {% if inquiries.has_previous %}
 			<li class="page-item">
-				<a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">이전</a>
+				<a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
 			</li>
     {% else %}
 			<li class="page-item disabled">
-				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
 			</li>
     {% endif %}
 
@@ -446,11 +473,11 @@
     {% for page_number in inquiries.paginator.page_range %}
 			{% if page_number == inquiries.number %}
 				<li class="page-item active" aria-current="page">
-					<a class="page-link" href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
 				</li>
 			{% else %}
 				<li class="page-item">
-					<a class="page-link" href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
 				</li>
 			{% endif %}
     {% endfor %}
@@ -458,11 +485,15 @@
     <!-- 다음페이지 -->
     {% if inquiries.has_next %}
 			<li class="page-item">
-				<a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">다음</a>
+				<a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
 			</li>
     {% else %}
 			<li class="page-item disabled">
-				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
 			</li>
     {% endif %}
 	</ul>
@@ -540,7 +571,9 @@
         // } 
         })
     })
+  
 </script>
 
+<script src="{% static 'js/sns.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/product_inquiries.js' %}"></script>
 {% endblock script %}

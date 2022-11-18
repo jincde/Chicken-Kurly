@@ -8,7 +8,7 @@ from .forms import CustomUserChangeForm, ProfileForm
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from products.models import Cart, Ddib
-from .models import OrderItem, WatchItem, Product, User, UserMember
+from .models import OrderItem, WatchItem, Product, User
 from .forms import ImageForm, OrderItemForm
 from django.contrib import messages
 from .forms import ProductBuyForm
@@ -18,6 +18,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 import json
 from django.db.models import Q
+
 
 
 
@@ -116,10 +117,6 @@ def profile(request, user_pk):
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
     inquiries = user.inquiry_set.order_by('-pk')
-    usermember = UserMember.objects.get(pk=user_pk)
-
-    
-    
     reply_form = ReplyForm()
     person = get_user_model()
     person = get_object_or_404(person, pk=user_pk)
@@ -143,7 +140,6 @@ def profile(request, user_pk):
         'inquiries': inquiries,
         'reply_form': reply_form,
         'inquiries': inquiry_page_obj,
-        'usermember': usermember,
         }
     return render(request, "accounts/profile.html", context)
 
@@ -293,3 +289,39 @@ def cart_update(request):
 
     # return redirect('accounts:cart')
     return JsonResponse(data, safe=False)
+
+def tocart(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    cart = Cart.objects.get(user=request.user)
+
+    cart_items = cart.cartitem_set.all()
+
+    # if request.method == 'POST':
+    #     cartitem = CartItem()
+    #     cartitem.quantity = request.POST['checkquantity']
+       
+    #     cartitem.cart = Cart.objects.get(pk=request.user.pk)
+    #     cartitem.product = product
+        
+    #     cartitem.save()
+
+    if request.method == 'POST':
+        for item in cart_items:
+            if item.product.pk == product_pk:
+                item.quantity += int(request.POST['checkquantity'])
+                item.save()
+                break
+        else:
+            CartItem.objects.create(cart=cart, product=product, quantity=int(request.POST['checkquantity']))
+            
+    return redirect('accounts:cart')
+
+
+def payment(request):
+    print('###########', request.POST)
+    selected_items = request.POST.getlist('selected_items') # 선택된 아이템들의 product_pk 리스트
+    quantities = request.POST.getlist('quantities') # 선택된 아이템들의 quantity 리스트
+    print(selected_items)
+    print(quantities)
+    
+    return redirect('accounts:cart')
