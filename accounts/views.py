@@ -19,8 +19,6 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 
 
-
-
 # Create your views here.
 def signup(request):
     if request.method == "POST":
@@ -139,8 +137,6 @@ def profile(request, user_pk):
         'cart_items': cart_items,
         'inquiries': inquiries,
         'inquiries': inquiry_page_obj,
-        
-    }
 
     return render(request, "accounts/profile.html", context)
 
@@ -293,5 +289,6 @@ def payment(request):
         OrderItem.objects.create(product=cart_item.product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid)
         cart_item.product.sold_count += 1
         cart_item.product.save()
+        cart_item.delete()
 
     return redirect('accounts:cart')
