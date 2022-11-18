@@ -38,6 +38,7 @@ class User(AbstractUser):
     rating = models.CharField(max_length=255, choices=rating_choices, default=BRONZE, verbose_name="rating")
     xp = models.IntegerField(default=10, verbose_name="XP")
 
+
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
