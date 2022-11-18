@@ -6,8 +6,13 @@ from .forms import *
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 
+from dotenv import load_dotenv
+import os
+
 # Create your views here.
 def index(request):
+    load_dotenv()  # .env 파일에서 환경 변수를 불러옵니다.
+    ACCESS_TOKEN = os.getenv("API_TOKEN")
     products = Product.objects.order_by('-pk')
     review = Review.objects.order_by('-pk')
     hits = Product.objects.order_by('-hit')
@@ -18,6 +23,7 @@ def index(request):
         'review':review,
         'hits': hits,
         'sold': sold,
+        'ACCESS_TOKEN': ACCESS_TOKEN,
         # 'image_cnt': products.image_set.count(), # index 페이지에서 carousel로 보여줄 때 사용
     }
 
