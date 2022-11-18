@@ -16,7 +16,7 @@ from products.forms import *
 from django.http import JsonResponse
 import json
 from django.db.models import Q
-
+from django.core.paginator import Paginator
 
 
 
@@ -138,10 +138,10 @@ def profile(request, user_pk):
         'cart_items': cart_items,
         'inquiries': inquiries,
         'inquiries': inquiry_page_obj,
-        'product': product,
-        'inquiry': inquiry,
-        'inquiryTitle': inquiry_title,
-        'inquiryContent': inquiry_content,
+        # 'product': product,
+        # 'inquiry': inquiry,
+        # 'inquiryTitle': inquiry_title,
+        # 'inquiryContent': inquiry_content,
     }
 
     return render(request, "accounts/profile.html", context)
