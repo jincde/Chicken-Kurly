@@ -4,10 +4,10 @@
 {% block content %}
 <div class='container'>
   <div class="text-end">
-    <a href="{% url 'articles:detail' article.pk %}" class="btn btn-outline-primary fs-6">뒤로가기</a>
+    <a href="{% url 'articles:detail' article.pk %}" class="btn fs-6" style='border-color: #5e0080; color: #5e0080;'>뒤로가기</a>
   </div>
-  <hr>
-  <div class='mx-2' sytle='margin: -2px;'>
+  
+  <div class='mx-2 mt-2' sytle='margin: -2px;'>
     <div class='d-flex'>
       <!-- 댓글 작성자, 시간 -->
       <div class="flex-grow-1">
@@ -65,13 +65,13 @@
       {% if recomment.comment.pk == comment.pk %}
         <div class='my-1'>
           <div>
-            <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}" style="text-decoration: none; color: #5e0080;">{{ recomment.user }}</a></span>
+            <span><a class="non_a fw-bold" href="{% url 'accounts:profile' recomment.user.pk %}" style="text-decoration: none; color: #5e0080; font-size:18px">{{ recomment.user }}</a></span>
             <span>{{ recomment.created_at }}</span>
             {% if request.user == recomment.user %}
             <span>
               <a href="{% url 'articles:rec_delete' recomment.pk comment.pk article.pk %}">
-                <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-                  <i class="bi bi-x"></i>
+                <span class="fs-5" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                  <i class="bi bi-trash"></i>
                 </span>
               </a>
             </span>
@@ -84,6 +84,15 @@
       {% endif %}
     {% endfor %}    
     
+    <!-- 대댓글 입력창 -->
+      <div class='mb-2'> 
+        <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data' maxlength="200">
+          {% csrf_token %}
+          {% bootstrap_form recomment_form %}
+          <button type="submit" class="btn mb-2" style='background-color:#5e0080; color:white;'>OK</button>
+        </form>
+      </div>
+
         <!-- 댓글 페이지네이션 -->
         {% if paginated_recomments %}
           <ul class="pagination justify-content-center">
@@ -129,12 +138,7 @@
             {% endif %}
           </ul>
         {% endif %}
-        <!-- 대댓글 입력창 -->
-        <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST' enctype='multipart/form-data' maxlength="200">
-          {% csrf_token %}
-          {% bootstrap_form recomment_form %}
-          {% bootstrap_button button_type='submit' content='글쓰기' %}
-        </form>
+        
   </div>
 </div>
 
