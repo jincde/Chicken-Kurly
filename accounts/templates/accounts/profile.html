@@ -134,18 +134,18 @@
             <!-- 상품 이미지 안에 장바구니 담기 버튼 -->
             {% comment %} < href="ddibtocartModal" data-toggle='modal'> {% endcomment %}
             <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex' data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ item.pk }}' >
-              <img style='margin-bottom:7rem' class='cart-img position-absolute bottom-0 end-0 mx-2' src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
+              <img style='margin-bottom:8rem' class='cart-img position-absolute bottom-0 end-0 mx-2' src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
             </button>
             
             <div style="padding: 12px 10px 0 0">
               <div class="d-flex justify-content-between">
               <a style='color:black' href="{% url 'products:detail' item.product.pk %}">
-                <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-0"
+                <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-2"
                   style="color: #FA622F; font-weight: 700;">{{ item.product.category }}</span>
                 <p class="m-0" style="font-weight: 400; color:black">{{ item.product.product_name }}</p>
                 <p class="m-0" style="font-weight: 800; color:black">{{ item.product.price }} 원</p>
                 </a>
-                  <a class='deletebtn' style='color:black' href="{% url 'accounts:ddib_delete' item.product.pk %}"> 
+                  <a class='deletebtn' style='color:black;' href="{% url 'accounts:ddib_delete' item.product.pk %}"> 
                     <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right'>
                     삭제
                     </button>
@@ -313,118 +313,119 @@
 </div>
 
 
-
-<div style="padding: 0 40px;">
-  <!-- 상품 문의 등록 버튼 & 모달 -->
-  <div class="row">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
-      
+<div class='container'>
+  <div style="padding: 0 40px;">
+    <!-- 상품 문의 등록 버튼 & 모달 -->
+    <div class="row">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
+        
+      </div>
     </div>
-  </div>
 
-  <!-- 상품 문의 목록 -->
-  <div class="row px-3" style="border-top:1px solid black;">
-    <table class="table">
-      <thead class="text-center">
-        <tr>
-          <th scope="col" style="width: 710px;">제목</th>
-          <th scope="col" style="width: 100px;">작성자</th>
-          <th scope="col" style="width: 100px;">작성일</th>
-          <th scope="col" style="width: 100px;">답변상태</th>
-        </tr>
-      </thead>
-
-      <tbody id="inquiryTableBody">
-        {% for inquiry in inquiries %}
-          <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
-            style="vertical-align: middle;">
-            <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
-            <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
-            <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
-            {% if inquiry.reply %}
-              <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
-            {% else %}
-              <td id="reply-status-{{ inquiry.pk }}" style="width: 100px;" class="text-center">-</td>
-            {% endif %}
+    <!-- 상품 문의 목록 -->
+    <div class="row px-3 mb-5" style="border-top:1px solid black;">
+      <table class="table">
+        <thead class="text-center">
+          <tr>
+            <th scope="col" style="width: 710px;">제목</th>
+            <th scope="col" style="width: 100px;">작성자</th>
+            <th scope="col" style="width: 100px;">작성일</th>
+            <th scope="col" style="width: 100px;">답변상태</th>
           </tr>
+        </thead>
 
-          <!-- 문의 내용 및 답변 Collapse -->
-          <tr class="collapse inquiry-{{ inquiry.pk }}" id="collapse-inquiry-{{ inquiry.pk }}">
-            <td colspan="4" class="text-bg-light px-3">
-              <div>
-                <div class="d-flex">
-                  <div class="me-3">Q.</div>
-                  <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
-                </div>
+        <tbody id="inquiryTableBody">
+          {% for inquiry in inquiries %}
+            <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
+              style="vertical-align: middle;">
+              <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
+              <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+              <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+              {% if inquiry.reply %}
+                <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+              {% else %}
+                <td id="reply-status-{{ inquiry.pk }}" style="width: 100px;" class="text-center">-</td>
+              {% endif %}
+            </tr>
+
+            <!-- 문의 내용 및 답변 Collapse -->
+            <tr class="collapse inquiry-{{ inquiry.pk }}" id="collapse-inquiry-{{ inquiry.pk }}">
+              <td colspan="4" class="text-bg-light px-3">
                 <div>
-                  <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
+                  <div class="d-flex">
+                    <div class="me-3">Q.</div>
+                    <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
                   </div>
-
-                  {% if inquiry.reply %}
-                    <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
-                      <div class="me-3">A.</div>
-                      <div>{{ inquiry.reply.content }}</div>
+                  <div>
+                    <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
                     </div>
-                  {% else %}
-                    <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
-                  {% endif %}
+
+                    {% if inquiry.reply %}
+                      <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
+                        <div class="me-3">A.</div>
+                        <div>{{ inquiry.reply.content }}</div>
+                      </div>
+                    {% else %}
+                      <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
+                    {% endif %}
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 상품 문의 페이지네이션 -->
+    <ul class="pagination justify-content-center" >
+      <!-- 이전 페이지 -->
+      {% if inquiries.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
+            <i class="bi bi-chevron-double-left"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+            <i class="bi bi-chevron-double-left"></i>
+          </a>
+        </li>
+      {% endif %}
+
+      <!-- 페이지 리스트 -->
+      {% for page_number in inquiries.paginator.page_range %}
+        {% if page_number == inquiries.number %}
+          <li class="page-item active" aria-current="page">
+            <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      <!-- 다음페이지 -->
+      {% if inquiries.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+            <i class="bi bi-chevron-double-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+            <i class="bi bi-chevron-double-right"></i>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
   </div>
-
-  <!-- 상품 문의 페이지네이션 -->
-  <ul class="pagination justify-content-center">
-    <!-- 이전 페이지 -->
-    {% if inquiries.has_previous %}
-			<li class="page-item">
-				<a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
-          <i class="bi bi-chevron-double-left"></i>
-        </a>
-			</li>
-    {% else %}
-			<li class="page-item disabled">
-				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-          <i class="bi bi-chevron-double-left"></i>
-        </a>
-			</li>
-    {% endif %}
-
-    <!-- 페이지 리스트 -->
-    {% for page_number in inquiries.paginator.page_range %}
-			{% if page_number == inquiries.number %}
-				<li class="page-item active" aria-current="page">
-					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
-				</li>
-			{% else %}
-				<li class="page-item">
-					<a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
-				</li>
-			{% endif %}
-    {% endfor %}
-
-    <!-- 다음페이지 -->
-    {% if inquiries.has_next %}
-			<li class="page-item">
-				<a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
-          <i class="bi bi-chevron-double-right"></i>
-        </a>
-			</li>
-    {% else %}
-			<li class="page-item disabled">
-				<a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-          <i class="bi bi-chevron-double-right"></i>
-        </a>
-			</li>
-    {% endif %}
-	</ul>
 </div>
-</div>
+
 
 
 
