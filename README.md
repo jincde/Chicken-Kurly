@@ -28,13 +28,21 @@
 [최보영](https://github.com/jupiter6676)
 
 ---
-## :chicken: Chicken Kurly 프로젝트 :purple_heart:
+## :chicken::purple_heart: Chicken Kurly 프로젝트 
 ##### 목적
 * Django와 HTML/CSS/JavaScript 활용하여 상품 정보 및 후기 공유 커뮤니티 웹 플랫폼 서비스 개발
 
 ##### :date: 기간
 * 2022.11.09 ~ 2022.11.22
 * 배포: 2022년 11월 
+
+#### :crossed_swords: 기술 스택
+<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white">
+<img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML&logoColor=white">
+<img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
+<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
 
 
 ## :technologist: 팀원 소개 및 담당 역할
