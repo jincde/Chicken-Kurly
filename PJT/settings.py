@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     "imagekit",
     "django_bootstrap5",
     "widget_tweaks",
-    "django.contrib.admin",
     'django_extensions',
     "mathfilters",
     'django_social_share',
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -69,7 +69,9 @@ ROOT_URLCONF = "PJT.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [
+            (BASE_DIR / "templates")
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

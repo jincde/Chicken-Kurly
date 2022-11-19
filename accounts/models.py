@@ -107,4 +107,3 @@ class WatchItem(models.Model):
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
-# 등급
