@@ -3,6 +3,8 @@
 {% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+
+
 {% block content %}
 
 <div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
@@ -20,7 +22,11 @@
           <div class="d-flex justify-content-start">
             <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
               {{ person.username }}</h3>
-              <h3>{{ user.rating }}</h3>
+              <!-- button -->
+            <button class="mdl-button mdl-js-button mdl-button--primary" style="font-size: 13px; margin: 5px;">
+              {{ user.rating }}
+            </button>       
+              <!-- <h3>{{ user.rating }}</h3> -->
           </div>
           <div class="row mb-3">
             <div class="col d-flex flex-column align-items-center" style="height: 45px;">
@@ -104,6 +110,7 @@
   </div>
 </div>
 
+         
 
 
 {% comment %} 찜한 상품 {% endcomment %}
@@ -360,9 +367,6 @@
 
 
 
-         
-
-
   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('#test-slide', {
@@ -397,4 +401,8 @@
 {% block script %}
   <script type="text/javascript" src="{% static 'js/ddibtocart.js' %}"></script>
   <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-deep_purple.min.css" /> 
 {% endblock script %}
