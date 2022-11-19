@@ -279,6 +279,6 @@ bi-heart {
 
 .article-grid {
   display: grid;
-  grid-template-columns: 64px 4fr 1.3fr;
+  grid-template-columns: 64px 5fr 1.8fr;
   gap: 20px;
 }
