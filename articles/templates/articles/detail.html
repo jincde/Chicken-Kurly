@@ -6,13 +6,14 @@
 {% block content %}
 
 <body style="background-color: rgb(245, 245, 245)">
-  <div class='article-grid container' style="width: 1070px; padding: 40px 0;">
+  <div class='article-grid container' style="width: 1280px; padding: 40px 0;">
     <!-- 11 -->
     <div>
       <div class='d-flex flex-column align-items-center' style="position: sticky; top: 100px">
         <div>
-          <a class="non_a" style="font-size: 1.4rem;" href="{% url 'articles:index' %}"><i
-              class="bi bi-backspace"></i></a>
+          <a class="non_a" style="font-size: 1.4rem;" href="{% url 'articles:index' %}">
+            <ion-icon name="arrow-back-outline" style="color: #3d3d3d; margin-bottom: 14px"></ion-icon>
+          </a>
         </div>
         <form class='like-forms' data-article-id="{{ article.pk }}">
           {% csrf_token %}
@@ -20,10 +21,10 @@
           <div class="d-flex align-items-center justify-content-end">
             <button type="submit" class="d-flex flex-column align-items-center"
               style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
-              <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;"
+              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 1.5rem; padding: 8px;"
                 class="ion-icon active align-items-center" name="heart">
               </ion-icon>
-              <span id='like-count-{{ article.pk }}' style="font-size: 1rem">
+              <span id='like-count-{{ article.pk }}' style="font-size: 14px; color: rgb(87, 87, 87)">
                 {{ article.like_users.count }}</span>
             </button>
           </div>
@@ -31,14 +32,24 @@
           <div class="d-flex flex-column align-items-center justify-content-end">
             <button type=" submit" class="d-flex flex-column align-items-center"
               style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
-              <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;"
+              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 1.5rem; padding: 8px;"
                 class="ion-icon d-flex align-items-center" name="heart"></ion-icon>
-              <div style="font-size: 1rem" id='like-count-{{ article.pk }}'>
+              <div style="font-size: 14px; color: rgb(87, 87, 87)" id='like-count-{{ article.pk }}'>
                 {{ article.like_users.count }}</div>
             </button>
           </div>
           {% endif %}
         </form>
+        <div class="d-flex flex-column align-items-center justify-content-end" style="margin-top: 14px;">
+          <a href="#target">
+            <ion-icon name="chatbubbles-outline" style="font-size: 1.5rem; padding: 8px; color: rgb(87, 87, 87);"
+              data-anchor="anchor_1" onclick="scrollEvent(this)">
+            </ion-icon>
+          </a>
+          <div style="font-size: 14px; color: rgb(87, 87, 87)">
+            {{ comments.count }}
+          </div>
+        </div>
         <div>
           {% if request.user == article.user %}
           <div class='text-end'>
@@ -77,52 +88,93 @@
     </div>
 
     <!-- 22 -->
-    <div style="background-color: white;">
-      <div style="padding: 0 36px">
+    <div class="rounded-3" style="background-color: white; border: 1px solid rgb(222, 222, 222);">
+      <div>
         <div class="text-center">
           {% if article.image %}
-          <img class="rounded" style="width: 20rem; height: 20rem" src="{{ article.image.url }}" alt="image">
+          <img class="rounded-3" style="width: 100%; height: 20rem; object-fit: cover;" src="{{ article.image.url }}"
+            alt="image">
           {% else %}
-          <img class="rounded" style="width: 20rem; height: 20rem"
+          <img class="rounded" style="width: 100%; height: 20rem object-fit:cover;"
             src="https://dummyimage.com/400/821db5/ffffff&text=+">
           {% endif %}
         </div>
-        <h1 class="text-start my-5" style="font-weight: 800;">{{ article.title }}</h1>
-        <div>
+        <div class="d-grid" style="grid-template-columns: 40px auto; padding: 32px 36px 0px; margin-bottom: 20px;">
+          <span>
+            {% if article.user.image %}
+            <img src='{{ article.user.image }}' style="border-radius: 50%; width:40px; height:40px">
+            {% else %}
+            <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:40px; height:40px">
+            {% endif %}
+          </span>
+          <div class="d-flex flex-column" style="padding-left: 12px;">
+            <p class="m-0 p-0" style="color: rgb(64, 64, 64); font-weight: 700;">{{ article.user.username}}</p>
+            <p class="m-0 p-0" style="color: rgb(113, 113, 113); font-size: 12px;">Posted on
+              {{ article.created_at|date:'Y년 m월 d일' }}<span class="mx-1"
+                style="color: rgb(189, 189, 189);">•</span>published at <a
+                href="{% url 'articles:index' %}">chicken-kurly</a></p>
+          </div>
+        </div>
+        <h1 class="text-start my-5" style="font-weight: 800; padding: 0 36px">{{ article.title }}</h1>
+        <div style="padding: 0 36px; text-rendering: optimizeSpeed;">
           {{ article.content|mark }}
         </div>
       </div>
-      <hr style="margin: 3rem auto;">
+      <hr id="anchor_1" style="margin: 3rem auto;">
       <!-- 댓글목록 -->
+      <div style="padding: 0 24px;">
+        <div style="font-size: 18px; font-weight: 700">댓글 <span style="color:#7f1ba4">
+            {{ comments.count }}</span>
+        </div>
+      </div>
       {% if comments %}
       {% for comment in paginated_comments %}
-      <div>
-        <div class='d-flex' style="padding: 0 36px;">
+      <div class='d-grid' style="padding: 0 24px; grid-template-columns: 40px auto;">
+        <span style="margin-top: 24px; padding-top: 14px;">
+          {% if comment.user.image %}
+          <img src='{{ comment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+          {% else %}
+          <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:32px; height:32px">
+          {% endif %}
+        </span>
+        <div class='d-flex flex-column'
+          style="padding: 14px 12px; margin: 1.5rem 0; border: 1px solid rgb(231, 231, 231); border-radius: 10px;">
+
           <!-- 댓글 작성자, 시간 -->
           <div class="flex-grow-1">
-            <span class='fs-5 fw-semibold'><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}"
-                style="text-decoration: none; color: #5e0080;">{{ comment.user }}</a></span>
-            <span class='fs-6 opacity-50 fst-italic'> {{ comment.created_at }}</span>
-            {% if request.user == comment.user %}
-            <span>
-              <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
-                <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-                  <i class="bi bi-x"></i>
-                </span>
-              </a>
-            </span>
-            {% endif %}
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <span style="font-size: 1rem"><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}"
+                    style="font-weight: 600; color: rgb(61, 61, 61);">{{ comment.user }}</a></span>
+                <span class="mx-1" style="color: rgb(189, 189, 189);">•</span>
+                <span style="color: rgb(113, 113, 113); font-weight: 400; font-size: 14px;">
+                  {{ comment.created_at|date:'Y년 m월 d일' }}</span>
+              </div>
+              {% if request.user == comment.user %}
+              <span>
+                <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+                  <span style="color: #e83c4b; display: inline-block; transform: translateY(3px); font-size: 1rem;">
+                    <i class="bi bi-x"></i>
+                  </span>
+                </a>
+              </span>
+              {% endif %}
+            </div>
+            <div style="margin: 12px 0 16px;">
+              <p class="text-break m-0" style="font-size: 18px; line-height: 27px">{{ comment.content }}
+              </p>
+            </div>
             <!-- 댓글 좋아요 -->
-            <div>
+            <div class="d-flex align-items-center">
               <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
                 {% if request.user in comment.like_users.all %}
                 <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
                   id='comment-like-btn-{{ comment.pk }}'>
-                  <div class="fs-6" style="color: red;">
+                  <div class="fs-6" style="color: #7f1ba4">
                     <span>
                       <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up-fill"></i>
                     </span>
-                    <span id='comment-like-count-{{ comment.pk }}'>
+                    <span class="me-3" id='comment-like-count-{{ comment.pk }}' style="font-size: 14px;">
                       {{ comment.like_users.count }}
                     </span>
                   </div>
@@ -130,55 +182,78 @@
                 {% else %}
                 <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
                   id='comment-like-btn-{{ comment.pk }}'>
-                  <div class="fs-6" style="color: red;">
+                  <div class="fs-6" style="color: #7f1ba4">
                     <span>
                       <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up"></i>
                     </span>
-                    <span id='comment-like-count-{{ comment.pk }}'>
+                    <span class="me-3" id='comment-like-count-{{ comment.pk }}' style="font-size: 14px;">
                       {{ comment.like_users.count }}
                     </span>
                   </div>
                 </button>
                 {% endif %}
               </form>
+              <p class="m-0 p-0" style="font-size: 14px; color:rgb(61, 61, 61)">
+                <button class="btn m-0 p-0" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseExample-{{ comment.pk }}" aria-expanded="false"
+                  aria-controls="collapseExample" style="font-size: 14px; color: rgb(61, 61, 61)">
+                  답글
+                </button>
+              </p>
             </div>
           </div>
           <!-- 댓글 내용 -->
-          <p class="fs-6 text-break">{{ comment.content }}
-          </p>
+
           <!-- 대댓글 -->
-          <p>
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseExample-{{ comment.pk }}" aria-expanded="false" aria-controls="collapseExample">
-              답글
-            </button>
-          </p>
-          <div class="collapse" id="collapseExample-{{ comment.pk }}">
-            <div class="card card-body">
-              <div class='p-1'>
+
+          <div class="collapse flex-grow-1" id="collapseExample-{{ comment.pk }}">
+            <div class="card card-body w-100" style="border: rgb(231, 231, 231);">
+              <div class='p-1 '>
+                <!-- 대댓글 입력창 -->
+                <form class="row" style="padding: 0 20px;"
+                  action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST'
+                  enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  <input type="text" name="content" maxlength="200" class="col-10" placeholder="답글을 작성하세요." required=""
+                    id="id_content" style="border: 0px; border-bottom:2px solid rgb(61, 61, 61); border-radius: 0px">
+                  <button class="btn col-2 non_a" type="submit">답글추가</button>
+                </form>
                 <div
                   style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 12; overflow: hidden;">
                   <!-- 대댓글 목록 -->
                   {% for recomment in recomments %}
 
                   {% if recomment.comment.pk == comment.pk %}
-                  <div class='my-2'>
-                    <div>
-                      <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}"
-                          style="text-decoration: none; color: #5e0080;">{{ recomment.user }}</a></span>
-                      <span>{{ recomment.created_at }}</span>
-                      {% if request.user == recomment.user %}
-                      <span>
-                        <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
-                          <span class="fs-4" style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
-                            <i class="bi bi-x"></i>
-                          </span>
-                        </a>
-                      </span>
+                  <div class='my-5 d-grid' style="grid-template-columns: 40px auto;">
+                    <span style="">
+                      {% if comment.user.image %}
+                      <img src='{{ comment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+                      {% else %}
+                      <img src="{% static 'images/android-icon-72x72.png' %}"
+                        style="border-radius: 50%; width:32px; height:32px">
                       {% endif %}
-                    </div>
-                    <div class="text-break">
-                      {{ recomment.content }}
+                    </span>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div>
+                        <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}"
+                            style="font-weight: 600; color: rgb(61, 61, 61);">{{ recomment.user }}</a></span>
+                        <span class="mx-1" style="color: rgb(189, 189, 189);">•</span>
+                        <span style="color: rgb(113, 113, 113); font-weight: 400; font-size: 14px">
+                          {{ recomment.created_at|date:'Y년 m월 d일 H시 t분 s초' }}</span>
+
+                        {% if request.user == recomment.user %}
+                        <span>
+                          <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
+                            <span style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                              <i class="bi bi-x"></i>
+                            </span>
+                          </a>
+                        </span>
+                        {% endif %}
+                        <div class="text-break" style="margin-top: 12px;">
+                          {{ recomment.content }}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   {% endif %}
@@ -186,15 +261,9 @@
                   {% endfor %}
                 </div>
                 <p class="text-end">
-                  <a href="{% url 'articles:rec_detail' comment.pk article.pk %}">자세히보기..</a>
+                  <a class="non_a" href="{% url 'articles:rec_detail' comment.pk article.pk %}"
+                    style="font-weight:600 ;">더보기</a>
                 </p>
-                <!-- 대댓글 입력창 -->
-                <form action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST'
-                  enctype='multipart/form-data'>
-                  {% csrf_token %}
-                  {% bootstrap_form recomment_form %}
-                  {% bootstrap_button button_type='submit' content='글쓰기' %}
-                </form>
               </div>
             </div>
           </div>
@@ -270,14 +339,31 @@
       </form>
     </div>
     <!-- 33 -->
-    <div style="background-color: white;">
-      <p>{{ article.user.username }}</p>
-      <p>{{ article.created_at }}</p>
-      {% if article.user.image %}
-      <img src="{{ article.user.image }}">
-      {% else %}
-      <img src="{% static 'images/android-icon-72x72.png' %}">
-      {% endif %}
+    <div>
+      <div class="rounded"
+        style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 60px;">
+        <div style="padding: 0 12px;">
+          {% if article.user.image %}
+          <img src="{{ article.user.image }}" style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
+          {% else %}
+          <img src="{% static 'images/android-icon-72x72.png' %}"
+            style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px; object-fit: cover;">
+          {% endif %}
+          <span style="color: rgb(64, 64, 64); font-weight: 700; font-size: 20px"><a class="non_a"
+              href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.username }}</a></span>
+        </div>
+        <div style="padding: 0 12px; margin-top: 1rem;">
+          <p class="m-0 p-0" style="font-size: 12px; font-weight: 700; color: rgb(82, 82, 82);">회원등급</p>
+          <p class="m-0 p-0" style="font-size: 16px; color: rgb(64, 64, 64)">
+            {{ article.user.rating }}</p>
+        </div>
+        <div style="padding: 0 12px; margin-top: 1rem;">
+          <p class="m-0 p-0" style="font-size: 12px; font-weight: 700; color: rgb(82, 82, 82);">가입일</p>
+          <p class="m-0 p-0" style="font-size: 16px; color: rgb(64, 64, 64)">
+            {{ article.user.date_joined|date:'Y년 m월 d일' }}</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </body>
@@ -408,6 +494,19 @@
   })
   {% endcomment %}
 
+</script>
+
+<script>
+  function scrollEvent(_params, speed) {
+    let anchor_id = $(_params).attr('data-anchor');
+    if (!speed) var speed = 'slow';
+    var a_tag = $("#" + anchor_id);
+    if (a_tag.length > 0) {
+      $('html, body').animate({
+        scrollTop: a_tag.offset().top
+      }, speed);
+    }
+  }
 </script>
 
 {% endblock content %}
