@@ -27,7 +27,10 @@
 
 ### :date: 기간
 * 2022.11.09 ~ 2022.11.22
+* 프로젝트 기획: 2022.11.09
+  - [기획서](https://www.notion.so/hg-edu/bb8affdc8a644d66a34ea3d1fcb84501)
 * 배포: 2022년 11월 21일
+
 
 
 ### :hammer_and_wrench: 기술 스택
