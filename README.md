@@ -13,23 +13,23 @@
   <img src="https://contrib.rocks/image?repo=jincde/chicken-kurly" />
 </a>
 
-[장영진](https://github.com/jincde) 
-[차화영](https://github.com/forwardyoung) 
-[이동현](https://github.com/soohofather) 
-[최정아](https://github.com/astroastrum)
+* [장영진](https://github.com/jincde), 
+[차화영](https://github.com/forwardyoung), 
+[이동현](https://github.com/soohofather), 
+[최정아](https://github.com/astroastrum),
 [최보영](https://github.com/jupiter6676)
 
 
-#### :trophy: 목적
+### :trophy: 목적
 * Django와 HTML/CSS/JavaScript 활용하여 상품 정보 및 후기 공유 커뮤니티 웹 플랫폼 서비스 개발
 
 
-#### :date: 기간
+### :date: 기간
 * 2022.11.09 ~ 2022.11.22
 * 배포: 2022년 11월 
 
 
-#### :hammer_and_wrench: 기술 스택
+### :hammer_and_wrench: 기술 스택
 <div align="left">
   <img src="https://img.shields.io/badge/Django-Full%20Stack-yellowgreen">
   <img src="https://img.shields.io/badge/Python-Full%20Stack-blue">
@@ -49,14 +49,15 @@
   <img src="https://img.shields.io/badge/GITHUB-black?style=flat&logo=Django&logoColor=181717"/>
 </div>
 
+---
 
 ## :technologist: 팀원 소개 및 담당 역할
 
 <details>
 <summary>장영진</summary>
 <div markdown="1">
-  * 팀장
-  * Frontend
+  * 팀장 <br>
+    - 풀스택 개발
     * products/index 페이지
     * 베이스 코드 작성
 </div>
@@ -64,41 +65,47 @@
 <details>
 <summary>이동현</summary>
 <div markdown="1">
- * 백엔드 개발
-    * 자유게시판 [Articles] 개발
+ * 백엔드 개발 <br>
+    - 자유게시판 [Articles] 개발
 </div>
 </details>
 <details>
 <summary>최보영</summary>
 <div markdown="1">
- * Fullstack
-    * 상품페이지 [Products] 개발
+ * Fullstack <br>
+    - 상품페이지 [Products] 개발
 </div>
 </details>
 <details>
 <summary>차화영</summary>
 <div markdown="1">
-  * Fullstack
-    * 상품페이지 [Products] 개발
+  * Fullstack <br>
+    - 상품페이지 [Products] 개발
 </div>
 </details>
 <details>
 <summary>최정아</summary>
 <div markdown="1">
-  * Fullstack
-    * 회원관리 [Accounts] 개발
+  * Fullstack <br>
+    - 회원관리 [Accounts] 개발
 </div>
 </details>
 
+---
 
 ## :bulb: 서비스 주제
-닭가슴살 식품 정보 및 후기 공유 커뮤니티 서비스
+* 닭가슴살 식품 정보 및 후기 공유 커뮤니티 서비스
 
 
+
+---
 ## :dart: Chicken Kurly
 ![]()
 []()![products](https://user-images.githubusercontent.com/108647883/202868016-5284776c-082e-49d0-93d3-e5e2228bc15b.gif)
 
+
+
+---
 
 ## :shopping_cart:주요 기능 소개
 
@@ -158,6 +165,9 @@
   * 회원 정보 수정
 
 
+
+---
+
 ## :computer:서비스 시연
 
 ![chickurl_시연](https://user-images.githubusercontent.com/108647883/202907753-382a29ea-3a4b-4769-b8e8-9929dca50f92.png)
@@ -165,7 +175,7 @@
 
 
 
-
+---
 
 ## :purple_heart:프로젝트 후 느낀점
 |팀원|느낀점|
