@@ -115,8 +115,8 @@ def change_password(request):
         "forms": forms,
     }
     return render(request, "accounts/change_password.html", context)
-
-
+    
+@login_required
 def profile(request, user_pk):
     products = Product.objects.order_by('-pk')
     user = get_object_or_404(get_user_model(), pk=user_pk)
