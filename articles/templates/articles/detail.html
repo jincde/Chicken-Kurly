@@ -146,7 +146,7 @@
       <div class='d-grid' style="padding: 0 24px; grid-template-columns: 40px auto;">
         <span style="margin-top: 24px; padding-top: 14px;">
           {% if comment.user.image %}
-          <img src='{{ comment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+          <img src='{{ comment.user.image.url }}' style="border-radius: 50%; width:32px; height:32px">
           {% else %}
           <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:32px; height:32px">
           {% endif %}
@@ -240,8 +240,8 @@
                   {% if recomment.comment.pk == comment.pk %}
                   <div class='my-5 d-grid' style="grid-template-columns: 40px auto;">
                     <span style="">
-                      {% if comment.user.image %}
-                      <img src='{{ comment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+                      {% if recomment.user.image %}
+                      <img src='{{ recomment.user.image.url }}' style="border-radius: 50%; width:32px; height:32px">
                       {% else %}
                       <img src="{% static 'images/android-icon-72x72.png' %}"
                         style="border-radius: 50%; width:32px; height:32px">
@@ -257,7 +257,7 @@
 
                         {% if request.user == recomment.user %}
                         <span>
-                          <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
+                          <a href="{% url 'articles:rec_delete' recomment.pk comment.pk article.pk %}">
                             <span style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
                               <i class="bi bi-x"></i>
                             </span>
@@ -340,7 +340,7 @@
         style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 100px; border: 1px solid rgb(222, 222, 222);">
         <div style="padding: 0 12px;">
           {% if article.user.image %}
-          <img src="{{ article.user.image }}" style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
+          <img src="{{ article.user.image.url }}" style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
           {% else %}
           <img src="{% static 'images/android-icon-72x72.png' %}"
             style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px; object-fit: cover;">
