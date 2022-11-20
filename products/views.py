@@ -15,6 +15,7 @@ def index(request):
     load_dotenv()  # .env 파일에서 환경 변수를 불러옵니다.
     ACCESS_TOKEN = os.getenv("API_TOKEN")
     products = Product.objects.order_by('-pk')
+    products_name = Product.objects.order_by('product_name')
     categories = Product.objects.values('category').distinct()
     review = Review.objects.order_by('-pk')
     hits = Product.objects.order_by('-hit')
@@ -28,6 +29,7 @@ def index(request):
         'sold': sold,
         'ACCESS_TOKEN': ACCESS_TOKEN,
         'categories': categories,
+        'products_name': products_name,
         # 'image_cnt': products.image_set.count(), # index 페이지에서 carousel로 보여줄 때 사용
     }
 

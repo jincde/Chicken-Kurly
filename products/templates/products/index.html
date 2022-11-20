@@ -26,18 +26,85 @@
 </div>
 
 <hr>
-<div class="container d-flex justify-content-center align-items-center" style="max-width: 1070px; height: 88px">
-  <ul class="d-flex justify-content-between category-list p-0 m-0"
-    style="max-width: 800px;list-style: none; font-weight: 700;">
-    <li>카테고리&nbsp</li>
-    <li>닭가슴살&nbsp</li>
-    <li>만두&nbsp</li>
-    <li>샐러드&nbsp</li>
-    <li>치킨&nbsp</li>
-    <li>소스1&nbsp</li>
-  </ul>
+<div style="width: 1070px; margin: 0 auto;">
+  <div class="d-flex align-items-center flex-column" style="margin: 40px; 0">
+    <div class="d-flex flex-column justify-content-center">
+      <h3 class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">카테고리별 검색</h3>
+      <p class="text-muted" style="font-size: 16px; font-weight:400;">아래 키워드를 클릭해보세요 </p>
+    </div>
+    <div class="d-flex" style="margin-bottom: 27px;">
+      <button class="category-title active mx-1" type="button" id="all"
+        style="padding: 10px 20px; border-radius: 22px; height: 40px; border: none;">
+        모두보기</button>
+      {% for category in categories %}
+      <button class="category-title mx-1" type="button" id="{{ category.category }}"
+        style="padding: 10px 20px; border-radius: 22px; height: 40px; border: none;">
+        {{ category.category }}</button>
+      {% endfor %}
+    </div>
+    <div class="swiper-box posts-collect" style="position: relative">
+      <section class="swiper posts-main-container" id="test-slide">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          {% for product in products_name %}
+          <div class="productcard swiper-slide all {{ product.category }}"
+            style="border: 0px solid black; color: rgb(51, 51, 51);" data-group="{{ product.category }}">
+            <a href="{% url 'products:detail' product.pk %}" style="color:rgb(51, 51, 51)">
+              <div class="product-img" style="">
+                <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+                  style="object-fit: cover">
+              </div>
+              <div style="padding: 12px 10px 0 0">
+                <div class="d-flex justify-content-between">
+                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
+                    style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
+                </div>
+                <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
+                <p class="m-0" style="font-weight: 800;">{{ product.price|intcomma }} 원</p>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
+            style="font-size: 2.5rem; color:white; z-index: 1000;"></i>
+        </div>
+        <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
+            style="font-size: 2.5rem; color:white;"></i>
+        </div>
+      </section>
+    </div>
+  </div>
 </div>
 
+<script>
+  const categoryTitle = document.querySelectorAll('.category-title');
+  const allCategoryPosts = document.querySelectorAll('.all');
+
+  for (let i = 0; i < categoryTitle.length; i++) {
+    categoryTitle[i].addEventListener('click', filterPosts.bind(this, categoryTitle[i]));
+  }
+
+  function filterPosts(item) {
+    changeActivePosition(item);
+    for (let i = 0; i < allCategoryPosts.length; i++) {
+      if (allCategoryPosts[i].classList.contains(item.attributes.id.value)) {
+        allCategoryPosts[i].style.display = "block";
+      } else {
+        allCategoryPosts[i].style.display = "none";
+      }
+    }
+  }
+
+  function changeActivePosition(activeItem) {
+    for (let i = 0; i < categoryTitle.length; i++) {
+      categoryTitle[i].classList.remove('active');
+    }
+    activeItem.classList.add('active');
+  };
+</script>
 <!-- Slider main container -->
 <div style="padding: 40px 0">
   <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
@@ -49,7 +116,8 @@
       <div class="swiper-wrapper">
         <!-- Slides -->
         {% for product in products %}
-        <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
+        <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);"
+          data-value="{{ product.category }}">
           <a href="{% url 'products:detail' product.pk %}" style="color:rgb(51, 51, 51)">
             <div class="product-img" style="">
               <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
@@ -69,10 +137,10 @@
       </div>
 
       <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+          style="font-size: 2.5rem; color:white; z-index: 1000;"></i>
       </div>
       <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+          style="font-size: 2.5rem; color:white;"></i>
       </div>
     </section>
   </div>
@@ -117,10 +185,10 @@
       </div>
 
       <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+          style="font-size: 2.5rem; color:white; z-index: 1000;"></i>
       </div>
       <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+          style="font-size: 2.5rem; color:white;"></i>
       </div>
     </section>
   </div>
@@ -160,10 +228,10 @@
       </div>
 
       <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
+          style="font-size: 2.5rem; color:white; z-index: 1000;"></i>
       </div>
       <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
+          style="font-size: 2.5rem; color:white;"></i>
       </div>
     </section>
   </div>
@@ -173,13 +241,10 @@
 <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
   <img style="object-fit: cover;" width="1070px" height="140px" src="{% static 'images/thin3.jpg' %}">
 </div>
-{% for category in categories %}
-<div>{{ category.category }}</div>
-{% endfor %}
 
 <!-- 인스타그램 크롤링 -->
 <div class="container d-flex flex-column justify-content-center align-items-center"
-  style="max-width:1070px; height: 450px; font-weight: 600; padding: 60px 0 100px;">
+  style="max-width:1070px; height: 450px; font-weight: 600; padding: 60px 0 100px; margin-bottom: 60px;">
   <h3 class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">인스타그램 고객 후기</h3>
   <p class="text-muted" style="font-size: 16px; font-weight:400;">더 많은 고객 후기가 궁금하다면?</p>
   <div class="d-flex align-items-center" style="width: 1070px; margin: 0 auto;">
