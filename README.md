@@ -59,7 +59,7 @@
 <details>
 <summary>이동현</summary>
 <div markdown="1">
-<h3>백엔드 개발</h3>
+<h5>백엔드 개발</h5>
     <ul>
     <li><h5>자유게시판 [Articles] 개발</h5></li>
     </ul>
@@ -68,7 +68,7 @@
 <details>
 <summary>최보영</summary>
 <div markdown="1">
-<h3>풀스택 개발</h3>
+<h5>풀스택 개발</h5>
     <ul>
     <li><h5>상품페이지 [Products] 개발</h5></li>
     </ul>
@@ -77,7 +77,7 @@
 <details>
 <summary>차화영</summary>
 <div markdown="1">
-<h3>풀스택 개발</h3>
+<h5>풀스택 개발</h5>
     <ul>
     <li><h5>상품페이지 [Products] 개발</h5></li>
     </ul>
@@ -86,8 +86,8 @@
 <details>
 <summary>최정아</summary>
 <div markdown="1">
+<h5>풀스택 개발</h5>
     <ul>
-    <li><h5>풀스택 개발</h5></li>
     <li><h5>회원관리 [Accounts] 개발</h5></li>
     </ul>
 </div>
