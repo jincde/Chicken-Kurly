@@ -89,6 +89,7 @@ class OrderItem(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_products')
   quantity = models.IntegerField()
+  price = models.IntegerField()
   order_date = models.DateTimeField(auto_now_add=True)
   imp_uid = models.CharField(max_length=50)
   merchant_uid = models.CharField(max_length=50)

@@ -9,7 +9,7 @@
   <!-- 비밀번호 변경 -->
 
 <section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
-  <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" enctype="multipart/form">
+  <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" enctype="multipart/form-data">
     {% csrf_token %}
     <h1 class="mb-5 text-center" style='color:#5e0080;' >개인정보 수정</h1>
     <fieldset class="form-group">
@@ -45,13 +45,18 @@
   <!-- <p class="fs-3 my-2 ms-5">{{ user.username }}</p> -->
   <!-- </div> </div> </div> <form action="{% url "accounts:profile_update" %}" method="POST"> {% csrf_token %} {% bootstrap_form form %} <input type="submit" class="btn btn-outline-dark" value="수정"> <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">비밀번호 수정</a> <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a> <a href="" class="btn btn-secondary">돌아가기</a> </form>-->
 </section>
+{% endblock content %}
 
+{% block script %}
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
   const oldPW = document.querySelector('#id_old_password')
   const newPW1 = document.querySelector('#id_new_password1')
   const newPW2 = document.querySelector('#id_new_password2')
 
+  console.log(oldPW)
+  console.log(newPW1)
+  console.log(newPW2)
   oldPW.removeAttribute('required')
   newPW1.removeAttribute('required')
   newPW2.removeAttribute('required')
@@ -103,4 +108,5 @@
       }
     }).open();
   }
-{% endblock content %}
+</script>
+{% endblock script %}

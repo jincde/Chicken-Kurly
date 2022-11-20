@@ -23,10 +23,10 @@
             <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
               {{ person.username }}</h3>
             <!-- button -->
-            <!-- <button class="mdl-button mdl-js-button mdl-button--primary" style="font-size: 13px; margin: 5px;">
+            <!-- <button class="mdl-button mdl-js-button mdl-button-primary" style="font-size: 13px; margin: 5px;">
               {{ user.rating }}
             </button> -->
-            <h3 style="margin:0; font-size: 24px;">{{ user.rating }}</h3>
+            <h3 style="margin:0; font-size: 24px;">{{ person.rating }}</h3>
           </div>
           <div class="row mb-3">
             <div class="col d-flex flex-column align-items-center" style="height: 45px;">
@@ -39,20 +39,20 @@
             </div>
             <div class="col d-flex flex-column align-items-center border-start" style="height: 45px;">
               <p class="mb-1" style="font-size: 13px; color: rgb(115, 115, 115)">리뷰</p>
-              <p class="text-black fw-bold" style="font-size: 16px;">{{ person.followers.count }}</p>
+              <p class="text-black fw-bold" style="font-size: 16px;">{{ person.review_set.count }}</p>
             </div>
           </div>
         </div>
         <div>
           <div class="px-4">
-            {% if person.username == user.username %}
+            {% if person == request.user %}
             <a href="{% url 'accounts:profile_update' %}"><input class="form-control btn text-white"
                 style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;"
                 type="submit" value='프로필 편집'></a>
             {% else %}
             <form action="{% url 'accounts:follow' person.pk %}" method='POST'>
               {% csrf_token %}
-              {% if user in person.followers.all %}
+              {% if request.user in person.followers.all %}
               <input class="form-control btn text-white"
                 style="background-color: #5e0080; box-shadow:0 2px 5px 0 rgb(0 107 88 / 5%); font-weight: 500;"
                 type="submit" value='팔로우 취소'>
@@ -71,39 +71,62 @@
       <div class="d-flex d-grid" style="width: 100%; height: 200px; gap: 4px;">
         <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
           <p class="m-0">누적 구매 금액</p>
-          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">100,000,000
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+            {{ total_payment }}
             <span style="font-size: 1rem;">원</span>
           </p>
         </div>
         <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
           <p class="m-0">포인트
-            <i class="bi bi-arrow-right-short"></i>
+            <!-- <i class="bi bi-arrow-right-short"></i> -->
           </p>
-          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">2,555,330
+          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+            {{ total_point }}
             <span style="font-size: 1rem;">P</span>
           </p>
         </div>
         <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
           <p class="m-0">누적 구매 횟수</p>
-          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">1,211
-            <span style="font-size: 1rem;">회</span>
-          </p>
+          {% if person.orderitem_set %}
+            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+              {{ person.orderitem_set.count }}
+              <span style="font-size: 1rem;">회</span>
+            </p>
+          {% else %}
+            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+              0<span style="font-size: 1rem;">회</span>
+            </p>
+          {% endif %}
         </div>
       </div>
       <div class="d-flex d-grid" style="width: 100%; height: 100%; gap: 4px;">
         <div class="d-flex flex-column justify-content-center"
           style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
           <p class="m-0">작성 게시글</p>
-          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">25
-            <span style="font-size: 1rem;">개</span>
-          </p>
+          {% if person.article_set %}
+            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+              {{ person.article_set.count }}
+              <span style="font-size: 1rem;">개</span>
+            </p>
+          {% else %}
+            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+              0<span style="font-size: 1rem;">개</span>
+            </p>
+          {% endif %}
         </div>
         <div class="d-flex flex-column justify-content-center"
           style="width:50%; height:100%; background-color: white; padding: 20px 30px;">
           <p class="m-0">작성 댓글</p>
-          <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">312
-            <span style="font-size: 1rem;">개</span>
-          </p>
+          {% if person.comment_set %}
+            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+              {{ person.comment_set.count }}
+              <span style="font-size: 1rem;">개</span>
+            </p>
+          {% else %}
+            <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
+              0<span style="font-size: 1rem;">개</span>
+            </p>
+          {% endif %}
         </div>
       </div>
     </section>
@@ -111,7 +134,7 @@
 </div>
 
 
-<!-- 인스타그램 크롤링 -->
+<!-- 구매목록 -->
 <div class="container d-flex flex-column justify-content-center align-items-center"
   style="max-width:1070px; font-weight: 600; padding: 60px 0 0;">
   <h3 style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">구매 목록</h3>
@@ -201,7 +224,7 @@
   </div>
 </div>
 
-<!-- 인스타그램 크롤링 -->
+<!-- 위시리스트 -->
 <div class="container d-flex flex-column justify-content-center align-items-center"
   style="max-width:1070px; font-weight: 600; padding: 60px 0 0;">
   <h3 style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">위시리스트</h3>
@@ -292,11 +315,12 @@
   </div>
 </div>
 
+<!-- 문의 내역 -->
 <div class='container' style="max-width: 1070px; padding: 60px 0;">
   <div style="padding: 0 40px;">
     <h3 class="text-center" style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">문의
       내역</h3>
-    {% if not inquities %}
+    {% if not inquiries %}
     <div class="d-flex justify-content-center">
       <h4 style="color: rgb(204, 204, 204);">아직 문의내역이 없습니다 📝</h4>
     </div>

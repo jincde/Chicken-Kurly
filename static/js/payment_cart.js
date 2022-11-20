@@ -53,7 +53,7 @@ function requestPay() {
     if (rsp.success) {
       formData.append('imp_uid', rsp.imp_uid)
       formData.append('merchant_uid', rsp.merchant_uid)
-
+      
       axios({
         method: 'post',
         url: '/accounts/cart/payment/',

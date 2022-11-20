@@ -19,7 +19,6 @@ quantityField.addEventListener('input', event => {
 function requestPay(product_pk, product_name) {
   const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value  
   const price = Number(document.querySelector('#price').innerText)
-  
   const quantity = Number(quantityField.value)
   const productBuyForm = document.querySelector('#product-buy-form')
   let formData = new FormData(productBuyForm)
