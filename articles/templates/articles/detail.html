@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'article_base.html' %}
 {% load django_bootstrap5 %}
 {% load filter %}
 {% load static %}
@@ -65,8 +65,8 @@
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
           <div class="modal-content">
-            <div class="modal-dody">
-              <table class="table text-center table-hover">
+            <div class="modal-body">
+              <table class="table text-center table-hover m-0">
                 <tbody>
                   <tr class='text-danger' onclick="goToDelete('{{article.pk}}')">
                     <td>삭제</td>
@@ -93,8 +93,8 @@
           <img class="rounded-3" style="width: 100%; height: 20rem; object-fit: cover;" src="{{ article.image.url }}"
             alt="image">
           {% else %}
-          <img class="rounded" style="width: 100%; height: 20rem; object-fit:cover;"
-            src="https://dummyimage.com/400/821db5/ffffff&text=+">
+          <img class="rounded" style="width: 100%; height: 5rem; object-fit:cover;"
+            src="https://dummyimage.com/400/5e0080/ffffff&text=+">
           {% endif %}
         </div>
         <div class="d-grid" style="grid-template-columns: 40px auto; padding: 32px 36px 0px; margin-bottom: 20px;">
