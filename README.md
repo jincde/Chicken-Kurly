@@ -1,6 +1,7 @@
 ## :chicken::purple_heart: 치킨컬리(Chicken-Kurly) 프로젝트
 
 **닭가슴살 러버들을 위한 건강한 식습관 공유 커뮤니티**
+    - 겉은 바삭하고 속은 촉촉하며 나트륨이 높지 않으면서도 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly
 [@chickenkurly_regram](https://www.instagram.com/chickenkurly_regram/)
 
 ![carousel2](README.assets/carousel2.jpg)
@@ -26,19 +27,10 @@
 
 ### :date: 기간
 * 2022.11.09 ~ 2022.11.22
-* 배포: 2022년 11월 
+* 배포: 2022년 11월 21일
 
 
 ### :hammer_and_wrench: 기술 스택
-<div align="left">
-  <img src="https://img.shields.io/badge/Django-Full%20Stack-yellowgreen">
-  <img src="https://img.shields.io/badge/Python-Full%20Stack-blue">
-  <img src="https://img.shields.io/badge/CSS-Frontend-pink">
-  <img src="https://img.shields.io/badge/JavaScript-Frontend-purple">
-  <img src="https://img.shields.io/badge/HTML-Full%20Stack-orange">
-  <img src="https://img.shields.io/badge/VSCODE-Full%20Stack-lightblue">
-  <img src="https://img.shields.io/badge/GITHUB-Full%20Stack-black">
-</div>
 <div align="left">
   <img src="https://img.shields.io/badge/Django-green?style=flat&logo=Django&logoColor=092E20"/>
   <img src="https://img.shields.io/badge/Python-blue?style=flat&logo=Django&logoColor=3776AB"/>
@@ -56,10 +48,10 @@
 <details>
 <summary>장영진</summary>
 <div markdown="1">
-  * 팀장 <br>
-    - 풀스택 개발
-    * products/index 페이지
-    * 베이스 코드 작성
+* <h3>팀장</h3>
+   <h5>풀스택 개발</h5>
+   <p>products/index 페이지</p>
+   <p>베이스 코드 작성</p>
 </div>
 </details>
 <details>
@@ -95,6 +87,7 @@
 
 ## :bulb: 서비스 주제
 * 닭가슴살 식품 정보 및 후기 공유 커뮤니티 서비스
+    - 신선하고 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly는 상품을 한눈에 볼 수 있는 Products App, 고객님의 피드백을 반영 및 공유할 수 있는 Articles App, 회원가입과 로그인 기능을 제공하는 Accounts App으로 구성되어 있습니다. 웹 프레임워크 Django를 기반하여 사용자가 쉽게 이용할 수 있도록 사이트를 구현했습니다.
 
 
 
@@ -175,6 +168,7 @@
 
 
 
+
 ---
 
 ## :purple_heart:프로젝트 후 느낀점
@@ -185,4 +179,9 @@
 |최보영|느낀점 작성|
 |차화영|느낀점 작성|
 |최정아|느낀점 작성|
+
+
+
+---
+
 
