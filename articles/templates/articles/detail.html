@@ -2,7 +2,6 @@
 {% load django_bootstrap5 %}
 {% load filter %}
 {% load static %}
-
 {% block content %}
 
 <body style="background-color: rgb(245, 245, 245)">
@@ -90,7 +89,8 @@
       <div>
         <div class="text-center">
           {% if article.image %}
-          <a href="#"><img class="rounded-3" style="width: 100%; height: 20rem; object-fit: cover;" src="{{ article.image.url }}" alt="image" data-bs-toggle="modal" data-bs-target="#imgModal"></a>
+          <a href="#"><img class="rounded-3" style="width: 100%; height: 20rem; object-fit: cover;"
+              src="{{ article.image.url }}" alt="image" data-bs-toggle="modal" data-bs-target="#imgModal"></a>
           <!-- Modal -->
           <div class="modal fade" id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -352,7 +352,8 @@
         style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 100px; border: 1px solid rgb(222, 222, 222);">
         <div style="padding: 0 12px;">
           {% if article.user.image %}
-          <img src="{{ article.user.image.url }}" style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
+          <img src="{{ article.user.image.url }}"
+            style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
           {% else %}
           <img src="{% static 'images/android-icon-72x72.png' %}"
             style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px; object-fit: cover;">
