@@ -131,7 +131,7 @@ def profile(request, user_pk):
 
     watch_items = WatchItem.objects.filter(user=user)
     inquiries = user.inquiry_set.order_by('-pk')
-    print(inquiries)
+
 
     product_buy_form = ProductBuyForm() 
     cart = Cart.objects.get(user=user)
@@ -142,9 +142,17 @@ def profile(request, user_pk):
     inquiry_paginator = Paginator(inquiries, 5)
     inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
 
-    # 총 구매 금액 및 포인트
+    # 총 구매 금액, 포인트 및 등급
     total_payment = sum(OrderItem.objects.filter(user=user).values_list('price', flat=True))
     total_point = total_payment // 10
+    
+    if total_point >= 50000:
+        user.rating = 'GOLD'
+        user.save()
+    elif total_point >= 30000:
+        print('3###########asdfasdfasdfasdfasdfasdf')
+        user.rating = 'SILVER'
+        user.save()
     
     context = {
         "person": user,
@@ -283,10 +291,10 @@ def payment(request):
         # 1. 선택된 장바구니 아이템의 pk로 아이템 인스턴스 객체를 가져옴.
         cart_item = cart.cartitem_set.get(pk=selected_items[i])
         # 2. 장바구니 페이지에서 수정된 수량으로 변경
-        quantity = quantities[i]
+        quantity = int(quantities[i])
         
         # 위의 정보를 바탕으로 주문서 작성
-        OrderItem.objects.create(product=cart_item.product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid, price=cart_item.product.price)
+        OrderItem.objects.create(product=cart_item.product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid, price=cart_item.product.price * quantity)
         cart_item.product.sold_count += 1
         cart_item.product.save()
         cart_item.delete()
