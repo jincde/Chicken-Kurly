@@ -94,8 +94,14 @@
           <!-- Modal -->
           <div class="modal fade" id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-              <img class="rounded" src="{{ article.image.url }}" alt="photo" data-bs-toggle="modal"
-                data-bs-target="#exampleModal" />
+                  <img
+                  class="rounded"
+                  src="{{ article.image.url }}"
+                  alt="photo"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  style="width: 100%; height: 100%; object-fit:cover;"
+                />
             </div>
           </div>
           {% else %}
