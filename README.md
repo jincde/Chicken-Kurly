@@ -1,99 +1,104 @@
-## 치킨컬리 - Chicken, Kurly 🔥
+## :chicken::purple_heart: 치킨컬리(Chicken-Kurly) 프로젝트
 
 **닭가슴살 러버들을 위한 건강한 식습관 공유 커뮤니티**
+    - 겉은 바삭하고 속은 촉촉하며 나트륨이 높지 않으면서도 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly
 [@chickenkurly_regram](https://www.instagram.com/chickenkurly_regram/)
 
 ![carousel2](README.assets/carousel2.jpg)
 
-![carousel1](README.assets/carousel1.jpg)
-
-
-
 ---
 
-### Contributors ✨
+#### ✨ Contributors
 
 <a href="https://github.com/jincde/chicken-kurly/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jincde/chicken-kurly" />
 </a>
 
-[장영진](https://github.com/jincde)
-
-[차화영](https://github.com/forwardyoung)
-
-[이동현](https://github.com/soohofather)
-
-[최정아](https://github.com/astroastrum)
-
+* [장영진](https://github.com/jincde), 
+[차화영](https://github.com/forwardyoung), 
+[이동현](https://github.com/soohofather), 
+[최정아](https://github.com/astroastrum),
 [최보영](https://github.com/jupiter6676)
 
----
-## :chicken::purple_heart: Chicken Kurly 프로젝트 
-##### 목적
+
+### :trophy: 목적
 * Django와 HTML/CSS/JavaScript 활용하여 상품 정보 및 후기 공유 커뮤니티 웹 플랫폼 서비스 개발
 
-##### :date: 기간
+
+### :date: 기간
 * 2022.11.09 ~ 2022.11.22
-* 배포: 2022년 11월 
+* 배포: 2022년 11월 21일
 
-#### :crossed_swords: 기술 스택
-<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white">
-<img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML&logoColor=white">
-<img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
-<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
 
+### :hammer_and_wrench: 기술 스택
+<div align="left">
+  <img src="https://img.shields.io/badge/Django-green?style=flat&logo=Django&logoColor=092E20"/>
+  <img src="https://img.shields.io/badge/Python-blue?style=flat&logo=Django&logoColor=3776AB"/>
+  <img src="https://img.shields.io/badge/CSS-pink?style=flat&logo=Django&logoColor=1572B6"/>
+  <img src="https://img.shields.io/badge/JavaScript-yellow?style=flat&logo=Django&logoColor=F7DF1E"/>
+  <img src="https://img.shields.io/badge/HTML-orange?style=flat&logo=Django&logoColor=E34F26"/>
+  <img src="https://img.shields.io/badge/VSCODE-Full%20Stack-purple"/>
+  <img src="https://img.shields.io/badge/GITHUB-black?style=flat&logo=Django&logoColor=181717"/>
+</div>
+
+---
 
 ## :technologist: 팀원 소개 및 담당 역할
 
 <details>
 <summary>장영진</summary>
 <div markdown="1">
-  * 팀장
-  * Frontend
-    * products/index 페이지
-    * 베이스 코드 작성
+* <h3>팀장</h3>
+   <h5>풀스택 개발</h5>
+   <p>products/index 페이지</p>
+   <p>베이스 코드 작성</p>
 </div>
 </details>
 <details>
 <summary>이동현</summary>
 <div markdown="1">
- * 백엔드 개발
-    * 자유게시판 [Articles] 개발
+ * 백엔드 개발 <br>
+    - 자유게시판 [Articles] 개발
 </div>
 </details>
 <details>
 <summary>최보영</summary>
 <div markdown="1">
-  * Fullstack
-    * 상품페이지 [Products] 개발
+ * Fullstack <br>
+    - 상품페이지 [Products] 개발
 </div>
 </details>
 <details>
 <summary>차화영</summary>
 <div markdown="1">
-  * Fullstack
-    * 상품페이지 [Products] 개발
+  * Fullstack <br>
+    - 상품페이지 [Products] 개발
 </div>
 </details>
 <details>
 <summary>최정아</summary>
 <div markdown="1">
-  * Fullstack
-    * 회원관리 [Accounts] 개발
+  * Fullstack <br>
+    - 회원관리 [Accounts] 개발
 </div>
 </details>
 
+---
 
 ## :bulb: 서비스 주제
-닭가슴살 식품 정보 및 후기 공유 커뮤니티 서비스
+* 닭가슴살 식품 정보 및 후기 공유 커뮤니티 서비스
+    - 신선하고 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly는 상품을 한눈에 볼 수 있는 Products App, 고객님의 피드백을 반영 및 공유할 수 있는 Articles App, 회원가입과 로그인 기능을 제공하는 Accounts App으로 구성되어 있습니다. 웹 프레임워크 Django를 기반하여 사용자가 쉽게 이용할 수 있도록 사이트를 구현했습니다.
 
 
-## Chicken Kurly
+
+---
+## :dart: Chicken Kurly
 ![]()
 []()![products](https://user-images.githubusercontent.com/108647883/202868016-5284776c-082e-49d0-93d3-e5e2228bc15b.gif)
 
+
+
+---
 
 ## :shopping_cart:주요 기능 소개
 
@@ -153,9 +158,18 @@
   * 회원 정보 수정
 
 
+
+---
+
 ## :computer:서비스 시연
 
+![chickurl_시연](https://user-images.githubusercontent.com/108647883/202907753-382a29ea-3a4b-4769-b8e8-9929dca50f92.png)
 
+
+
+
+
+---
 
 ## :purple_heart:프로젝트 후 느낀점
 |팀원|느낀점|
@@ -165,4 +179,9 @@
 |최보영|느낀점 작성|
 |차화영|느낀점 작성|
 |최정아|느낀점 작성|
+
+
+
+---
+
 
