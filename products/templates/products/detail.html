@@ -84,9 +84,9 @@
 
             <div class="row">
               {% if request.user.is_authenticated %}
-              <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center">
                 <!-- 장바구니 버튼 -->
-                <form id="product-buy-form" data-product-id="{{ product.pk }}">
+                <form id="product-buy-form" data-product-id="{{ product.pk }}" class="w-100">
                   {% csrf_token %}
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
@@ -94,8 +94,8 @@
                       <div>{{ product_buy_form.quantity|add_class:"form-control"|attr:"min:0" }}</div>
                     </div>
                     <button type='submit'
-                      style='background-color:transparent; border:1px solid rgb(221, 221, 221); border-radius:3px;'
-                      id="btn-cart" class="bi bi-cart2 fs-4" name="cart" data-bs-toggle="modal" data-bs-target="#cart"
+                      style='background-color:transparent; border:none;'
+                      id="btn-cart" class="bi bi-cart2 fs-1" name="cart" data-bs-toggle="modal" data-bs-target="#cart"
                       disabled>
                     </button>
                   </div>
@@ -104,12 +104,12 @@
                 <!-- 찜 버튼 -->
                 <form data-product-id='{{ product.pk }}' id='ddib-btn' class="ddib-heart ms-2">
                   {% csrf_token %}
-                  <button style='background-color:transparent; border:1px solid rgb(221, 221, 221); border-radius:3px'
-                    class='product-detail-ddib-btn fs-4' type='submit'>
+                  <button style='background-color:transparent; border:none;'
+                    class='product-detail-ddib-btn' type='submit'>
                     {% if request.user in product.ddib_users.all %}
-                    <i style='color:#5e0080;' class="bi bi-heart-fill"></i>
+                    <i style='color:#5e0080;' class="bi bi-heart-fill fs-1"></i>
                     {% else %}
-                    <i style='color:#5e0080;' class="bi bi-heart"></i>
+                    <i style='color:#5e0080;' class="bi bi-heart fs-1"></i>
                     {% endif %}
                   </button>
                 </form>
