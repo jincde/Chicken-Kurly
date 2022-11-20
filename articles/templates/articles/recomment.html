@@ -96,7 +96,7 @@
                       <div>
                         <span style="">
                           {% if recomment.user.image %}
-                          <img src='{{ recomment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+                          <img src='{{ recomment.user.image.url }}' style="border-radius: 50%; width:32px; height:32px">
                           {% else %}
                           <img src="{% static 'images/android-icon-72x72.png' %}"
                             style="border-radius: 50%; width:32px; height:32px">
