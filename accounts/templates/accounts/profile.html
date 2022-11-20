@@ -243,10 +243,11 @@
                   <p class="m-0" style="font-weight: 400; color:black">{{ item.product.product_name }}</p>
                   <p class="m-0" style="font-weight: 800; color:black">{{ item.product.price }} 원</p>
                 </a>
-                <a class='deletebtn' style='color:black' href="{% url 'accounts:ddib_delete' item.product.pk %}"> 
-                  <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right' class=''>
+                <a class='deletebtn' href="{% url 'accounts:ddib_delete' item.product.pk %}"> 
+                  {% comment %} <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right' class=''>
                     삭제
-                  </button>
+                  </button> {% endcomment %}
+                  <i style='color:#5e0080;' class="bi bi-trash3"></i>
                 </a>
               <!-- </p> -->
               </div>
