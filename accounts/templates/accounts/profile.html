@@ -214,17 +214,17 @@
         <!-- Slides -->
         {% for item in order_items %}
         <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-          <a href="{% url 'products:detail' item.product.pk %}">
+          <a href="{% url 'products:detail' item.pk %}">
             <div class="product-img position-relative overflow-hidden">
-              <img src="{{ item.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+              <img src="{{ item.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
                 style="object-fit: cover">
-              </div>
-            </a>
-           <!-- 상품 이미지 안에 장바구니 담기 버튼 -->
-            {% comment %} < href="ddibtocartModal" data-toggle='modal'> {% endcomment %}
-            <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex' data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ item.pk }}' >
-              <img style='margin-bottom:7rem' class='cart-img position-absolute bottom-0 end-0 mx-2' src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
-            </button>
+            </div>
+          </a>
+          <!-- 상품 이미지 안에 장바구니 담기 버튼 -->
+          {% comment %} < href="ddibtocartModal" data-toggle='modal'> {% endcomment %}
+          <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex' data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ item.pk }}' >
+            <img style='margin-bottom:7rem' class='cart-img position-absolute bottom-0 end-0 mx-2' src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
+          </button>
             
           <!-- 상품 이미지 안에 장바구니 담기 기능 
           <a href="https://www.kurly.com/main">
@@ -235,23 +235,23 @@
             </button>
           </a>-->
        
-              <div style="padding: 12px 10px 0 0">
-                <div class="d-flex justify-content-between">
-                <a href="{% url 'products:detail' item.product.pk %}">
-                  <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-0"
-                  style="color: #FA622F; font-weight: 700;">{{ item.product.category }}</span>
-                  <p class="m-0" style="font-weight: 400; color:black">{{ item.product.product_name }}</p>
-                  <p class="m-0" style="font-weight: 800; color:black">{{ item.product.price }} 원</p>
-                </a>
-                <a class='deletebtn' href="{% url 'accounts:ddib_delete' item.product.pk %}"> 
-                  {% comment %} <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right' class=''>
-                    삭제
-                  </button> {% endcomment %}
-                  <i style='color:#5e0080;' class="bi bi-trash3"></i>
-                </a>
-              <!-- </p> -->
-              </div>
-            </div>
+          <div style="padding: 12px 10px 0 0">
+            <div class="d-flex justify-content-between">
+            <a href="{% url 'products:detail' item.pk %}">
+              <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.brand }}</span><span class="m-0"
+              style="color: #FA622F; font-weight: 700;">{{ item.category }}</span>
+              <p class="m-0" style="font-weight: 400; color:black">{{ item.product_name }}</p>
+              <p class="m-0" style="font-weight: 800; color:black">{{ item.price }} 원</p>
+            </a>
+            <a class='deletebtn' href="{% url 'accounts:ddib_delete' item.pk %}"> 
+              {% comment %} <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right' class=''>
+                삭제
+              </button> {% endcomment %}
+              <i style='color:#5e0080;' class="bi bi-trash3"></i>
+            </a>
+          <!-- </p> -->
+          </div>
+        </div>
         
           
 <!-- 구매에서 장바구니 모달-->
@@ -266,17 +266,17 @@
                   <div class="modal-body item-cart-modals" data-item-id="{{ item.pk }}"> 
                   {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
                     <div class='text-center mb-2'>
-                    {{ item.product.product_name }}
+                    {{ item.product_name }}
                     </div>
                       <div class="row">
                           <!-- 수량 입력 -->
                           <div class="">
-                          <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
+                          <form action="{% url 'accounts:tocart' item.pk %}" method="POST">
                           {% csrf_token %}
                             <div class='d-flex justify-content-center'>
                               <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" style='width:80px; height:30px' class="form-control quantity-input me-2 text-center" type="number" name="checkquantity" min="1" value="1">
-                              <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-                              <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price }}</span>원</div>
+                              <div class="d-none" id="price-{{ item.pk }}">{{ item.price }}</div>
+                              <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.price }}</span>원</div>
                             </div>
                             <div class='d-flex justify-content-center'>
                               <button type="button" class="btn me-2" data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
