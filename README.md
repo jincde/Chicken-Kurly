@@ -1,43 +1,35 @@
-## 치킨컬리 - Chicken, Kurly 🔥
+## 치킨컬리 - Chicken-Kurly 🔥
 
 **닭가슴살 러버들을 위한 건강한 식습관 공유 커뮤니티**
 [@chickenkurly_regram](https://www.instagram.com/chickenkurly_regram/)
 
 ![carousel2](README.assets/carousel2.jpg)
 
-![carousel1](README.assets/carousel1.jpg)
-
-
-
 ---
 
-### Contributors ✨
+### ✨ Contributors
 
 <a href="https://github.com/jincde/chicken-kurly/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jincde/chicken-kurly" />
 </a>
-
+<div align="left">
 [장영진](https://github.com/jincde)
-
 [차화영](https://github.com/forwardyoung)
-
 [이동현](https://github.com/soohofather)
-
 [최정아](https://github.com/astroastrum)
-
 [최보영](https://github.com/jupiter6676)
+</div>
 
----
 ## :chicken::purple_heart: Chicken Kurly 프로젝트 
-##### 목적
+#### :trophy: 목적
 * Django와 HTML/CSS/JavaScript 활용하여 상품 정보 및 후기 공유 커뮤니티 웹 플랫폼 서비스 개발
 
-##### :date: 기간
+#### :date: 기간
 * 2022.11.09 ~ 2022.11.22
 * 배포: 2022년 11월 
 
 #### :hammer_and_wrench: 기술 스택
-<div align="center">
+<div align="left">
   <img src="https://img.shields.io/badge/Django-Full%20Stack-yellowgreen">
   <img src="https://img.shields.io/badge/Python-Full%20Stack-blue">
   <img src="https://img.shields.io/badge/CSS-Frontend-pink">
@@ -46,7 +38,7 @@
   <img src="https://img.shields.io/badge/VSCODE-Full%20Stack-lightblue">
   <img src="https://img.shields.io/badge/GITHUB-Full%20Stack-black">
 </div>
-<div align="center">
+<div align="left">
   <img src="https://img.shields.io/badge/Django-green?style=flat&logo=Django&logoColor=092E20"/>
   <img src="https://img.shields.io/badge/Python-blue?style=flat&logo=Django&logoColor=3776AB"/>
   <img src="https://img.shields.io/badge/CSS-pink?style=flat&logo=Django&logoColor=1572B6"/>
@@ -78,7 +70,7 @@
 <details>
 <summary>최보영</summary>
 <div markdown="1">
-  * Fullstack
+ * Fullstack
     * 상품페이지 [Products] 개발
 </div>
 </details>
@@ -102,7 +94,7 @@
 닭가슴살 식품 정보 및 후기 공유 커뮤니티 서비스
 
 
-## Chicken Kurly
+## :dart: Chicken Kurly
 ![]()
 []()![products](https://user-images.githubusercontent.com/108647883/202868016-5284776c-082e-49d0-93d3-e5e2228bc15b.gif)
 
@@ -166,6 +158,11 @@
 
 
 ## :computer:서비스 시연
+
+![chickurl_시연](https://user-images.githubusercontent.com/108647883/202907753-382a29ea-3a4b-4769-b8e8-9929dca50f92.png)
+
+
+
 
 
 
