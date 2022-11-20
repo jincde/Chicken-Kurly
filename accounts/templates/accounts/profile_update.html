@@ -20,17 +20,12 @@
         
         {% bootstrap_form password_form %}
 
-        <div class="d-flex justify-content-between">
-        <h6 class="my-3" style="width:123px; color: rgb(51, 51, 51); font-size:14px;">배송받을 주소</h6>
-        <div class="my-3">
-          <input type="text" name="address" style='width:333px' class="signup-input form-control"
-            placeholder="주소를 입력해주세요" id="sample6_address">
-        </div>
-        <div>
-          <input class="btn my-3" type="button"
-            style="border: 1px solid #5e0080; color: #5e0080; margin-left: 8px; font-weight: 500;"
-            value="주소검색" onclick="sample6_execDaumPostcode()">
-        </div>
+        <div class="">
+          <h6 class="my-3 fw-bold" style="color: rgb(51, 51, 51); font-size:14px;">배송받을 주소</h6>
+          <div class="my-3">
+            <input type="text" name="address" style='width:535px' class="signup-input form-control"
+              placeholder="주소를 입력해주세요" id="sample6_address">
+          </div>
       </div>
           {% bootstrap_form form %}
           <input type="submit" class="btn" style='background-color: #5e0080; border-color: #5e0080; color:white' value="수정">
@@ -47,8 +42,12 @@
 </section>
 {% endblock content %}
 
+
+{% comment %} <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 {% block script %}
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script>
   const oldPW = document.querySelector('#id_old_password')
   const newPW1 = document.querySelector('#id_new_password1')
@@ -108,5 +107,7 @@
       }
     }).open();
   }
-</script>
-{% endblock script %}
+
+</script> {% endcomment %}
+{% endblock content %}
+

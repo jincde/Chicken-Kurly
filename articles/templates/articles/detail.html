@@ -100,7 +100,7 @@
         <div class="d-grid" style="grid-template-columns: 40px auto; padding: 32px 36px 0px; margin-bottom: 20px;">
           <span>
             {% if article.user.image %}
-            <img src='{{ article.user.image }}' style="border-radius: 50%; width:40px; height:40px">
+            <img src='{{ article.user.image.url }}' style="border-radius: 50%; width:40px; height:40px">
             {% else %}
             <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:40px; height:40px">
             {% endif %}
