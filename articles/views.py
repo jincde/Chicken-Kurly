@@ -180,13 +180,15 @@ def c_delete(request, c_pk, a_pk):
 
     return redirect("articles:detail", a_pk)
 
+# 대댓글 삭제
 @login_required
 def recomment_delete(request, c_pk, a_pk):
 
     recomment = ReComment.objects.get(pk=c_pk)
     recomment.delete()
 
-    return redirect("articles:rec_detail", a_pk)
+    return redirect("articles:rec_detail", c_pk, a_pk)
+
 
 @login_required
 def rec_delete(request, rec_pk, c_pk, a_pk):

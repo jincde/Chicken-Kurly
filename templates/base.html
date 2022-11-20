@@ -51,6 +51,49 @@
       <ion-icon type="button" onclick="getHide()" style="background-color: none; font-weight: 200;" name="close-outline"
         style="font-size: 1rem;"></ion-icon>
     </div>
+
+    <nav class="navbar navbar-expand-md bg-white py-0" style="background-color: white; position: sticky; top: 0; z-index: 4;">
+      <div class="container nav-grid" style="max-width: 1050px;">
+        <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo.png' %}" width="100%" height="60"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div style="width: 30%;">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link non_a" aria-current="page" href="{% url 'products:index' %}" style="font-size:18px;">치킨컬리</a>
+              </li>
+              <li class="navb-item">
+                <a class="nav-link non_a" href="{% url 'articles:index' %}" style="font-size:18px;">헬짱피드</a>
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex align-items-center" style="width: 400px; border:1px solid #5e0080; border-radius: 8px;">
+            <form action="{% url 'articles:search' %}" method="">
+              {% csrf_token %}
+              <input class="form-control search-input" name="keyword" type="search" placeholder="검색어를 입력해주세요." aria-label="Search" style="width: 350px; height: 47px; color: #5e0080; border: 0px; font-weight: 400;">
+            </form>
+            <i class="bi bi-search search-icon" style="font-size:1.2rem;width: 10%; color: #5e0080;"></i>
+          </div>
+          <div class="d-flex justify-content-end" style="width: 300px">
+            <div class="icons d-flex justify-content-between" style="width: 130px;">
+              <div>
+                <a class="non_a" href="https://github.com/jincde/Chicken-Kurly">
+                  <i class="bi bi-github" style="font-size: 1.4rem"></i>
+                </a>
+              </div>
+              <div>
+                <a class='non_a' href="">
+                  <i class="bi bi-heart" style="font-size: 1.4rem"></i>
+                </a>
+              </div>
+              <div>
+                <a class='non_a' href="{% url 'accounts:cart' %}">
+                  <i class="bi bi-cart" style="font-size: 1.4rem"></i>
+                </a>
+              </div>
+
   </div>
   <div style="background-color: white;">
     <section class="d-flex container align-items-center justify-content-end navbar-line"
