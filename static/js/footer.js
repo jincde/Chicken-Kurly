@@ -18,11 +18,11 @@ function Footer() {
             </div>
             <div class="footer_email">
               비회원 문의:
-              <a href="mailto:help@kurlycorp.com">help@kurlycorp.com</a>
+              <a href="mailto:help@kurlycorp.com">help@chickenkurlycorp.com</a>
               <br/>
               비회원 대량주문 문의 :
               <a href="mailto:kurlygift@kurlycorp.com">
-                kurlygift@kurlycorp.com
+                kurlygift@chickenkurlycorp.com
               </a>
             </div>
           </div>
@@ -30,12 +30,12 @@ function Footer() {
             <ul class="right_div_ul">
               <li class="right_li">
                 <a href="https://www.kurly.com/shop/introduce/about_kurly.php" target="_self" class="right_a">
-                  컬리소개
+                  치킨컬리소개
                 </a>
               </li>
               <li class="right_li2">
                 <a href="https://www.youtube.com/embed/WEep7BcboMQ?rel=0&amp;showinfo=0&amp;wmode=opaque&amp;enablejsapi=1" target="_self" class="right_a">
-                  컬리소개영상
+                  치킨컬리소개영상
                 </a>
               </li>
               <li class="right_li2">
@@ -60,34 +60,29 @@ function Footer() {
               </li>
             </ul>
             <div class="right_info">
-              법인명 (상호) : 주식회사 컬리
+              법인명 (상호) : 주식회사 치킨컬리
               <span class="right_info_span"></span>
               사업자등록번호 : 261-81-23567
               <a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2618123567&amp;apv_perm_no=" target="_blank" rel="noreferrer" class="css-1tby8gd ebj6vxr0">
                 사업자정보 확인
               </a>
               <br/>
-              통신판매업 : 제 2018-서울강남-01646 호
+              통신판매업 : 제2016-서울강남-00호
               <span class="right_info_span"></span>
-              개인정보보호책임자 : 이원준
+              개인정보보호책임자 : CHICKEN-KURLY
               <br/>
-              주소 : 서울특별시 강남구 테헤란로 133, 18층(역삼동)
+              주소 : 서울특별시 강남구 언주로
               <span class="right_info_span"></span>
-              대표이사 : 김슬아
-              <br/>
-              입점문의 :
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLScLB7YkGJwNRzpGpp0gbR1i4C1_uvTEFj43SFfJ_XEadTn3gQ/viewform?usp=sf_link" target="_blank" rel="noreferrer" class="css-1tby8gd ebj6vxr0">
-                입점문의하기
-              </a>
+              대표이사 : CHICKEN-KURLY
               <span class="right_info_span"></span>
               제휴문의 :
               <a href="mailto:business@kurlycorp.com" class="css-1tby8gd ebj6vxr0">
-                business@kurlycorp.com
+                business@chickenkurlycorp.com
               </a>
               <br/>
               채용문의 :
               <a href="mailto:recruit@kurlycorp.com" class="css-1tby8gd ebj6vxr0">
-                recruit@kurlycorp.com
+                recruit@chickenkurlycorp.com
               </a>
               <br/>
               팩스: 070 - 7500 - 6098
@@ -98,7 +93,7 @@ function Footer() {
           <button>
             <img src="https://res.kurly.com/pc/ico/2208/logo_isms.svg" alt="isms 로고" class="up_down_footer_img"/>
             <p>
-              [인증범위] 마켓컬리 쇼핑몰 서비스 개발·운영
+              [인증범위] 치킨컬리 쇼핑몰 서비스 개발·운영
               <br/>
               (심사받지 않은 물리적 인프라 제외)
               <br/>
@@ -134,7 +129,7 @@ function Footer() {
         </div>
       </div>
       <div class="down_footer">
-        <em class="right">© KURLY CORP. ALL RIGHTS RESERVED</em>
+        <em class="right">© CHICKEN KURLY CORP. ALL RIGHTS RESERVED</em>
       </div>
     </div>
   </div>);
