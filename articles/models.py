@@ -15,9 +15,9 @@ class Article(models.Model):
     image = ProcessedImageField(
         upload_to="img/",
         blank=True,
-        processors=[ResizeToFill(400, 300)],  
+        processors=[Thumbnail(1920, 1080)],  
         format="JPEG", 
-        options={"quality": 80},
+        options={"quality": 100},
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_articles")
