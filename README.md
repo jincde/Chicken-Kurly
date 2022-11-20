@@ -1,7 +1,7 @@
 ## :chicken::purple_heart: 치킨컬리(Chicken-Kurly) 프로젝트
 
 **닭가슴살 러버들을 위한 건강한 식습관 공유 커뮤니티**
-    - 겉은 바삭하고 속은 촉촉하며 나트륨이 높지 않으면서도 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly
+<br>- 겉은 바삭하고 속은 촉촉하며 나트륨이 높지 않으면서도 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly
 [@chickenkurly_regram](https://www.instagram.com/chickenkurly_regram/)
 
 ![carousel2](README.assets/carousel2.jpg)
@@ -48,38 +48,48 @@
 <details>
 <summary>장영진</summary>
 <div markdown="1">
-* <h3>팀장</h3>
-   <h5>풀스택 개발</h5>
-   <p>products/index 페이지</p>
-   <p>베이스 코드 작성</p>
+<h3>팀장</h3>
+    <ul>
+    <li><h5>풀스택 개발</h5></li>
+    <li><p>products/index 페이지</p></li>
+    <li><p>베이스 코드 작성</p></li>
+    </ul>
 </div>
 </details>
 <details>
 <summary>이동현</summary>
 <div markdown="1">
- * 백엔드 개발 <br>
-    - 자유게시판 [Articles] 개발
+<h3>백엔드 개발</h3>
+    <ul>
+    <li><h5>자유게시판 [Articles] 개발</h5></li>
+    </ul>
 </div>
 </details>
 <details>
 <summary>최보영</summary>
 <div markdown="1">
- * Fullstack <br>
-    - 상품페이지 [Products] 개발
+<h3>풀스택 개발</h3>
+    <ul>
+    <li><h5>상품페이지 [Products] 개발</h5></li>
+    </ul>
 </div>
 </details>
 <details>
 <summary>차화영</summary>
 <div markdown="1">
-  * Fullstack <br>
-    - 상품페이지 [Products] 개발
+<h3>풀스택 개발</h3>
+    <ul>
+    <li><h5>상품페이지 [Products] 개발</h5></li>
+    </ul>
 </div>
 </details>
 <details>
 <summary>최정아</summary>
 <div markdown="1">
-  * Fullstack <br>
-    - 회원관리 [Accounts] 개발
+    <ul>
+    <li><h5>풀스택 개발</h5></li>
+    <li><h5>회원관리 [Accounts] 개발</h5></li>
+    </ul>
 </div>
 </details>
 
