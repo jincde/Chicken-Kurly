@@ -37,15 +37,15 @@
 * 배포: 2022년 11월 
 
 #### :hammer_and_wrench: 기술 스택
-<img src="https://img.shields.io/badge/Django-Full%20Stack-yellowgreen">
-<img src="https://img.shields.io/badge/Python-Full%20Stack-blue">
-<img src="https://img.shields.io/badge/CSS-Frontend-pink">
-<img src="https://img.shields.io/badge/JavaScript-Frontend-purple">
-<img src="https://img.shields.io/badge/HTML-Full%20Stack-orange">
-<img src="https://img.shields.io/badge/VSCODE-Full%20Stack-lightblue">
-<img src="https://img.shields.io/badge/GITHUB-Full%20Stack-black">
-
-
+<div align="center">
+  <img src="https://img.shields.io/badge/Django-Full%20Stack-yellowgreen">
+  <img src="https://img.shields.io/badge/Python-Full%20Stack-blue">
+  <img src="https://img.shields.io/badge/CSS-Frontend-pink">
+  <img src="https://img.shields.io/badge/JavaScript-Frontend-purple">
+  <img src="https://img.shields.io/badge/HTML-Full%20Stack-orange">
+  <img src="https://img.shields.io/badge/VSCODE-Full%20Stack-lightblue">
+  <img src="https://img.shields.io/badge/GITHUB-Full%20Stack-black">
+</div>
 <div align="center">
   <img src="https://img.shields.io/badge/Django-green?style=flat&logo=Django&logoColor=092E20"/>
   <img src="https://img.shields.io/badge/Python-blue?style=flat&logo=Django&logoColor=3776AB"/>
