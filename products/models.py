@@ -19,6 +19,7 @@ class Product(models.Model):
     hit = models.PositiveIntegerField(default=0) # 조회수는 음수일 수 없음
     brand = models.CharField(max_length=20)
     category = models.CharField(max_length=20)
+    ddib_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="ddib_users") 
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
 class Image(models.Model):

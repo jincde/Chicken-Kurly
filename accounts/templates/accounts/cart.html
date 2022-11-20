@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <!-- 체크박스로 상품 선택 후 주문 버튼을 누르면 -->
@@ -23,16 +24,16 @@
               name="selected_items" value="{{ item.pk }}" id="check-{{ item.pk }}">
             <!-- 상품 정보 -->
             <div class="col-7 d-flex justify-content-start">
-              <a href="{% url 'products:detail' item.pk %}" style='color:black'>
+              <a href="{% url 'products:detail' item.product.pk %}" style='color:black'>
                 <div class="d-flex align-items-center">
-                    <img src="{{ item.product.image_set.all.0.image.url }}" alt="{{ item.product.image_set.all.0.image }}"
-                      class="rounded-1" width="72px" height="72px">
-                    <div class="ms-3">
-                      <p id="product-name-{{ item.pk }}" class="fs-5 mb-1">{{ item.product.product_name }}</p>
-                      <p class="text-muted m-0">{{ item.product.content }}</p>
-                    </div>
+                  <img src="{{ item.product.image_set.all.0.image.url }}" alt="{{ item.product.image_set.all.0.image }}"
+                    class="rounded-1" width="72px" height="72px">
+                  <div class="ms-3">
+                    <p id="product-name-{{ item.pk }}" class="fs-5 mb-1">{{ item.product.product_name }}</p>
+                    <p class="text-muted m-0">{{ item.product.content }}</p>
+                  </div>
                 </div>
-              </a>  
+              </a>
             </div>
 
             <!-- 수량 입력 -->
@@ -44,7 +45,8 @@
 
             <div class="col-2 d-flex justify-content-end align-items-center">
               <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-              <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price}}</span>원</div>
+              <div class="fw-bold me-3"><span class="price-fields" id="price-{{ item.pk }}-field">
+                  {{ item.product.price }}</span>원</div>
               <!-- 장바구니에서 삭제 -->
               <input type="submit" class="btn-close" name="delete" value="{{ item.pk }}" style="color:transparent;">
             </div>

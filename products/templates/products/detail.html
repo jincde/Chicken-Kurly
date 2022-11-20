@@ -31,8 +31,8 @@
             {% for image in product.image_set.all %}
             <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}"
               style="height: 480px; width: 480px;">
-              <img style="object-fit: cover;" src="{{ image.image.url }}" class="d-block h-100 mx-auto"
-                alt="{{ image.image }}">
+              <img style="object-fit: cover; width: 480px; height:480px;" src="{{ image.image.url }}"
+                class="d-block mx-auto" alt="{{ image.image }}">
             </div>
             {% endfor %}
           </div>
@@ -50,7 +50,7 @@
       </article>
 
       <article class="d-flex align-items-center" style="width: 480px; height: 480px;">
-        <div class="d-flex flex-column justify-content-between" style="width: 400px; height: 480px;">
+        <div class="d-flex flex-column justify-content-between" style="width: 400px; height: 380px;">
           <div class="div-top" style="height: 144px;">
             <div style="font-size: 20px; font-weight:700; color:#5e0080">{{ product.brand }}</div>
             <h1 style="font-size: 32px; font-weight:700; color:rgb(51, 51, 51); margin-top: 16px;">

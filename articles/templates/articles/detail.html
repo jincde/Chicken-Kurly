@@ -12,16 +12,17 @@
       <div class='d-flex flex-column align-items-center' style="position: sticky; top: 100px">
         <div>
           <a class="non_a" style="font-size: 1.4rem;" href="{% url 'articles:index' %}">
-            <ion-icon name="arrow-back-outline" style="color: #3d3d3d; margin-bottom: 14px"></ion-icon>
+            <ion-icon name="arrow-back-outline" style="color: #3d3d3d; margin-bottom: 14px; font-size: 1.5rem;">
+            </ion-icon>
           </a>
         </div>
         <form class='like-forms' data-article-id="{{ article.pk }}">
           {% csrf_token %}
           {% if request.user in article.like_users.all %}
-          <div class="d-flex align-items-center justify-content-end">
+          <div class="d-flex align-items-center justify-content-end" style="margin-top: 14px;">
             <button type="submit" class="d-flex flex-column align-items-center"
               style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
-              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 1.5rem; padding: 8px;"
+              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 2rem; padding: 8px;"
                 class="ion-icon active align-items-center" name="heart">
               </ion-icon>
               <span id='like-count-{{ article.pk }}' style="font-size: 14px; color: rgb(87, 87, 87)">
@@ -29,10 +30,10 @@
             </button>
           </div>
           {% else %}
-          <div class="d-flex flex-column align-items-center justify-content-end">
+          <div class="d-flex flex-column align-items-center justify-content-end" style="margin-top: 14px">
             <button type=" submit" class="d-flex flex-column align-items-center"
               style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
-              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 1.5rem; padding: 8px;"
+              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 2rem; padding: 8px;"
                 class="ion-icon d-flex align-items-center" name="heart"></ion-icon>
               <div style="font-size: 14px; color: rgb(87, 87, 87)" id='like-count-{{ article.pk }}'>
                 {{ article.like_users.count }}</div>
@@ -42,7 +43,7 @@
         </form>
         <div class="d-flex flex-column align-items-center justify-content-end" style="margin-top: 14px;">
           <a href="#target">
-            <ion-icon name="chatbubbles-outline" style="font-size: 1.5rem; padding: 8px; color: rgb(87, 87, 87);"
+            <ion-icon name="chatbubbles-outline" style="font-size: 2rem; padding: 8px; color: rgb(87, 87, 87);"
               data-anchor="anchor_1" onclick="scrollEvent(this)">
             </ion-icon>
           </a>
@@ -339,7 +340,7 @@
     <!-- 33 -->
     <div>
       <div class="rounded"
-        style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 60px; border: 1px solid rgb(222, 222, 222);">
+        style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 100px; border: 1px solid rgb(222, 222, 222);">
         <div style="padding: 0 12px;">
           {% if article.user.image %}
           <img src="{{ article.user.image }}" style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
