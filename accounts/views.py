@@ -77,7 +77,7 @@ def logout(request):
 @login_required
 def profile_update(request):
     if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, instance=request.user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         password_form = PasswordChangeForm(request.user, request.POST)
 
         if form.is_valid():
@@ -119,44 +119,44 @@ def change_password(request):
 
 def profile(request, user_pk):
     products = Product.objects.order_by('-pk')
-    ddib = Ddib.objects.get(user=request.user) # 요청한 사용자의 찜(가방)을 가져와라.
+    user = get_object_or_404(get_user_model(), pk=user_pk)
+    ddib = Ddib.objects.get(user=user) # 요청한 사용자의 찜(가방)을 가져와라.
     ddib_items = ddib.ddibitem_set.all() # 찜한 목록(가방 안에 있는 물건들)을 가져와라.
     
-    OrderItems = OrderItem.objects.order_by('-pk')
-
-
     # 중복되지 않은 상품 id 리스트
-    order_product_ids = OrderItem.objects.filter(user=request.user).values_list('product', flat=True).distinct()
+    order_product_ids = OrderItem.objects.filter(user=user).values_list('product', flat=True).distinct()
     order_items = []
     for id in order_product_ids:
         order_items.append(Product.objects.get(pk=id))
 
-    watch_items = WatchItem.objects.filter(user=request.user)
-    user = get_user_model().objects.get(pk=user_pk)
+    watch_items = WatchItem.objects.filter(user=user)
     inquiries = user.inquiry_set.order_by('-pk')
+    print(inquiries)
 
-    person = get_user_model()
-    person = get_object_or_404(person, pk=user_pk)
     product_buy_form = ProductBuyForm() 
-    cart = Cart.objects.get(user=request.user)
+    cart = Cart.objects.get(user=user)
     cart_items = cart.cartitem_set.all()
 
     # 문의 페이지네이션
     inquiry_page = request.GET.get('inquiry_page', '1')
     inquiry_paginator = Paginator(inquiries, 5)
     inquiry_page_obj = inquiry_paginator.get_page(inquiry_page)
+
+    # 총 구매 금액 및 포인트
+    total_payment = sum(OrderItem.objects.filter(user=user).values_list('price', flat=True))
+    total_point = total_payment // 10
     
     context = {
-        "OrderItems": OrderItems,
-        "person": person,
+        "person": user,
         "ddib_items": ddib_items,
         'product_buy_form': product_buy_form,
         'order_items': order_items,
         'watch_items': watch_items,
         'cart_items': cart_items,
-        'inquiries': inquiries,
         'inquiries': inquiry_page_obj,
         'products': products,
+        'total_payment': total_payment,
+        'total_point': total_point,
     }
 
     return render(request, "accounts/profile.html", context)
@@ -286,7 +286,7 @@ def payment(request):
         quantity = quantities[i]
         
         # 위의 정보를 바탕으로 주문서 작성
-        OrderItem.objects.create(product=cart_item.product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid)
+        OrderItem.objects.create(product=cart_item.product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid, price=cart_item.product.price)
         cart_item.product.sold_count += 1
         cart_item.product.save()
         cart_item.delete()
