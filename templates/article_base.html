@@ -81,7 +81,7 @@
         <div style="width: 30%;">
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link non_a" aria-current="page" href="#" style="font-size:18px;">치킨컬리</a>
+              <a class="nav-link non_a" aria-current="page" href="{% url 'products:index' %}" style="font-size:18px;">치킨컬리</a>
             </li>
             <li class="navb-item">
               <a class="nav-link non_a" href="{% url 'articles:index' %}" style="font-size:18px;">헬짱피드</a>
@@ -104,7 +104,7 @@
               </a>
             </div>
             <div>
-              <a class='non_a' href="{% url 'accounts:profile' user.pk %}">
+              <a class='non_a' href="">
                 <i class="bi bi-heart" style="font-size: 1.4rem"></i>
               </a>
             </div>

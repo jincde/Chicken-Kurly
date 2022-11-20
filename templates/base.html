@@ -1,394 +1,522 @@
-{% load static %}
+{% extends 'article_base.html' %}
 {% load django_bootstrap5 %}
-{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
+{% load filter %}
+{% load static %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block content %}
 
-  <!-- CSS only -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U'%}">
-  <link rel="stylesheet" href="{% static 'css/footer.css' %}?{% now 'U'%}">
-
-  <!-- bootstrap icon -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
-  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css' rel='stylesheet' type='text/css'>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
-  <link rel="icon" type="image/png" sizes="72x72" href="{% static 'images/android-icon-72x72.png' %}">
-  <title>치킨컬리</title>
-</head>
-
-<style>
-  a {
-    text-decoration: none;
-  }
-
-  ion-icon {
-    color: #ffffff8d;
-    font-size: 20px;
-  }
-</style>
-
-<body>
-  <div class="align-items-center"
-    style="display: flex; background-color: #5e0080; color: white; font-weight: 400; height: 42px;" id="makers">
-    <div class="container d-flex justify-content-center align-items-center"
-      style="min-width: 1070px; max-width: 1070px; font-size: 12px;">
-      이동현
-      장영진 차화영
-      최보영
-      최정아
-
-    </div>
+<body style="background-color: rgb(245, 245, 245)">
+  <div class='article-grid container' style="width: 1280px; padding: 40px 0;">
+    <!-- 11 -->
     <div>
-      <ion-icon type="button" onclick="getHide()" style="background-color: none; font-weight: 200;" name="close-outline"
-        style="font-size: 1rem;"></ion-icon>
+      <div class='d-flex flex-column align-items-center' style="position: sticky; top: 100px">
+        <div>
+          <a class="non_a" style="font-size: 1.4rem;" href="{% url 'articles:index' %}">
+            <ion-icon name="arrow-back-outline" style="color: #3d3d3d; margin-bottom: 14px; font-size: 1.5rem;">
+            </ion-icon>
+          </a>
+        </div>
+        <form class='like-forms' data-article-id="{{ article.pk }}">
+          {% csrf_token %}
+          {% if request.user in article.like_users.all %}
+          <div class="d-flex align-items-center justify-content-end" style="margin-top: 14px;">
+            <button type="submit" class="d-flex flex-column align-items-center"
+              style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
+              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 2rem; padding: 8px;"
+                class="ion-icon active align-items-center" name="heart">
+              </ion-icon>
+              <span id='like-count-{{ article.pk }}' style="font-size: 14px; color: rgb(87, 87, 87)">
+                {{ article.like_users.count }}</span>
+            </button>
+          </div>
+          {% else %}
+          <div class="d-flex flex-column align-items-center justify-content-end" style="margin-top: 14px">
+            <button type=" submit" class="d-flex flex-column align-items-center"
+              style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
+              <ion-icon id='heart-{{ article.pk }}' style="color: #3d3d3d; font-size: 2rem; padding: 8px;"
+                class="ion-icon d-flex align-items-center" name="heart"></ion-icon>
+              <div style="font-size: 14px; color: rgb(87, 87, 87)" id='like-count-{{ article.pk }}'>
+                {{ article.like_users.count }}</div>
+            </button>
+          </div>
+          {% endif %}
+        </form>
+        <div class="d-flex flex-column align-items-center justify-content-end" style="margin-top: 14px;">
+          <a href="#target">
+            <ion-icon name="chatbubbles-outline" style="font-size: 2rem; padding: 8px; color: rgb(87, 87, 87);"
+              data-anchor="anchor_1" onclick="scrollEvent(this)">
+            </ion-icon>
+          </a>
+          <div style="font-size: 14px; color: rgb(87, 87, 87)">
+            {{ comments.count }}
+          </div>
+        </div>
+        <div>
+          {% if request.user == article.user %}
+          <div class='text-end' style="margin-top: 28px;">
+            <button type="button" class="fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              style="border: 0px; background-color: transparent;">
+              <i class="bi bi-three-dots" style="color: rgb(61, 61, 61)"></i>
+            </button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              <table class="table text-center table-hover m-0">
+                <tbody>
+                  <tr class='text-danger' onclick="goToDelete('{{article.pk}}')">
+                    <td>삭제</td>
+                  </tr>
+                  <tr onclick="goToUpdate('{{article.pk}}')">
+                    <td>수정</td>
+                  </tr>
+                  <tr>
+                    <td data-bs-dismiss="modal">닫기</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <nav class="navbar navbar-expand-md bg-white py-0" style="background-color: white; position: sticky; top: 0; z-index: 4;">
-      <div class="container nav-grid" style="max-width: 1050px;">
-        <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo.png' %}" width="100%" height="60"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div style="width: 30%;">
-            <ul class="navbar-nav mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link non_a" aria-current="page" href="{% url 'products:index' %}" style="font-size:18px;">치킨컬리</a>
-              </li>
-              <li class="navb-item">
-                <a class="nav-link non_a" href="{% url 'articles:index' %}" style="font-size:18px;">헬짱피드</a>
-              </li>
-            </ul>
-          </div>
-          <div class="d-flex align-items-center" style="width: 400px; border:1px solid #5e0080; border-radius: 8px;">
-            <form action="{% url 'articles:search' %}" method="">
-              {% csrf_token %}
-              <input class="form-control search-input" name="keyword" type="search" placeholder="검색어를 입력해주세요." aria-label="Search" style="width: 350px; height: 47px; color: #5e0080; border: 0px; font-weight: 400;">
-            </form>
-            <i class="bi bi-search search-icon" style="font-size:1.2rem;width: 10%; color: #5e0080;"></i>
-          </div>
-          <div class="d-flex justify-content-end" style="width: 300px">
-            <div class="icons d-flex justify-content-between" style="width: 130px;">
-              <div>
-                <a class="non_a" href="https://github.com/jincde/Chicken-Kurly">
-                  <i class="bi bi-github" style="font-size: 1.4rem"></i>
-                </a>
-              </div>
-              <div>
-                <a class='non_a' href="">
-                  <i class="bi bi-heart" style="font-size: 1.4rem"></i>
-                </a>
-              </div>
-              <div>
-                <a class='non_a' href="{% url 'accounts:cart' %}">
-                  <i class="bi bi-cart" style="font-size: 1.4rem"></i>
-                </a>
-              </div>
-
-  </div>
-  <div style="background-color: white;">
-    <section class="d-flex container align-items-center justify-content-end navbar-line"
-      style="max-width: 1050px; height: 35px; font-size: 12px;">
-      {% if request.user.is_authenticated %}
-      <a class="non_a" href="{% url 'accounts:profile' user.pk %}">
-        {{ user.username }}님</a>
-      <span class="mx-2" style="font-weight: 100;">|</span>
-      <a class="non_a" href="{% url 'accounts:logout' %}">로그아웃</a>
-      <span class="mx-2" style="font-weight: 100;">|</span>고객센터
-      {% else %}
-      <a class="non_a" href="{% url 'accounts:signup' %}">회원가입</a>
-      <span class="mx-2" style="font-weight: 100;">|</span>
-      <a class="non_a" href="{% url 'accounts:login' %}">로그인</a>
-      <span class="mx-2" style="font-weight: 100;">|</span>고객센터
-      {% endif %}
-    </section>
-  </div>
-  <nav class="navbar navbar-expand-md bg-white py-0"
-    style="background-color: white; position: sticky; top: 0; height: 90px; z-index: 4;">
-    <div class="container nav-grid" style="max-width: 1050px;">
-      <a class="navbar-brand" href="{% url 'products:index' %}"><img src="{% static 'images/logo3.png' %}" width="100%"
-          height="60"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div style="width: 30%;">
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link non_a" aria-current="page" href="#" style="font-size:18px;">치킨컬리</a>
-            </li>
-            <li class="navb-item">
-              <a class="nav-link non_a" href="{% url 'articles:index' %}" style="font-size:18px;">헬짱피드</a>
-            </li>
-          </ul>
+    <!-- 22 -->
+    <div class="rounded-3" style="background-color: white; border: 1px solid rgb(222, 222, 222);">
+      <div>
+        <div class="text-center">
+          {% if article.image %}
+          <img class="rounded-3" style="width: 100%; height: 20rem; object-fit: cover;" src="{{ article.image.url }}"
+            alt="image">
+          {% else %}
+          <img class="rounded" style="width: 100%; height: 5rem; object-fit:cover;"
+            src="https://dummyimage.com/400/5e0080/ffffff&text=+">
+          {% endif %}
         </div>
-        <div class="d-flex align-items-center" style="width: 400px; border:1px solid #5e0080;">
-          <form action="{% url 'articles:search' %}" method="">
-            {% csrf_token %}
-            <input class="form-control search-input" name="keyword" type="search" placeholder="검색어를 입력해주세요."
-              aria-label="Search" style="width: 340px; height: 47px; color: #5e0080; border: 0px; font-weight: 400;">
-          </form>
-          <i class="bi bi-search search-icon" style="font-size:1.2rem;width: 10%; color: #5e0080;"></i>
+        <div class="d-grid" style="grid-template-columns: 40px auto; padding: 32px 36px 0px; margin-bottom: 20px;">
+          <span>
+            {% if article.user.image %}
+            <img src='{{ article.user.image.url }}' style="border-radius: 50%; width:40px; height:40px">
+            {% else %}
+            <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:40px; height:40px">
+            {% endif %}
+          </span>
+          <div class="d-flex flex-column" style="padding-left: 12px;">
+            <p class="m-0 p-0" style="color: rgb(64, 64, 64); font-weight: 700;">{{ article.user.username}}</p>
+            <p class="m-0 p-0" style="color: rgb(113, 113, 113); font-size: 12px;">Posted on
+              {{ article.created_at|date:'Y년 m월 d일' }}<span class="mx-1"
+                style="color: rgb(189, 189, 189);">•</span>published at <a
+                href="{% url 'articles:index' %}">chicken-kurly</a></p>
+          </div>
         </div>
-        <div class="d-flex justify-content-end" style="width: 300px">
-          <div class="icons d-flex justify-content-between" style="width: 130px;">
-            <div>
-              <a class="non_a" href="https://github.com/jincde/Chicken-Kurly">
-                <i class="bi bi-github" style="font-size: 1.4rem"></i>
-              </a>
+        <h1 class="text-start my-5" style="font-weight: 800; padding: 0 36px">{{ article.title }}</h1>
+        <div style="padding: 0 36px; text-rendering: optimizeSpeed;">
+          {{ article.content|mark }}
+        </div>
+      </div>
+      <hr id="anchor_1" style="margin: 3rem auto;">
+      <!-- 댓글목록 -->
+      <div style="padding: 0 24px;">
+        <div style="font-size: 18px; font-weight: 700">댓글 <span style="color:#7f1ba4">
+            {{ comments.count }}</span>
+        </div>
+      </div>
+      <!-- 댓글 입력 폼 -->
+      <form action="{% url 'articles:c_create' article.pk %}" method="POST" id="comment-form"
+        data-article-id="{{ article.pk }}">
+        {% csrf_token %}
+        <div style="width: 100%; padding: 24px;">
+          <div class="row" style="padding: 0 36px;">
+            <input type="text" name="comment" maxlength="200" placeholder="댓글을 작성하세요." required="" id="comment"
+              style="border: 0px; border-bottom:2px solid rgb(204, 204, 204); border-radius: 0px;">
+            <div class="d-flex justify-content-end p-0">
+              <button class="btn non_a text-end mt-3"
+                style="background-color: #5e0080; color: white; font-weight:500; padding: 12 16px;"
+                type="submit">댓글작성</button>
             </div>
-            <div>
-              {% if user.pk == none %}
-              <a class='non_a' href="{% url 'accounts:login' %}">
-                <i class="bi bi-heart" style="font-size: 1.4rem"></i>
-              </a>
-              {% else %}
-              <a class='non_a' href="{% url 'accounts:profile' user.pk %}">
-                <i class="bi bi-heart" style="font-size: 1.4rem"></i>
-              </a>
+          </div>
+        </div>
+      </form>
+      {% if comments %}
+      {% for comment in paginated_comments %}
+      <div class='d-grid' style="padding: 0 24px; grid-template-columns: 40px auto;">
+        <span style="margin-top: 24px; padding-top: 14px;">
+          {% if comment.user.image %}
+          <img src='{{ comment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+          {% else %}
+          <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:32px; height:32px">
+          {% endif %}
+        </span>
+        <div class='d-flex flex-column'
+          style="padding: 14px 12px; margin: 1.5rem 0; border: 1px solid rgb(231, 231, 231); border-radius: 10px;">
+
+          <!-- 댓글 작성자, 시간 -->
+          <div class="flex-grow-1">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <span style="font-size: 1rem"><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}"
+                    style="font-weight: 600; color: rgb(61, 61, 61);">{{ comment.user }}</a></span>
+                <span class="mx-1" style="color: rgb(189, 189, 189);">•</span>
+                <span style="color: rgb(113, 113, 113); font-weight: 400; font-size: 14px;">
+                  {{ comment.created_at|date:'Y년 m월 d일' }}</span>
+              </div>
+              {% if request.user == comment.user %}
+              <span>
+                <a href="{% url 'articles:c_delete' comment.pk article.pk %}">
+                  <span style="color: #e83c4b; display: inline-block; transform: translateY(3px); font-size: 1rem;">
+                    <i class="bi bi-x"></i>
+                  </span>
+                </a>
+              </span>
               {% endif %}
             </div>
-            <div>
-              <a class='non_a' href="{% url 'accounts:cart' %}">
-                <i class="bi bi-cart" style="font-size: 1.4rem"></i>
-              </a>
+            <div style="margin: 12px 0 16px;">
+              <p class="text-break m-0" style="font-size: 18px; line-height: 27px">{{ comment.content }}
+              </p>
+            </div>
+            <!-- 댓글 좋아요 -->
+            <div class="d-flex align-items-center">
+              <form class="comment-like-forms" data-comment-id="{{ comment.pk }}">
+                {% if request.user in comment.like_users.all %}
+                <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+                  id='comment-like-btn-{{ comment.pk }}'>
+                  <div class="fs-6" style="color: #7f1ba4">
+                    <span>
+                      <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up-fill"></i>
+                    </span>
+                    <span class="me-3" id='comment-like-count-{{ comment.pk }}' style="font-size: 14px;">
+                      {{ comment.like_users.count }}
+                    </span>
+                  </div>
+                </button>
+                {% else %}
+                <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+                  id='comment-like-btn-{{ comment.pk }}'>
+                  <div class="fs-6" style="color: #7f1ba4">
+                    <span>
+                      <i id='thumbs-up-{{ comment.pk }}' class="bi bi-hand-thumbs-up"></i>
+                    </span>
+                    <span class="me-3" id='comment-like-count-{{ comment.pk }}' style="font-size: 14px;">
+                      {{ comment.like_users.count }}
+                    </span>
+                  </div>
+                </button>
+                {% endif %}
+              </form>
+              <p class="m-0 p-0" style="font-size: 14px; color:rgb(61, 61, 61)">
+                <button class="btn m-0 p-0" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseExample-{{ comment.pk }}" aria-expanded="false"
+                  aria-controls="collapseExample" style="font-size: 14px; color: rgb(61, 61, 61)">
+                  답글
+                </button>
+              </p>
+            </div>
+          </div>
+          <!-- 댓글 내용 -->
+
+          <!-- 대댓글 -->
+
+          <div class="collapse flex-grow-1" id="collapseExample-{{ comment.pk }}">
+            <div class="card card-body w-100" style="border: rgb(231, 231, 231);">
+              <div class='p-1 '>
+                <!-- 대댓글 입력창 -->
+                <form class="row" style="padding: 0 20px;"
+                  action="{% url 'articles:rec_detail_create' comment.pk article.pk %}" method='POST'
+                  enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  <input type="text" name="content" maxlength="200" class="col-10" placeholder="답글을 작성하세요." required=""
+                    id="id_content" style="border: 0px; border-bottom:2px solid rgb(61, 61, 61); border-radius: 0px">
+                  <button class="btn col-2 non_a" type="submit">답글추가</button>
+                </form>
+                <div
+                  style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 12; overflow: hidden;">
+                  <!-- 대댓글 목록 -->
+                  {% for recomment in recomments %}
+
+                  {% if recomment.comment.pk == comment.pk %}
+                  <div class='my-5 d-grid' style="grid-template-columns: 40px auto;">
+                    <span style="">
+                      {% if comment.user.image %}
+                      <img src='{{ comment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+                      {% else %}
+                      <img src="{% static 'images/android-icon-72x72.png' %}"
+                        style="border-radius: 50%; width:32px; height:32px">
+                      {% endif %}
+                    </span>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div>
+                        <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}"
+                            style="font-weight: 600; color: rgb(61, 61, 61);">{{ recomment.user }}</a></span>
+                        <span class="mx-1" style="color: rgb(189, 189, 189);">•</span>
+                        <span style="color: rgb(113, 113, 113); font-weight: 400; font-size: 14px">
+                          {{ recomment.created_at|date:'Y년 m월 d일 H시 t분 s초' }}</span>
+
+                        {% if request.user == recomment.user %}
+                        <span>
+                          <a href="{% url 'articles:recomment_delete' recomment.pk article.pk %}">
+                            <span style="color: #e83c4b; display: inline-block; transform: translateY(3px);">
+                              <i class="bi bi-x"></i>
+                            </span>
+                          </a>
+                        </span>
+                        {% endif %}
+                        <div class="text-break" style="margin-top: 12px;">
+                          {{ recomment.content }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+
+                  {% endfor %}
+                </div>
+                <p class="text-end">
+                  <a class="non_a" href="{% url 'articles:rec_detail' comment.pk article.pk %}"
+                    style="font-weight:600 ;">더보기</a>
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-  </nav>
-  {% block content %}{% endblock %}
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <!-- Channel Plugin Scripts -->
-  <script>
-    (function () {
-      var w = window;
-      if (w.ChannelIO) {
-        return (window.console.error || window.console.log || function () { })('ChannelIO script included twice.');
-      }
-      var ch = function () {
-        ch.c(arguments);
-      };
-      ch.q = [];
-      ch.c = function (args) {
-        ch
-          .q
-          .push(args);
-      };
-      w.ChannelIO = ch;
+      {% endfor %}
+      {% endif %}
+      <!-- 댓글 페이지네이션 -->
+      {% if paginated_comments %}
+      <ul class="pagination justify-content-center">
+        <!-- 첫 페이지 -->
+        {% if paginated_comments.has_previous %}
+        <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+        <li class="page-item">
+          <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#">&#60;</a>
+        </li>
+        {% endif %}
 
-      function l() {
-        if (w.ChannelIOInitialized) {
-          return;
-        }
-        w.ChannelIOInitialized = true;
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
-        s.charset = 'UTF-8';
-        var x = document.getElementsByTagName('script')[0];
-        x
-          .parentNode
-          .insertBefore(s, x);
-      }
-      if (document.readyState === 'complete') {
-        l();
-      } else if (window.attachEvent) {
-        window.attachEvent('onload', l);
-      } else {
-        window.addEventListener('DOMContentLoaded', l, false);
-        window.addEventListener('load', l, false);
-      }
-    })();
-    ChannelIO('boot', { "pluginKey": "ce57ca97-109b-4151-b12e-89a8b4f56f69" });
-  </script>
-  <!-- End Channel Plugin -->
-  <!-- <footer> <div class="container" style="max-width: 1070px; height: 580px; padding: 30px 0 0; border-top:1px solid #dfdfdf;"> <div class="d-flex justify-content-between"> <div> <h2>고객센터</h2> <p>010-000-0000 | 09:00 ~ 18:00</p> </div> <div> <p>소개 인재채용 약관 개인정보처리방침 이용안내</p> <p>법인명 등록번호</p> <p>주소 대표이사</p> <p>입점문의 제휴문의</p> <p>채용문의</p> <p>팩스 010-000-0000</p> <p>인스타 트위터 페이스북 카카오톡 네이버블로그</p> </div> </div> </div> </footer> -->
+        <!-- 페이지리스트 -->
+        <!-- //페이지 범위를 하나씩 리턴 -->
+        {% for page_number in paginated_comments.paginator.page_range %}
+        {% if page_number >= paginated_comments.number|add:-2 and page_number <= paginated_comments.number|add:2 %} <!--
+          // 현재 페이지일 때는 active -->
+          {% if page_number == paginated_comments.number %}
+          <li class="page-item" aria-current="page">
+            <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
+              href="?page={{ page_number }}">{{ page_number }}</a>
+          </li>
+          {% else %}
+          <li class="page-item text-color-warning">
+            <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">
+              {{ page_number }}</a>
+          </li>
+          {% endif %}
+          {% endif %}
+          {% endfor %}
 
-  <!-- footer design -->
-  <footer class="mdl-mega-footer" style="background-color: #fff; border-top: 1px solid rgb(230, 230, 230);">
-    <div class="mdl-mega-footer__middle-section" style="width: 1070px; margin: 0 auto;">
-      <div class="mdl-mega-footer__drop-down-section">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-        <h1 class="mdl-mega-footer__heading"></h1>
-        <ul class="mdl-mega-footer__link-list">
-          <div class="cc_view cc_qna">
-            <h3 class="my-3" style="font-size: 20px;">
-              <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')"
-                class="tit">고객행복센터</a>
-            </h3>
-            <dl class="list">
-              <dt>0000-0000</dt>
-              <dd>월~토요일 오전 7시 - 오후 6시</dd>
-            </dl>
-          </div>
-          <div class="cc_view cc_qna">
-            <h3 class="my-2 mt-5" style="font-size: 20px;">
-              <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')"
-                class="tit">카카오톡 문의</a>
-            </h3>
-            <dl class="list">
-              <dt>월~토요일 오전7시-오후6시</dt>
-              <dd>일/공휴일 오전7시-오후1시</dd>
-            </dl>
-          </div>
-          <div class="mdl-mega-footer__bottom-section">
-        </ul>
-      </div>
-      <div class="mdl-mega-footer__drop-down-section">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-        <h1 class="mdl-mega-footer__heading"></h1>
-        <ul class="mdl-mega-footer__link-list">
-          <!-- 1:1 문의 -->
-          <div class="cc_view cc_qna">
-            <h3 class="my-3" style="font-size: 20px;">
-              <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')"
-                class="tit">1:1 문의</a>
-            </h3>
-            <dl class="list">
-              <dt>24시간 접수 불가능</dt>
-              <dd>고객센터 운영시간에 천천히
-                <br>답변해드리겠습니다.
-              </dd>
-            </dl>
-          </div>
-          <div class="mdl-mega-footer__drop-down-section">
-            <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-            <h1 class="mdl-mega-footer__heading"></h1>
-            <ul class="mdl-mega-footer__link-list">
-              <li>
-                <a href="#"></a>
-              </li>
-              <li>
-                <a href="#"></a>
-              </li>
-              <li>
-                <a href="#"></a>
-              </li>
-            </ul>
-          </div>
-      </div>
-      <div class="mdl-mega-footer__drop-down-section d-none">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-        <h1 class="mdl-mega-footer__heading"></h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li>
-            <a href="#"></a>
+          <!-- 다음페이지 -->
+          {% if paginated_comments.has_next %}
+          <li class="page-item">
+            <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
           </li>
-          <li>
-            <a href="#"></a>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" href="#">&#62;</a>
           </li>
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
-        </ul>
-      </div>
-      <div class="mdl-mega-footer__drop-down-section d-none">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-        <h1 class="mdl-mega-footer__heading"></h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
-        </ul>
-      </div>
-      <div class="mdl-mega-footer__drop-down-section" style="width: 500px;">
-        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-        <h1 class="mdl-mega-footer__heading"></h1>
-        <ul class="mdl-mega-footer__link-list">
-          <li>
-            <a href="#" style="font-size: 20px;">주식회사 치킨컬리</a>
-          </li>
-          법인명 (상호) : 주식회사 치킨컬리
-          <span class="bar">I</span>
-          사업자등록번호 : 000-81-00000
-          <a href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2618123567&amp;apv_perm_no=" target="_blank"
-            class="link">사업자정보 확인</a>
-          <br>
-          통신판매업 : 제2016-서울강남-00호
-          <span class="bar">I</span>
-          개인정보보호책임자 : CHICKEN-KURLY
-          <br>
-          주소 : 서울특별시 강남구 언주로
-          <span class="bar">I</span>
-          대표이사 : CHICKEN-KURLY
-          <br>
-          입점문의 :
-          <a href="https://forms.gle/oKMAe1SaicqMX3SC9" target="_blank" class="link">입점문의하기</a>
-          <span class="bar">I</span>
-          제휴문의 :
-          <a href="mailto:business@kurlycorp.com" class="link">business@Chickenkurlycorp</a>
-          <br>
-          채용문의 :
-          <a href="mailto:recruit@kurlycorp.com" class="link">recruit@Chickenkurlycorp.com</a>
-          <br>
-          팩스: 070 - 0000 - 0000
-          <span class="bar">I</span>
-          이메일 :
-          <a href="mailto:help@kurlycorp.com" class="link">help@Chickenkurlycorp.com</a>
-          <div class="mt-3 mdl-mega-footer__link-list">
-            <p class="mdl-logo" style="color: rgb(151, 151, 151);">Chicken Kurly</p>
-            <p class="mdl-logo" style="color: rgb(151, 151, 151);">Help</p>
-            <p class="mdl-logo" style="color: rgb(151, 151, 151);">Privacy & Terms</p>
-          </div>
-        </ul>
-
-        <em class="copy"><br>© CHICKEN KURLY CORP. ALL RIGHTS RESERVED</em>
-      </div>
+          {% endif %}
+      </ul>
+      {% else%}
+      <h4 class="text-center" style="color:rgb(204, 204, 204); padding: 100px 0;">첫 댓글의 주인공이 되어보세요 👀</h4>
+      {% endif %}
     </div>
+    <!-- 33 -->
+    <div>
+      <div class="rounded"
+        style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 100px; border: 1px solid rgb(222, 222, 222);">
+        <div style="padding: 0 12px;">
+          {% if article.user.image %}
+          <img src="{{ article.user.image }}" style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
+          {% else %}
+          <img src="{% static 'images/android-icon-72x72.png' %}"
+            style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px; object-fit: cover;">
+          {% endif %}
+          <span style="color: rgb(64, 64, 64); font-weight: 700; font-size: 20px"><a class="non_a"
+              href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.username }}</a></span>
+        </div>
+        <div style="padding: 0 12px; margin-top: 1rem;">
+          <p class="m-0 p-0" style="font-size: 12px; font-weight: 700; color: rgb(82, 82, 82);">회원등급</p>
+          <p class="m-0 p-0" style="font-size: 16px; color: rgb(64, 64, 64)">
+            {{ article.user.rating }}</p>
+        </div>
+        <div style="padding: 0 12px; margin-top: 1rem;">
+          <p class="m-0 p-0" style="font-size: 12px; font-weight: 700; color: rgb(82, 82, 82);">가입일</p>
+          <p class="m-0 p-0" style="font-size: 16px; color: rgb(64, 64, 64)">
+            {{ article.user.date_joined|date:'Y년 m월 d일' }}</p>
+        </div>
+      </div>
+
     </div>
-  </footer>
-  <script>
-    function getHide() {
-      document.getElementById('makers').style.display = 'none';
-    }
-  </script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
-    crossorigin="anonymous"></script>
-  <!-- Axios -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- Iamport -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-  <script src='/static/js/footer.js'></script>
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-  <script defer="defer" src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-deep_purple.min.css" />
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-indigo.min.css" />
-  {% block script %}{% endblock %}
+  </div>
 </body>
 
-</html>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  // 게시글 좋아요 비동기 
+  const forms = document.querySelectorAll('.like-forms')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const articleId = event.target.dataset.articleId
+
+      axios({
+        method: 'post',
+        url: `/articles/like/${event.target.dataset.articleId}/`,
+        headers: { 'X-CSRFToken': csrftoken },
+      })
+        .then((response) => {
+          const likeBtn = document.querySelector(`#like-btn-${articleId}`)
+          const likeCount = document.querySelector(`#like-count-${articleId}`)
+          const isLiked = response.data.is_liked
+          const heart = document.querySelector(`#heart-${articleId}`)
+
+          if (isLiked === true) {
+            heart.classList.add('active')
+            // heart.classList.remove('bi-heart')
+            // likeBtn.classList.remove('btn-outline-danger')
+            // likeBtn.classList.add('btn-danger')
+            likeCount.innerText = response.data.likeCount
+          } else {
+            // heart.classList.add('bi-heart')
+            heart.classList.remove('active')
+            // likeBtn.classList.remove('btn-danger')
+            // likeBtn.classList.add('btn-outline-danger')
+
+            likeCount.innerText = response.data.likeCount
+          }
+
+        })
+        .catch((error) => {
+          console.log(error.response)
+        })
+    })
+  })
+
+  // 댓글 좋아요 비동기
+  const commentforms = document.querySelectorAll('.comment-like-forms')
+  const commentcsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  commentforms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const commentId = event.target.dataset.commentId
+
+      axios({
+        method: 'post',
+        url: `/articles/c_like/${event.target.dataset.commentId}/`,
+        headers: { 'X-CSRFToken': commentcsrftoken },
+      })
+        .then((response) => {
+          const commentlikeBtn = document.querySelector(`#comment-like-btn-${commentId}`)
+          const likeCount = document.querySelector(`#comment-like-count-${commentId}`)
+          const commentisLiked = response.data.comment_is_liked
+          const thumbsUp = document.querySelector(`#thumbs-up-${commentId}`)
+          console.log(likeCount)
+
+          if (commentisLiked === true) {
+            thumbsUp.classList.remove('bi-hand-thumbs-up')
+            thumbsUp.classList.add('bi-hand-thumbs-up-fill')
+            // heart.classList.remove('bi-heart')
+            // likeBtn.classList.remove('btn-outline-danger')
+            // likeBtn.classList.add('btn-danger')
+            likeCount.innerText = response.data.like_count
+          } else {
+            thumbsUp.classList.remove('bi-hand-thumbs-up-fill')
+            thumbsUp.classList.add('bi-hand-thumbs-up')
+            // heart.classList.add('bi-heart')
+            // likeBtn.classList.remove('btn-danger')
+            // likeBtn.classList.add('btn-outline-danger')
+            likeCount.innerText = response.data.like_count
+          }
+
+        })
+    })
+  })
+
+
+
+</script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<script>
+  // 댓글 비동기 구현 코드 ㅠㅠ 일단 보류..
+  /* const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  const commentForm = document.querySelector('#comment-form')
+  commentForm.addEventListener('submit', function (event) {
+    event.preventDefault()
+    axios({
+      method: 'post',
+      url: `/articles/comment/${event.target.dataset.articleId}/`,
+      headers: { 'X-CSRFToken': csrftoken },
+      data: new FormData(commentForm)
+    })
+      .then(response => {
+        console.log(response.data)
+
+        const comments = document.querySelector('#comments')
+        const div = document.createElement('div')
+        div.classList.add('mx-2')
+        div.style.margin = '-2px'
+        const span = document.createElement('span')
+        span.innerText = `${response.data.userName}`
+        span.classList.add('fs-5')
+        span.classList.add('fw-semibold')
+        span.style.color = '#5e0080'
+        const p = document.createElement('p')
+        p.innerText = `${response.data.content}`
+        div.appendChild(span)
+        div.appendChild(p)
+        comments.append(div)
+        const commentInput = document.querySelector('#comment')
+        commentInput.value = ''
+      })
+  })
+  */
+
+</script>
+
+<script>
+  function scrollEvent(_params, speed) {
+    let anchor_id = $(_params).attr('data-anchor');
+    if (!speed) var speed = 'slow';
+    var a_tag = $("#" + anchor_id);
+    if (a_tag.length > 0) {
+      $('html, body').animate({
+        scrollTop: a_tag.offset().top
+      }, speed);
+    }
+  }
+</script>
+
+<script>
+  function goToDelete(article_pk) {
+    // pk= 다음에 문자열은 안 되는 것 같다..
+    // https://stackoverflow.com/questions/17832194/get-javascript-variables-value-in-django-url-template-tag
+    location.href = "{% url 'articles:delete' pk=0 %}".replace('0', article_pk);
+  }
+
+  function goToUpdate(article_pk) {
+    // pk= 다음에 문자열은 안 되는 것 같다..
+    // https://stackoverflow.com/questions/17832194/get-javascript-variables-value-in-django-url-template-tag
+    location.href = "{% url 'articles:update' pk=0 %}".replace('0', article_pk);
+  }
+</script>
+
+{% endblock content %}
