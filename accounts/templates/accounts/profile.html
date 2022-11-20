@@ -2,11 +2,11 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% bootstrap_css %}
+{% load humanize %}
 {% bootstrap_javascript %}
 
 
 {% block content %}
-
 <div class="test-section" style="background-color: rgb(247, 247, 247); height:392px; padding: 40px 0">
   <div class="container test-grid" style="max-width: 1070px; display: grid;">
     <div class="profile" style="max-width: 100%; background-color: white;">
@@ -22,11 +22,11 @@
           <div class="d-flex justify-content-start">
             <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
               {{ person.username }}</h3>
-              <!-- button -->
-            <button class="mdl-button mdl-js-button mdl-button--primary" style="font-size: 13px; margin: 5px;">
+            <!-- button -->
+            <!-- <button class="mdl-button mdl-js-button mdl-button--primary" style="font-size: 13px; margin: 5px;">
               {{ user.rating }}
-            </button>       
-              <!-- <h3>{{ user.rating }}</h3> -->
+            </button> -->
+            <h3 style="margin:0; font-size: 24px;">{{ user.rating }}</h3>
           </div>
           <div class="row mb-3">
             <div class="col d-flex flex-column align-items-center" style="height: 45px;">
@@ -110,217 +110,202 @@
   </div>
 </div>
 
-         
 
-
-{% comment %} 찜한 상품 {% endcomment %}
-<div style="padding: 40px 0;">
-  <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-    <h3 style="color: rgb(51, 51, 51)">찜한 상품</h3>
-  </div>
-  <div class="swiper-box" style="position: relative; padding:0 40px;">
-    <section class="swiper" id="test-slide">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        {% for item in ddib_items %}
-          <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-            <a href="{% url 'products:detail' item.product.pk %}">
-              <div class="product-img position-relative overflow-hidden">
-                <img src="{{ item.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
-                  style="object-fit: cover;">
-              </div>
-            </a>
-            <!-- 상품 이미지 안에 장바구니 담기 버튼 -->
-            {% comment %} < href="ddibtocartModal" data-toggle='modal'> {% endcomment %}
-            <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex' data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ item.pk }}' >
-              <img style='margin-bottom:8rem' class='cart-img position-absolute bottom-0 end-0 mx-2' src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
-            </button>
-            
-            <div style="padding: 12px 10px 0 0">
-              <div class="d-flex justify-content-between">
-              <a style='color:black' href="{% url 'products:detail' item.product.pk %}">
-                <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.product.brand }}</span><span class="m-2"
-                  style="color: #FA622F; font-weight: 700;">{{ item.product.category }}</span>
-                <p class="m-0" style="font-weight: 400; color:black">{{ item.product.product_name }}</p>
-                <p class="m-0" style="font-weight: 800; color:black">{{ item.product.price }} 원</p>
-                </a>
-                  <a class='deletebtn' style='color:black;' href="{% url 'accounts:ddib_delete' item.product.pk %}"> 
-                    <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right'>
-                    삭제
-                    </button>
-                  </a>
-                <!-- </p> -->
-            </div>
-          </div>
-          <!-- 찜에서 장바구니 모달-->
-            <!-- Modal -->
-            <div class="modal fade" id="ddibtocartModal-{{ item.pk }}" tabindex="-1" aria-labelledby="ddibtocartModalLabel" aria-hidden="true">
-              <div class="modal-dialog" >
-                <div class="modal-content">
-                  {% comment %} <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="ddibtocartModal">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div> {% endcomment %}
-                  <div class="modal-body item-cart-modals" data-item-id="{{ item.pk }}"> 
-                  {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
-                    <div class='text-center mb-2'>
-                    {{ item.product.product_name }}
-                    </div>
-                      <div class="row">
-                          <!-- 수량 입력 -->
-                          <div class="">
-                          <form action="{% url 'accounts:tocart' item.product.pk %}" method="POST">
-                          {% csrf_token %}
-                            <div class='d-flex justify-content-center'>
-                              <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" style='width:80px; height:30px' class="form-control quantity-input me-2 text-center" type="number" name="checkquantity" min="1" value="1">
-                              <div class="d-none" id="price-{{ item.pk }}">{{ item.product.price }}</div>
-                              <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.product.price }}</span>원</div>
-                            </div>
-                            <div class='d-flex justify-content-center'>
-                              <button type="button" class="btn me-2" data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                              <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
-                            </div>
-                          </form>
-                          </div>
-                        </div>
-                      </div> 
-                  </div>
-                </div>
-              </div>
-            </div>
-        {% endfor %}
-      </div>
-      {% comment %} <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
-      </div>
-      <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
-      </div> {% endcomment %}
-    </section>
-  </div>
-</div>
-
-
-<!-- 구매한 상품들입니다 -->
-<div style="padding: 40px 0;">
-  <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-    <h3 style="color: rgb(51, 51, 51)">구매한 상품</h3>
-  </div>
-  <div class="swiper-box" style="position: relative; padding:0 40px;">
-    <section class="swiper" id="test-slide">
-      <!-- Additional required wrapper -->
-      <div class="swiper-wrapper">
-        <!-- Slides -->
-        {% for item in order_items %}
-        <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-          <a href="{% url 'products:detail' item.pk %}">
-            <div class="product-img position-relative overflow-hidden">
-              <img src="{{ item.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+<!-- 인스타그램 크롤링 -->
+<div class="container d-flex flex-column justify-content-center align-items-center"
+  style="max-width:1070px; font-weight: 600; padding: 60px 0 0;">
+  <h3 style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">구매 목록</h3>
+  <div class="d-flex align-items-center justify-content-center" style="width: 1070px; margin: 0 auto;">
+    {% if not order_items %}
+    <div class="d-flex justify-content-center">
+      <h4 style="color: rgb(204, 204, 204);">아직 구매목록이 없습니다. 💸</h4>
+    </div>
+    {% else %}
+    <div class='d-flex row'
+      style="margin: 0 auto; width: 1070px; overflow-x: scroll; overflow: hidden; gap: 5px; padding: 0px;">
+      <div class="scrolling-wrapper d-flex" style="width: 1070px; gap:10px">
+        {% for product in order_items %}
+        <div class="productcard swiper-slide"
+          style="border: 0px solid black; color: rgb(51, 51, 51); width: 256px; height: 435px;"
+          data-value="{{ product.category }}">
+          <a href="{% url 'products:detail' product.pk %}" style="color:rgb(51, 51, 51)">
+            <div class="product-img" style="">
+              <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
                 style="object-fit: cover">
             </div>
           </a>
-          <!-- 상품 이미지 안에 장바구니 담기 버튼 -->
-          {% comment %} < href="ddibtocartModal" data-toggle='modal'> {% endcomment %}
-          <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex' data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ item.pk }}' >
-            <img style='margin-bottom:7rem' class='cart-img position-absolute bottom-0 end-0 mx-2' src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg==" alt="">
+          <!-- 모달버튼 -->
+          <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex'
+            data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ product.pk }}'>
+            <img style='top: 278px' class='cart-img position-absolute end-0 mx-2'
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg=="
+              alt="">
           </button>
-            
-          <!-- 상품 이미지 안에 장바구니 담기 기능 
-          <a href="https://www.kurly.com/main">
-            <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex'>
-              <img class='cart-img position-absolute bottom-0 end-0 mx-2'
-                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg=="
-                alt="">
-            </button>
-          </a>-->
-       
           <div style="padding: 12px 10px 0 0">
             <div class="d-flex justify-content-between">
-            <a href="{% url 'products:detail' item.pk %}">
-              <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ item.brand }}</span><span class="m-0"
-              style="color: #FA622F; font-weight: 700;">{{ item.category }}</span>
-              <p class="m-0" style="font-weight: 400; color:black">{{ item.product_name }}</p>
-              <p class="m-0" style="font-weight: 800; color:black">{{ item.price }} 원</p>
-            </a>
-            <a class='deletebtn' href="{% url 'accounts:ddib_delete' item.pk %}"> 
-              {% comment %} <button type='button' style='border-color:#5e0080; background-color:transparent; border-radius:8px; color:#5e0080; float:right' class=''>
-                삭제
-              </button> {% endcomment %}
-              <i style='color:#5e0080;' class="bi bi-trash3"></i>
-            </a>
-          <!-- </p> -->
+              <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
+                style="padding: 0px 10px; border-radius: 22px; background-color: rgba(274, 243, 248, 1); color:#5e0080; font-weight: 500;">
+                {{ product.category }}</span>
+            </div>
+            <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}
+            </p>
+            <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ product.price|intcomma }} 원</p>
           </div>
         </div>
-        
-          
-<!-- 구매에서 장바구니 모달-->
-            <!-- Modal -->
-            <div class="modal fade" id="ddibtocartModal-{{ item.pk }}" tabindex="-1" aria-labelledby="ddibtocartModalLabel" aria-hidden="true">
-              <div class="modal-dialog" >
-                <div class="modal-content">
-                  {% comment %} <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="ddibtocartModal">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div> {% endcomment %}
-                  <div class="modal-body item-cart-modals" data-item-id="{{ item.pk }}"> 
-                  {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
-                    <div class='text-center mb-2'>
-                    {{ item.product_name }}
-                    </div>
-                      <div class="row">
-                          <!-- 수량 입력 -->
-                          <div class="">
-                          <form action="{% url 'accounts:tocart' item.pk %}" method="POST">
-                          {% csrf_token %}
-                            <div class='d-flex justify-content-center'>
-                              <input data-item-id="{{ item.pk }}" id="quantity-{{ item.pk }}" style='width:80px; height:30px' class="form-control quantity-input me-2 text-center" type="number" name="checkquantity" min="1" value="1">
-                              <div class="d-none" id="price-{{ item.pk }}">{{ item.price }}</div>
-                              <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields" id="price-{{ item.pk }}-field">{{ item.price }}</span>원</div>
-                            </div>
-                            <div class='d-flex justify-content-center'>
-                              <button type="button" class="btn me-2" data-bs-dismiss="modal" style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
-                              <button type="submit" class="cart" data-bs-dismiss="modal"  data-bs-target='#cartModal-{{ item.pk }}' style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니 담기</button>
-                            </div>
-                          </form>
-                          </div>
-                        </div>
-                      </div> 
+        <!-- 모달 -->
+        <div class="modal fade" id="ddibtocartModal-{{ product.pk }}" tabindex="-1"
+          aria-labelledby="ddibtocartModalLabel" aria-hidden="true">
+          <div class="modal-dialog" style="margin: 200px auto">
+            <div class="modal-content">
+              {% comment %} <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ddibtocartModal">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div> {% endcomment %}
+              <div class="modal-body item-cart-modals" data-item-id="{{ product.pk }}">
+                {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
+                <div class='text-center mb-2'>
+                  {{ product.product_name }}
+                </div>
+                <div class="row">
+                  <!-- 수량 입력 -->
+                  <div class="">
+                    <form action="{% url 'accounts:tocart' product.pk %}" method="POST">
+                      {% csrf_token %}
+                      <div class='d-flex justify-content-center'>
+                        <input data-item-id="{{ product.pk }}" id="quantity-{{ product.pk }}"
+                          style='width:80px; height:30px' class="form-control quantity-input me-2 text-center"
+                          type="number" name="checkquantity" min="1" value="1">
+                        <div class="d-none" id="price-{{ product.pk }}">{{ product.price }}</div>
+                        <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields"
+                            id="price-{{ product.pk }}-field">{{ product.price }}</span>원</div>
+                      </div>
+                      <div class='d-flex justify-content-center'>
+                        <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                          style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                        <button type="submit" class="cart" data-bs-dismiss="modal"
+                          data-bs-target='#cartModal-{{ product.product.pk }}'
+                          style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니
+                          담기</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
         {% endfor %}
       </div>
-      {% comment %} <div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
-      </div>
-      <div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-          style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
-      </div> {% endcomment %}
-    </section>
+    </div>
+    {% endif %}
   </div>
 </div>
 
-<!-- swiper end -->
-<div class="swiper-button-prev" style="position: absolute;"><i class="bi bi-arrow-left-circle-fill"
-  style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323; z-index: 1000;"></i>
-</div>
-<div class="swiper-button-next"><i class="bi bi-arrow-right-circle-fill"
-  style="font-size: 2.5rem; color:white; text-shadow: 2px 2px 4px #282323;"></i>
-</div>
-</section>
-</div>
+<!-- 인스타그램 크롤링 -->
+<div class="container d-flex flex-column justify-content-center align-items-center"
+  style="max-width:1070px; font-weight: 600; padding: 60px 0 0;">
+  <h3 style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">위시리스트</h3>
+  <div class="d-flex align-items-center justify-content-center" style="width: 1070px; margin: 0 auto;">
+    {% if not ddib_items %}
+    <div class="d-flex justify-content-center">
+      <h4 style="color: rgb(204, 204, 204);">아직 위시리스트가 없습니다 🎁</h4>
+    </div>
+    {% else %}
+    <div class='d-flex row'
+      style="margin: 0 auto; width: 1070px; overflow-x: scroll; overflow: hidden; gap: 5px; padding: 0px;">
+      <div class="scrolling-wrapper d-flex" style="width: 1070px; gap:10px">
+        {% for product in ddib_items %}
+        <div class="productcard swiper-slide"
+          style="border: 0px solid black; color: rgb(51, 51, 51); width: 256px; height: 435px;"
+          data-value="{{ product.category }}">
+          <a href="{% url 'products:detail' product.product.pk %}" style="color:rgb(51, 51, 51)">
+            <div class="product-img" style="">
+              <img src="{{ product.product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
+                style="object-fit: cover">
+            </div>
+          </a>
+          <!-- 모달버튼 -->
+          <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex'
+            data-bs-toggle="modal" data-bs-target='#ddibtocartModal2-{{ product.product.pk }}'>
+            <img style='top: 278px' class='cart-img position-absolute end-0 mx-2'
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg=="
+              alt="">
+          </button>
+          <div style="padding: 12px 10px 0 0">
+            <div class="d-flex justify-content-between">
+              <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.product.brand }}</span><span
+                class="m-0"
+                style="padding: 0px 10px; border-radius: 22px; background-color: rgba(274, 243, 248, 1); color:#5e0080; font-weight: 500;">
+                {{ product.product.category }}</span>
+            </div>
+            <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product.product_name }}
+            </p>
+            <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ product.product.price|intcomma }} 원</p>
+          </div>
+        </div>
+        <!-- 모달 -->
+        <div class="modal fade" id="ddibtocartModal2-{{ product.product.pk }}" tabindex="-1"
+          aria-labelledby="ddibtocartModalLabel" aria-hidden="true">
+          <div class="modal-dialog" style="margin: 200px auto">
+            <div class="modal-content">
+              {% comment %} <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ddibtocartModal">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div> {% endcomment %}
+              <div class="modal-body item-cart-modals" data-item-id="{{ product.product.pk }}">
+                {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
+                <div class='text-center mb-2'>
+                  {{ product.product.product_name }}
+                </div>
+                <div class="row">
+                  <!-- 수량 입력 -->
+                  <div class="">
+                    <form action="{% url 'accounts:tocart' product.product.pk %}" method="POST">
+                      {% csrf_token %}
+                      <div class='d-flex justify-content-center'>
+                        <input data-item-id="{{ product.product.pk }}" id="quantity-{{ product.product.pk }}"
+                          style='width:80px; height:30px' class="form-control quantity-input me-2 text-center"
+                          type="number" name="checkquantity" min="1" value="1">
+                        <div class="d-none" id="price-{{ product.product.pk }}">{{ product.product.price }}</div>
+                        <div class="fw-bold mt-1 mb-2 text-center" style=''><span class="price-fields"
+                            id="price-{{ product.product.pk }}-field">{{ product.product.price }}</span>원</div>
+                      </div>
+                      <div class='d-flex justify-content-center'>
+                        <button type="button" class="btn me-2" data-bs-dismiss="modal"
+                          style="border:solid 1px #d3d3d3; border-radius:3px; height:50px; width:120px; background-color: white;">취소</button>
+                        <button type="submit" class="cart" data-bs-dismiss="modal"
+                          data-bs-target='#cartModal-{{ product.product.pk }}'
+                          style="border-radius:3px; border:0px; height:50px; width:120px; background-color: #5e0080; color: white">장바구니
+                          담기</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
 </div>
 
-
-<div class='container'>
+<div class='container' style="max-width: 1070px; padding: 60px 0;">
   <div style="padding: 0 40px;">
+    <h3 class="text-center" style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">문의
+      내역</h3>
+    {% if not inquities %}
+    <div class="d-flex justify-content-center">
+      <h4 style="color: rgb(204, 204, 204);">아직 문의내역이 없습니다 📝</h4>
+    </div>
+    {% else %}
     <!-- 상품 문의 등록 버튼 & 모달 -->
     <div class="row">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold m-0" style='font-size: 18px;'>상품 문의</h2>
-        
+        <h2 class="fw-bold m-0" style='font-size: 18px;'>문의 내역</h2>
+
       </div>
     </div>
 
@@ -338,134 +323,138 @@
 
         <tbody id="inquiryTableBody">
           {% for inquiry in inquiries %}
-            <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse" data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false"
-              style="vertical-align: middle;">
-              <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;" class="px-3">{{ inquiry.title }}</td>
-              <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
-              <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
-              {% if inquiry.reply %}
-                <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
-              {% else %}
-                <td id="reply-status-{{ inquiry.pk }}" style="width: 100px;" class="text-center">-</td>
-              {% endif %}
-            </tr>
+          <tr class="inquiry-{{ inquiry.pk }}" data-bs-toggle="collapse"
+            data-bs-target="#collapse-inquiry-{{ inquiry.pk }}" aria-expanded="false" style="vertical-align: middle;">
+            <td id="inquiry-title-{{ inquiry.pk }}" class="inquiry_title" scope="row" style="width: 710px;"
+              class="px-3">{{ inquiry.title }}</td>
+            <td style="width: 100px;" class="text-center">{{ inquiry.user }}</td>
+            <td style="width: 100px;" class="text-center">{{ inquiry.created_at|date:'Y.m.d' }}</td>
+            {% if inquiry.reply %}
+            <td style="width: 100px;" class="text-center"><span style="color:#5e0080">답변완료</span></td>
+            {% else %}
+            <td id="reply-status-{{ inquiry.pk }}" style="width: 100px;" class="text-center">-</td>
+            {% endif %}
+          </tr>
 
-            <!-- 문의 내용 및 답변 Collapse -->
-            <tr class="collapse inquiry-{{ inquiry.pk }}" id="collapse-inquiry-{{ inquiry.pk }}">
-              <td colspan="4" class="text-bg-light px-3">
-                <div>
-                  <div class="d-flex">
-                    <div class="me-3">Q.</div>
-                    <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
-                  </div>
-                  <div>
-                    <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
-                    </div>
-
-                    {% if inquiry.reply %}
-                      <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
-                        <div class="me-3">A.</div>
-                        <div>{{ inquiry.reply.content }}</div>
-                      </div>
-                    {% else %}
-                      <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
-                    {% endif %}
-                  </div>
+          <!-- 문의 내용 및 답변 Collapse -->
+          <tr class="collapse inquiry-{{ inquiry.pk }}" id="collapse-inquiry-{{ inquiry.pk }}">
+            <td colspan="4" class="text-bg-light px-3">
+              <div>
+                <div class="d-flex">
+                  <div class="me-3">Q.</div>
+                  <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
                 </div>
-              </td>
-            </tr>
+                <div>
+                  <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
+                  </div>
+
+                  {% if inquiry.reply %}
+                  <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
+                    <div class="me-3">A.</div>
+                    <div>{{ inquiry.reply.content }}</div>
+                  </div>
+                  {% else %}
+                  <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
 
     <!-- 상품 문의 페이지네이션 -->
-    <ul class="pagination justify-content-center" >
+    <ul class="pagination justify-content-center">
       <!-- 이전 페이지 -->
       {% if inquiries.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
-            <i class="bi bi-chevron-double-left"></i>
-          </a>
-        </li>
+      <li class="page-item">
+        <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
+      </li>
       {% else %}
-        <li class="page-item disabled">
-          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-            <i class="bi bi-chevron-double-left"></i>
-          </a>
-        </li>
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-left"></i>
+        </a>
+      </li>
       {% endif %}
 
       <!-- 페이지 리스트 -->
       {% for page_number in inquiries.paginator.page_range %}
-        {% if page_number == inquiries.number %}
-          <li class="page-item active" aria-current="page">
-            <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
-          </li>
-        {% else %}
-          <li class="page-item">
-            <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;' href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
-          </li>
-        {% endif %}
+      {% if page_number == inquiries.number %}
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;'
+          href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+      </li>
+      {% else %}
+      <li class="page-item">
+        <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;'
+          href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
+      </li>
+      {% endif %}
       {% endfor %}
 
       <!-- 다음페이지 -->
       {% if inquiries.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
-            <i class="bi bi-chevron-double-right"></i>
-          </a>
-        </li>
+      <li class="page-item">
+        <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
+      </li>
       {% else %}
-        <li class="page-item disabled">
-          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-            <i class="bi bi-chevron-double-right"></i>
-          </a>
-        </li>
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <i class="bi bi-chevron-double-right"></i>
+        </a>
+      </li>
       {% endif %}
     </ul>
+    {% endif %}
   </div>
 </div>
 
 
 
 
-  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('#test-slide', {
-      // Optional parameters
-      direction: 'horizontal',
-      slidesPerView: 4,
-      spaceBetween: 15,
-      loop: false,
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('#test-slide', {
+    // Optional parameters
+    direction: 'horizontal',
+    slidesPerView: 4,
+    spaceBetween: 15,
+    loop: false,
 
-      // If we need pagination
-      pagination: {
-        el: '.swiper-pagination'
-      },
+    // If we need pagination
+    pagination: {
+      el: '.swiper-pagination'
+    },
 
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      },
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    },
 
-      // And if we need scrollbar
-      // scrollbar: {
-      //   el: '.swiper-scrollbar',
-      // },
-    });
+    // And if we need scrollbar
+    // scrollbar: {
+    //   el: '.swiper-scrollbar',
+    // },
+  });
 
-  </script>
-  
+</script>
+
 
 {% endblock content %}
 
 {% block script %}
-  <script type="text/javascript" src="{% static 'js/ddibtocart.js' %}"></script>
-  <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script type="text/javascript" src="{% static 'js/ddibtocart.js' %}"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-deep_purple.min.css" /> 
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.purple-deep_purple.min.css" />
 {% endblock script %}

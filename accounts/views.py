@@ -124,12 +124,13 @@ def profile(request, user_pk):
     
     OrderItems = OrderItem.objects.order_by('-pk')
 
+
     # 중복되지 않은 상품 id 리스트
     order_product_ids = OrderItem.objects.filter(user=request.user).values_list('product', flat=True).distinct()
     order_items = []
     for id in order_product_ids:
         order_items.append(Product.objects.get(pk=id))
-    
+
     watch_items = WatchItem.objects.filter(user=request.user)
     user = get_user_model().objects.get(pk=user_pk)
     inquiries = user.inquiry_set.order_by('-pk')
