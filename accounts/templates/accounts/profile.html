@@ -72,7 +72,7 @@
         <div style="width:212px; height:200px; background-color: white; padding: 26px 0 30px 30px;">
           <p class="m-0">누적 구매 금액</p>
           <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
-            {{ total_payment }}
+            {{ total_payment|intcomma }}
             <span style="font-size: 1rem;">원</span>
           </p>
         </div>
@@ -81,7 +81,7 @@
             <!-- <i class="bi bi-arrow-right-short"></i> -->
           </p>
           <p class="m-0" style="font-size: 20px; color:#5e0080; font-weight: 600;">
-            {{ total_point }}
+            {{ total_point|intcomma }}
             <span style="font-size: 1rem;">P</span>
           </p>
         </div>
