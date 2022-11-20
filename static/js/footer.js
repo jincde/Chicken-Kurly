@@ -1,4 +1,4 @@
-import "./Footer.css";
+// import "./Footer.css";
 
 function Footer() {
   return (<div class="benner">
@@ -62,7 +62,7 @@ function Footer() {
             <div class="right_info">
               법인명 (상호) : 주식회사 치킨컬리
               <span class="right_info_span"></span>
-              사업자등록번호 : 261-81-23567
+              사업자등록번호 : 000-00-00000
               <a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2618123567&amp;apv_perm_no=" target="_blank" rel="noreferrer" class="css-1tby8gd ebj6vxr0">
                 사업자정보 확인
               </a>
@@ -79,57 +79,57 @@ function Footer() {
               <a href="mailto:business@kurlycorp.com" class="css-1tby8gd ebj6vxr0">
                 business@chickenkurlycorp.com
               </a>
-              <br/>
+              <br />
               채용문의 :
               <a href="mailto:recruit@kurlycorp.com" class="css-1tby8gd ebj6vxr0">
                 recruit@chickenkurlycorp.com
               </a>
-              <br/>
-              팩스: 070 - 7500 - 6098
+              <br />
+              팩스: 070 - 7500 - 0000
             </div>
           </div>
         </div>
         <div class="up_down_footer">
           <button>
-            <img src="https://res.kurly.com/pc/ico/2208/logo_isms.svg" alt="isms 로고" class="up_down_footer_img"/>
+            <img src="https://res.kurly.com/pc/ico/2208/logo_isms.svg" alt="isms 로고" class="up_down_footer_img" />
             <p>
               [인증범위] 치킨컬리 쇼핑몰 서비스 개발·운영
-              <br/>
+              <br />
               (심사받지 않은 물리적 인프라 제외)
-              <br/>
+              <br />
               [유효기간] 2022.01.19 ~ 2025.01.18
             </p>
           </button>
           <button>
-            <img src="https://res.kurly.com/pc/ico/2208/logo_privacy.svg" alt="eprivacy plus 로고" class="up_down_footer_img"/>
+            <img src="https://res.kurly.com/pc/ico/2208/logo_privacy.svg" alt="eprivacy plus 로고" class="up_down_footer_img" />
             <p>
               개인정보보호 우수 웹사이트 ·
-              <br/>
+              <br />
               개인정보처리시스템 인증 (ePRIVACY PLUS)
             </p>
           </button>
           <button>
-            <img src="https://res.kurly.com/pc/ico/2208/logo_tosspayments.svg" alt="payments 로고" class="toss_img"/>
+            <img src="https://res.kurly.com/pc/ico/2208/logo_tosspayments.svg" alt="payments 로고" class="toss_img" />
             <p>
               토스페이먼츠 구매안전(에스크로)
-              <br/>
+              <br />
               서비스를 이용하실 수 있습니다.
             </p>
           </button>
           <button>
-            <img src="https://res.kurly.com/pc/ico/2208/logo_wooriBank.svg" alt="우리은행 로고" class="up_down_footer_img"/>
+            <img src="https://res.kurly.com/pc/ico/2208/logo_wooriBank.svg" alt="우리은행 로고" class="up_down_footer_img" />
             <p>
               고객님이 현금으로 결제한 금액에 대해 우리은행과
-              <br/>
+              <br />
               채무지급보증 계약을 체결하여 안전거래를 보장하고
-              <br/>
+              <br />
               있습니다.
             </p>
           </button>
         </div>
       </div>
       <div class="down_footer">
-        <em class="right">© CHICKEN KURLY CORP. ALL RIGHTS RESERVED</em>
+        <em class="right">© CHICKEN-KURLY CORP. ALL RIGHTS RESERVED</em>
       </div>
     </div>
   </div>);

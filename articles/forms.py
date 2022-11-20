@@ -10,4 +10,8 @@ class ArticleForm(forms.ModelForm):
 class ReCommentForm(forms.ModelForm):
     class Meta:
         model = ReComment
-        fields = ('content',)
+        
+        fields = ["content",]
+        labels = {
+            'content': '답글'
+        }

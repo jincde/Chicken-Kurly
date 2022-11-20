@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
-<div class="d-flex justify-content-center" style="padding-top: 60px;">
-  <h3 style="font-size: 28px; color: rgb(51, 51 ,51);"><span style="color:#5e0080">'{{keyword}}'</span>에 대한 검색 결과</h3>
+<div class="d-flex justify-content-center" style="padding-top: 60px; ">
+  <h3 style="font-size: 28px; color: rgb(51, 51 ,51); font-weight: 700;"><span
+      style="color:#5e0080">'{{keyword}}'</span>에 대한 검색 결과</h3>
 </div>
 <div class="d-flex justify-content-between flex-wrap"
   style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0; overflow: hidden; overflow-x: scroll;">
@@ -11,6 +13,11 @@
         style="font-size: 26px;">📌</span></h3>
   </div>
 </div>
+{% if not products %}
+<div class="d-flex justify-content-center">
+  <h4 style="color: rgb(204, 204, 204);">검색 결과가 없습니다</h4>
+</div>
+{% else %}
 <div>
   <div class="swiper-box" style="position: relative">
     <section class="swiper" id="test-slide">
@@ -24,13 +31,21 @@
               <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
                 style="object-fit: cover">
             </div>
+            <!-- 모달버튼 -->
+            <button type='button' style='border:none; background-color:transparent;' class='ddib-to-cart d-flex'
+              data-bs-toggle="modal" data-bs-target='#ddibtocartModal-{{ product.pk }}'>
+              <img style='top: 278px' class='cart-img position-absolute end-0 mx-2'
+                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIHZpZXdCb3g9IjAgMCA0NSA0NSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPGNpcmNsZSBmaWxsPSIjMkEwMDM4IiBvcGFjaXR5PSIuNSIgY3g9IjIyLjUiIGN5PSIyMi41IiByPSIyMi41Ii8+CiAgICAgICAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEuMDMgMTQuMzgpIiBzdHJva2U9IiNGRkYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0ibTIwLjQ2IDIuOTEtMi4xNyA5LjIzSDUuODdMMy43MSAyLjkxeiIvPgogICAgICAgICAgICA8Y2lyY2xlIHN0cm9rZS13aWR0aD0iMS4yIiBjeD0iMTYuMzUiIGN5PSIxNi44NiIgcj0iMS43Ii8+CiAgICAgICAgICAgIDxjaXJjbGUgc3Ryb2tlLXdpZHRoPSIxLjIiIGN4PSI3LjgyIiBjeT0iMTYuODYiIHI9IjEuNyIvPgogICAgICAgICAgICA8cGF0aCBzdHJva2Utd2lkdGg9IjEuNCIgZD0iTTAgMGgzLjAybDEuNDEgNS45OCIvPgogICAgICAgIDwvZz4KICAgIDwvZz4KPC9zdmc+Cg=="
+                alt="">
+            </button>
             <div style="padding: 12px 10px 0 0">
               <div class="d-flex justify-content-between">
                 <span class="m-0" style="color:#B5B5B5; font-weight: 400;">{{ product.brand }}</span><span class="m-0"
-                  style="color: #FA622F; font-weight: 700;">{{ product.category }}</span>
+                  style="padding: 0px 10px; border-radius: 22px; background-color: rgba(274, 243, 248, 1); color:#5e0080; font-weight: 500;">
+                  {{ product.category }}</span>
               </div>
-              <p class="m-0" style="font-weight: 400;">{{ product.product_name }}</p>
-              <p class="m-0" style="font-weight: 800;">{{ product.price }} 원</p>
+              <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}</p>
+              <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ product.price|intcomma }} 원</p>
             </div>
         </div>
         {% endfor %}
@@ -44,16 +59,23 @@
       </div>
     </section>
   </div>
-  </section>
+  {% endif %}
+</div>
 
-  <div class="d-flex justify-content-between flex-wrap"
-    style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0; overflow: hidden; overflow-x: scroll;">
-    <div class="d-flex justify-content-between align-items-center" style="width: 1070px; margin-bottom: 16px;">
-      <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">아티클 검색결과 <span
-          style="font-size: 26px;">📌</span></h3>
-    </div>
+<div class="d-flex justify-content-between flex-wrap"
+  style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0; overflow: hidden; overflow-x: scroll;">
+  <div class="d-flex justify-content-between align-items-center" style="width: 1070px; margin-bottom: 16px;">
+    <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">아티클 검색결과 <span
+        style="font-size: 26px;">📌</span></h3>
   </div>
-  <section class="article-card d-flex justify-content-between flex-wrap"
+</div>
+{% if not articles %}
+<div class="d-flex justify-content-center">
+  <h4 style="color: rgb(204, 204, 204); padding-bottom: 60px;">검색 결과가 없습니다</h4>
+</div>
+{% else %}
+<div>
+  <section class="article-card d-flex justify-content-start flex-wrap"
     style="max-width: 1070px; margin:0 auto; gap:40px; margin-bottom: 60px;">
     {% for article in articles %}
     <article class="contentcard"
@@ -114,125 +136,127 @@
     </article>
     {% endfor %}
   </section>
+  {% endif %}
+</div>
 
-  <!-- 게시글 페이지네이션 -->
-  {% if paginated_articles %}
-  <ul class="pagination justify-content-center">
-    <!-- 첫 페이지 -->
-    {% if paginated_articles.has_previous %}
-    <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+<!-- 게시글 페이지네이션 -->
+{% if paginated_articles %}
+<ul class="pagination justify-content-center">
+  <!-- 첫 페이지 -->
+  {% if paginated_articles.has_previous %}
+  <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
+  <li class="page-item">
+    <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" href="#">&#60;</a>
+  </li>
+  {% endif %}
+
+  <!-- 페이지리스트 -->
+  <!-- //페이지 범위를 하나씩 리턴 -->
+  {% for page_number in paginated_articles.paginator.page_range %}
+  {% if page_number >= paginated_articles.number|add:-2 and page_number <= paginated_articles.number|add:2 %} <!-- // 현재
+    페이지일 때는 active -->
+    {% if page_number == paginated_articles.number %}
+    <li class="page-item" aria-current="page">
+      <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
+        href="?page={{ page_number }}">{{ page_number }}</a>
+    </li>
+    {% else %}
+    <li class="page-item text-color-warning">
+      <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{
+        page_number }}</a>
+    </li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+    <!-- 다음페이지 -->
+    {% if paginated_articles.has_next %}
     <li class="page-item">
-      <a class="page-link" style="color: #5e0080; text-decoration: none;" tabindex="-1" href="?page=1">&#60;</a>
+      <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
     </li>
     {% else %}
     <li class="page-item disabled">
-      <a class="page-link" href="#">&#60;</a>
+      <a class="page-link" tabindex="-1" href="#">&#62;</a>
     </li>
     {% endif %}
-
-    <!-- 페이지리스트 -->
-    <!-- //페이지 범위를 하나씩 리턴 -->
-    {% for page_number in paginated_articles.paginator.page_range %}
-    {% if page_number >= paginated_articles.number|add:-2 and page_number <= paginated_articles.number|add:2 %} <!-- //
-      현재 페이지일 때는 active -->
-      {% if page_number == paginated_articles.number %}
-      <li class="page-item" aria-current="page">
-        <a class="page-link" style="background-color: #5e0080; color: white; text-decoration: none;"
-          href="?page={{ page_number }}">{{ page_number }}</a>
-      </li>
-      {% else %}
-      <li class="page-item text-color-warning">
-        <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{
-          page_number }}</a>
-      </li>
-      {% endif %}
-      {% endif %}
-      {% endfor %}
-
-      <!-- 다음페이지 -->
-      {% if paginated_articles.has_next %}
-      <li class="page-item">
-        <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ max_index }}">&#62;</a>
-      </li>
-      {% else %}
-      <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" href="#">&#62;</a>
-      </li>
-      {% endif %}
-  </ul>
-  {% endif %}
+</ul>
+{% endif %}
 
 
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    const forms = document.querySelectorAll('.like-forms')
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const forms = document.querySelectorAll('.like-forms')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
-    forms.forEach((form) => {
-      form.addEventListener('submit', function (event) {
-        event.preventDefault()
-        const articleId = event.target.dataset.articleId
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const articleId = event.target.dataset.articleId
 
-        axios({
-          method: 'post',
-          url: `/articles/like/${event.target.dataset.articleId}/`,
-          headers: { 'X-CSRFToken': csrftoken },
-        })
-          .then((response) => {
-            const likeBtn = document.querySelector(`#like-btn-${articleId}`)
-            const likeCount = document.querySelector(`#like-count-${articleId}`)
-            const isLiked = response.data.is_liked
-            const heart = document.querySelector(`#heart-${articleId}`)
-
-            if (isLiked === true) {
-              heart.classList.add('active')
-              // heart.classList.remove('bi-heart')
-              // likeBtn.classList.remove('btn-outline-danger')
-              // likeBtn.classList.add('btn-danger')
-              likeCount.innerText = response.data.likeCount
-            } else {
-              // heart.classList.add('bi-heart')
-              heart.classList.remove('active')
-              // likeBtn.classList.remove('btn-danger')
-              // likeBtn.classList.add('btn-outline-danger')
-
-              likeCount.innerText = response.data.likeCount
-            }
-
-          })
-          .catch((error) => {
-            console.log(error.response)
-          })
+      axios({
+        method: 'post',
+        url: `/articles/like/${event.target.dataset.articleId}/`,
+        headers: { 'X-CSRFToken': csrftoken },
       })
+        .then((response) => {
+          const likeBtn = document.querySelector(`#like-btn-${articleId}`)
+          const likeCount = document.querySelector(`#like-count-${articleId}`)
+          const isLiked = response.data.is_liked
+          const heart = document.querySelector(`#heart-${articleId}`)
+
+          if (isLiked === true) {
+            heart.classList.add('active')
+            // heart.classList.remove('bi-heart')
+            // likeBtn.classList.remove('btn-outline-danger')
+            // likeBtn.classList.add('btn-danger')
+            likeCount.innerText = response.data.likeCount
+          } else {
+            // heart.classList.add('bi-heart')
+            heart.classList.remove('active')
+            // likeBtn.classList.remove('btn-danger')
+            // likeBtn.classList.add('btn-outline-danger')
+
+            likeCount.innerText = response.data.likeCount
+          }
+
+        })
+        .catch((error) => {
+          console.log(error.response)
+        })
     })
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-  <script>
-    const swiper = new Swiper('#test-slide', {
-      // Optional parameters
-      direction: 'horizontal',
-      slidesPerView: 4,
-      spaceBetween: 15,
-      loop: false,
+  })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script>
+  const swiper = new Swiper('#test-slide', {
+    // Optional parameters
+    direction: 'horizontal',
+    slidesPerView: 4,
+    spaceBetween: 15,
+    loop: false,
 
-      // If we need pagination
-      pagination: {
-        el: '.swiper-pagination',
-      },
+    // If we need pagination
+    pagination: {
+      el: '.swiper-pagination',
+    },
 
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
 
-      // And if we need scrollbar
-      // scrollbar: {
-      //   el: '.swiper-scrollbar',
-      // },
-    });
-  </script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    // And if we need scrollbar
+    // scrollbar: {
+    //   el: '.swiper-scrollbar',
+    // },
+  });
+</script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-  {% endblock content %}
+{% endblock content %}

@@ -53,37 +53,34 @@
         </div>
         <div>
           {% if request.user == article.user %}
-          <div class='text-end'>
-            <button type="button" class="btn btn-outline-primary fs-5" data-bs-toggle="modal"
-              data-bs-target="#exampleModal" style="border: 0px;">
-              <i class="bi bi-three-dots"></i>
+          <div class='text-end' style="margin-top: 28px;">
+            <button type="button" class="fs-5" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              style="border: 0px; background-color: transparent;">
+              <i class="bi bi-three-dots" style="color: rgb(61, 61, 61)"></i>
             </button>
           </div>
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-sm">
-              <div class="modal-content">
-                <div class="modal-dody">
-                  <table class="table text-center table-hover">
-                    <tbody>
-                      <tr class='text-danger' onclick="location.href='{% url 'articles:delete' article.pk %}'">
-                      <tr class='text-danger' onclick="location.href='{% url 'articles:delete' article.pk %}'">
-
-                        <td>삭제</td>
-                      </tr>
-                      <tr onclick="location.href='{% url 'articles:update' article.pk %}'">
-                        <td>수정</td>
-                      </tr>
-                      <tr>
-                        <td data-bs-dismiss="modal">닫기</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-dody">
+              <table class="table text-center table-hover">
+                <tbody>
+                  <tr class='text-danger' onclick="goToDelete('{{article.pk}}')">
+                    <td>삭제</td>
+                  </tr>
+                  <tr onclick="goToUpdate('{{article.pk}}')">
+                    <td>수정</td>
+                  </tr>
+                  <tr>
+                    <td data-bs-dismiss="modal">닫기</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          {% endif %}
         </div>
       </div>
     </div>
@@ -460,7 +457,7 @@
 
 <script>
   // 댓글 비동기 구현 코드 ㅠㅠ 일단 보류..
-  {% comment %} const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  /* const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
   const commentForm = document.querySelector('#comment-form')
   commentForm.addEventListener('submit', function (event) {
     event.preventDefault()
@@ -491,7 +488,7 @@
         commentInput.value = ''
       })
   })
-  {% endcomment %}
+  */
 
 </script>
 
@@ -505,6 +502,20 @@
         scrollTop: a_tag.offset().top
       }, speed);
     }
+  }
+</script>
+
+<script>
+  function goToDelete(article_pk) {
+    // pk= 다음에 문자열은 안 되는 것 같다..
+    // https://stackoverflow.com/questions/17832194/get-javascript-variables-value-in-django-url-template-tag
+    location.href = "{% url 'articles:delete' pk=0 %}".replace('0', article_pk);
+  }
+
+  function goToUpdate(article_pk) {
+    // pk= 다음에 문자열은 안 되는 것 같다..
+    // https://stackoverflow.com/questions/17832194/get-javascript-variables-value-in-django-url-template-tag
+    location.href = "{% url 'articles:update' pk=0 %}".replace('0', article_pk);
   }
 </script>
 
