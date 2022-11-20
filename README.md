@@ -46,7 +46,7 @@
 <img src="https://img.shields.io/badge/GITHUB-Full%20Stack-black">
 
 
-<div align="right">
+<div align="center">
   <img src="https://img.shields.io/badge/Django-green?style=flat&logo=Django&logoColor=092E20"/>
   <img src="https://img.shields.io/badge/Python-blue?style=flat&logo=Django&logoColor=3776AB"/>
   <img src="https://img.shields.io/badge/CSS-pink?style=flat&logo=Django&logoColor=1572B6"/>
