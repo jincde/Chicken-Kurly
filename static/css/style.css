@@ -282,3 +282,24 @@ bi-heart {
   grid-template-columns: 64px 5fr 1.8fr;
   gap: 20px;
 }
+
+
+.category-title {
+  background-color: #f7f7f7;
+  color: rgb(61, 61, 61);
+}
+
+.category-title:hover {
+  background-color: rgba(247, 243, 248, 1);
+  color: #5e0080
+}
+
+.category-title:active {
+  background-color: #5e0080;
+  color: rgba(247, 243, 248, 1);
+}
+
+.category-title:focus {
+  background-color: #5e0080;
+  color: rgba(247, 243, 248, 1);
+}
