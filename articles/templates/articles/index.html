@@ -8,12 +8,13 @@
     <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">최신 아티클 <span
         style="font-size: 26px;">📌</span></h3>
     <div>
-      <a class="non_a" style="text-decoration: none; color: #5e0080; font-weight: 600;" href="{% url 'articles:create' %}">글쓰기</a>
+      <a class="non_a" style="text-decoration: none; color: #5e0080; font-weight: 600;"
+        href="{% url 'articles:create' %}">글쓰기</a>
     </div>
   </div>
 </div>
 
-<section class="article-card d-flex justify-content-between flex-wrap"
+<section class="article-card d-flex justify-content-start flex-wrap"
   style="max-width: 1070px; margin:0 auto; gap:40px;">
   {% for article in paginated_articles %}
   <article class="contentcard"
@@ -44,7 +45,8 @@
           {% csrf_token %}
           {% if request.user in article.like_users.all %}
           <div class="d-flex align-items-center justify-content-end">
-            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;" id='like-btn-{{ article.pk }}'>
+            <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+              id='like-btn-{{ article.pk }}'>
               <ion-icon id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" class="ion-icon active me-2"
                 name="heart">
               </ion-icon>
@@ -68,12 +70,11 @@
         <form>
           <div class="d-flex align-items-center justify-content-end">
             <a href="{% url 'accounts:login' %}" class="d-flex text-center" style="color: black;">
-              <ion-icon style="color: red; font-size: 1.5rem;" class="ion-icon me-2"
-                name="heart"></ion-icon>
+              <ion-icon style="color: red; font-size: 1.5rem;" class="ion-icon me-2" name="heart"></ion-icon>
               <span style="font-size: 1rem">
                 {{ article.like_users.count }}</span>
             </a>
-          </div>          
+          </div>
         </form>
         {% endif %}
       </div>
@@ -89,7 +90,7 @@
 
 <!-- 게시글 페이지네이션 -->
 {% if paginated_articles %}
-<ul class="pagination justify-content-center">
+<ul class="pagination justify-content-center py-5">
   <!-- 첫 페이지 -->
   {% if paginated_articles.has_previous %}
   <!-- 이전페이지가 있으면 연결(첫 페이지가 아니면) -->
@@ -114,7 +115,8 @@
     </li>
     {% else %}
     <li class="page-item text-color-warning">
-      <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">{{ page_number }}</a>
+      <a class="page-link" style="color: #5e0080; text-decoration: none;" href="?page={{ page_number }}">
+        {{ page_number }}</a>
     </li>
     {% endif %}
     {% endif %}
