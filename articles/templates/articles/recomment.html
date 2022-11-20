@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 {% block content %}
 <body style="background-color: rgb(245, 245, 245)">
@@ -19,6 +20,13 @@
             <div class="flex-grow-1 px-3 py-2" >
               <div class="d-flex align-items-center justify-content-between">
                 <div>
+                  <span>
+                    {% if comment.user.image %}
+                      <img src='{{ comment.user.image.url }}' style="border-radius: 50%; width:40px; height:40px">
+                    {% else %}
+                      <img src="{% static 'images/android-icon-72x72.png' %}" style="border-radius: 50%; width:40px; height:40px">
+                    {% endif %}
+                  </span>
                   <span style="font-size: 1rem"><a class="non_a" href="{% url 'accounts:profile' comment.user.pk %}"
                       style="font-weight: 600; color: rgb(61, 61, 61);">{{ comment.user }}</a></span>
                   <span class="mx-1" style="color: rgb(189, 189, 189);">•</span>
@@ -81,9 +89,19 @@
                   {% for recomment in recomments %}
 
                   {% if recomment.comment.pk == comment.pk %}
+                  
                   <div class='my-5 d-grid' >
+                    
                     <div class="d-flex align-items-center justify-content-between">
                       <div>
+                        <span style="">
+                          {% if recomment.user.image %}
+                          <img src='{{ recomment.user.image }}' style="border-radius: 50%; width:32px; height:32px">
+                          {% else %}
+                          <img src="{% static 'images/android-icon-72x72.png' %}"
+                            style="border-radius: 50%; width:32px; height:32px">
+                          {% endif %}
+                        </span> 
                         <span><a class="non_a" href="{% url 'accounts:profile' recomment.user.pk %}"
                             style="font-weight: 600; color: rgb(61, 61, 61);">{{ recomment.user }}</a></span>
                         <span class="mx-1" style="color: rgb(189, 189, 189);">•</span>
