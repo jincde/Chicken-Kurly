@@ -303,3 +303,10 @@ bi-heart {
   background-color: #5e0080;
   color: rgba(247, 243, 248, 1);
 }
+
+.category-bg {
+  padding: 0px 10px;
+  border-radius: 22px;
+  background-color: rgba(274, 243, 248, 1);
+  color: #5e0080;
+}
