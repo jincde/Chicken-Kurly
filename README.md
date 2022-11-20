@@ -36,7 +36,15 @@
 * 2022.11.09 ~ 2022.11.22
 * 배포: 2022년 11월 
 
-#### :crossed_swords: 기술 스택
+#### :hammer_and_wrench: 기술 스택
+<img src="https://img.shields.io/badge/Django-Full%20Stack-yellowgreen">
+<img src="https://img.shields.io/badge/Python-Full%20Stack-blue">
+<img src="https://img.shields.io/badge/CSS-Frontend-pink">
+<img src="https://img.shields.io/badge/JavaScript-Frontend-purple">
+<img src="https://img.shields.io/badge/HTML-Full%20Stack-orange">
+<img src="https://img.shields.io/badge/VSCODE-Full%20Stack-lightblue">
+<img src="https://img.shields.io/badge/GITHUB-Full%20Stack-black">
+
 <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white">
 <img src="https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=HTML&logoColor=white">
 <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS&logoColor=white">
