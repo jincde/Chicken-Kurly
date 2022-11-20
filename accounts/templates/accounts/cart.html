@@ -54,7 +54,7 @@
         </div>
         {% endfor %}
 
-        <input type="submit" class="" name="select_delete" value="선택삭제">
+        <input type="submit" class="text-muted" style="background-color:transparent; border:none;" name="select_delete" value="선택삭제">
       </div>
 
       <!-- 주소 및 가격 정보 -->
@@ -66,9 +66,10 @@
             <div class="ms-2">배송지</div>
           </div>
           <div class="mb-3">{{ request.user.address }}</div>
-          <button type="button" class="btn w-100"
-            style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">배송지
-            변경</button>
+          <a href="{% url 'accounts:profile' request.user.pk %}" type="button" class="btn w-100"
+            style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">
+            배송지 변경
+          </a>
         </div>
 
         <!-- 가격 정보 -->
