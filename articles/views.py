@@ -77,17 +77,23 @@ def rec_detail(request, c_pk, a_pk):
     recomments = ReComment.objects.filter(comment=comment).order_by('-pk')
     recomment_form = ReCommentForm()
 
-    page = request.GET.get('page', '1')
-    paginator = Paginator(recomments, 5)
-    paginated_recomments = paginator.get_page(page)
-    max_index = len(paginator.page_range)
+    # 대댓글 페이지네이션
+    recomment_page = request.GET.get('recomment_page', '1')
+    recomment_paginator = Paginator(recomments, 5)
+    recomment_page_obj = recomment_paginator.get_page(recomment_page)
+
+    # page = request.GET.get('page', '1')
+    # paginator = Paginator(recomments, 5)
+    # paginated_recomments = paginator.get_page(page)
+    # max_index = len(paginator.page_range)
 
     context = {
         'comment': comment,
         'recomments': recomments,
-        'paginated_recomments': paginated_recomments,
+        'recomments': recomment_page_obj,
+        # 'paginated_recomments': paginated_recomments,
         'recomment_form': recomment_form,
-        'max_index': max_index,
+        # 'max_index': max_index,
         'article': article,
     }
 
@@ -180,7 +186,7 @@ def recomment_delete(request, c_pk, a_pk):
     recomment = ReComment.objects.get(pk=c_pk)
     recomment.delete()
 
-    return redirect("articles:detail", a_pk)
+    return redirect("articles:rec_detail", a_pk)
 
 @login_required
 def rec_delete(request, rec_pk, c_pk, a_pk):

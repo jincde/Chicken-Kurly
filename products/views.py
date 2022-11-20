@@ -450,9 +450,10 @@ def payment(request, product_pk):
     imp_uid = request.POST.get('imp_uid')
     merchant_uid = request.POST.get('merchant_uid')
     quantity = request.POST.get('quantity')
-    
+    total_price = product.price * int(quantity)
+
     # 위의 정보를 바탕으로 주문서 작성
-    OrderItem.objects.create(product=product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid)
+    OrderItem.objects.create(product=product, quantity=quantity, user=request.user, imp_uid=imp_uid, merchant_uid=merchant_uid, price=total_price)
     product.sold_count += 1
     product.save()
 

@@ -78,7 +78,9 @@
                 </div>
               </div>
               <div style="font-size: 32px; font-weight: 700">
-                <span id="price">{{ product.price|intcomma }}</span>원
+                <!-- intcomma는 js에서 숫자형으로 못 바꾸는 것 같다. -->
+                <span id="price" class="d-none">{{ product.price }}</span>
+                <span>{{ product.price|intcomma }}</span>원
               </div>
             </div>
 
