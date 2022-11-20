@@ -4,25 +4,26 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U'%}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}?{% now 'U'%}">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?{% now 'U'%}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}?{% now 'U'%}">
 
-    <!-- bootstrap icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
-    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css' rel='stylesheet' type='text/css'>
+  <!-- bootstrap icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+  <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css' rel='stylesheet' type='text/css'>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-    <link rel="icon" type="image/png" sizes="72x72" href="{% static 'images/android-icon-72x72.png' %}">
-    <title>치킨컬리</title>
-  </head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+  <link rel="icon" type="image/png" sizes="72x72" href="{% static 'images/android-icon-72x72.png' %}">
+  <title>치킨컬리</title>
+</head>
 
 <style>
   a {
@@ -31,22 +32,25 @@
 
   ion-icon {
     color: #ffffff8d;
+    font-size: 20px;
   }
 </style>
 
 <body>
   <div class="align-items-center"
     style="display: flex; background-color: #5e0080; color: white; font-weight: 400; height: 42px;" id="makers">
-    <div class="container row justify-content-center" style="min-width: 1070px; max-width: 1070px; font-size: 12px;">이동현
+    <div class="container d-flex justify-content-center align-items-center"
+      style="min-width: 1070px; max-width: 1070px; font-size: 12px;">
+      이동현
       장영진 차화영
       최보영
       최정아
-      <div>
-        <ion-icon type="button" onclick="getHide()" style="background-color: none; font-weight: 200;"
-          name="close-outline" style="font-size: 1rem;"></ion-icon>
-      </div>
-    </div>
 
+    </div>
+    <div>
+      <ion-icon type="button" onclick="getHide()" style="background-color: none; font-weight: 200;" name="close-outline"
+        style="font-size: 1rem;"></ion-icon>
+    </div>
   </div>
   <div style="background-color: white;">
     <section class="d-flex container align-items-center justify-content-end navbar-line"
@@ -119,115 +123,104 @@
           </div>
         </div>
       </div>
-    </nav>
-    {% block content %}{% endblock %}
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <!-- Channel Plugin Scripts -->
-    <script>
-      (function () {
-        var w = window;
-        if (w.ChannelIO) {
-          return (window.console.error || window.console.log || function () {})('ChannelIO script included twice.');
-        }
-        var ch = function () {
-          ch.c(arguments);
-        };
-        ch.q = [];
-        ch.c = function (args) {
-          ch
-            .q
-            .push(args);
-        };
-        w.ChannelIO = ch;
+  </nav>
+  {% block content %}{% endblock %}
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <!-- Channel Plugin Scripts -->
+  <script>
+    (function () {
+      var w = window;
+      if (w.ChannelIO) {
+        return (window.console.error || window.console.log || function () { })('ChannelIO script included twice.');
+      }
+      var ch = function () {
+        ch.c(arguments);
+      };
+      ch.q = [];
+      ch.c = function (args) {
+        ch
+          .q
+          .push(args);
+      };
+      w.ChannelIO = ch;
 
-        function l() {
-          if (w.ChannelIOInitialized) {
-            return;
-          }
-          w.ChannelIOInitialized = true;
-          var s = document.createElement('script');
-          s.type = 'text/javascript';
-          s.async = true;
-          s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
-          s.charset = 'UTF-8';
-          var x = document.getElementsByTagName('script')[0];
-          x
-            .parentNode
-            .insertBefore(s, x);
+      function l() {
+        if (w.ChannelIOInitialized) {
+          return;
         }
-        if (document.readyState === 'complete') {
-          l();
-        } else if (window.attachEvent) {
-          window.attachEvent('onload', l);
-        } else {
-          window.addEventListener('DOMContentLoaded', l, false);
-          window.addEventListener('load', l, false);
-        }
-      })();
-      ChannelIO('boot', {"pluginKey": "ce57ca97-109b-4151-b12e-89a8b4f56f69"});
-    </script>
-    <!-- End Channel Plugin -->
-    <!-- <footer> <div class="container" style="max-width: 1070px; height: 580px; padding: 30px 0 0; border-top:1px solid #dfdfdf;"> <div class="d-flex justify-content-between"> <div> <h2>고객센터</h2> <p>010-000-0000 | 09:00 ~ 18:00</p> </div> <div> <p>소개 인재채용 약관 개인정보처리방침 이용안내</p> <p>법인명 등록번호</p> <p>주소 대표이사</p> <p>입점문의 제휴문의</p> <p>채용문의</p> <p>팩스 010-000-0000</p> <p>인스타 트위터 페이스북 카카오톡 네이버블로그</p> </div> </div> </div> </footer> -->
+        w.ChannelIOInitialized = true;
+        var s = document.createElement('script');
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+        s.charset = 'UTF-8';
+        var x = document.getElementsByTagName('script')[0];
+        x
+          .parentNode
+          .insertBefore(s, x);
+      }
+      if (document.readyState === 'complete') {
+        l();
+      } else if (window.attachEvent) {
+        window.attachEvent('onload', l);
+      } else {
+        window.addEventListener('DOMContentLoaded', l, false);
+        window.addEventListener('load', l, false);
+      }
+    })();
+    ChannelIO('boot', { "pluginKey": "ce57ca97-109b-4151-b12e-89a8b4f56f69" });
+  </script>
+  <!-- End Channel Plugin -->
+  <!-- <footer> <div class="container" style="max-width: 1070px; height: 580px; padding: 30px 0 0; border-top:1px solid #dfdfdf;"> <div class="d-flex justify-content-between"> <div> <h2>고객센터</h2> <p>010-000-0000 | 09:00 ~ 18:00</p> </div> <div> <p>소개 인재채용 약관 개인정보처리방침 이용안내</p> <p>법인명 등록번호</p> <p>주소 대표이사</p> <p>입점문의 제휴문의</p> <p>채용문의</p> <p>팩스 010-000-0000</p> <p>인스타 트위터 페이스북 카카오톡 네이버블로그</p> </div> </div> </div> </footer> -->
 
-    <!-- footer design -->
-    <footer class="mdl-mega-footer" style="background-color: #fff; border-top: 1px solid rgb(230, 230, 230);">
-      <div class="mdl-mega-footer__middle-section" style="width: 1070px; margin: 0 auto;">
-        <div class="mdl-mega-footer__drop-down-section">
-          <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-          <h1 class="mdl-mega-footer__heading"></h1>
-          <ul class="mdl-mega-footer__link-list">
-            <div class="cc_view cc_qna">
-              <h3>
-                <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')" class="tit">고객행복센터</a>
-              </h3>
-              <dl class="list">
-                <dt>0000-0000</dt>
-                <dd>월~토요일 오전 7시 - 오후 6시</dd>
-              </dl>
-            </div>
-            <div class="cc_view cc_qna">
-              <h3 class="mt-5">
-                <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')" class="tit">카카오톡 문의</a>
-              </h3>
-              <dl class="list">
-                <dt>월~토요일 오전7시-오후6시</dt>
-                <dd>일/공휴일 오전7시-오후1시</dd>
-              </dl>
-            </div>
-          </ul>
-        </div>
-        <div class="mdl-mega-footer__drop-down-section">
-          <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-          <h1 class="mdl-mega-footer__heading"></h1>
-          <ul class="mdl-mega-footer__link-list">
-            <!-- 1:1 문의 -->
-            <div class="cc_view cc_qna">
-              <h3>
-                <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')" class="tit">1:1 문의</a>
-              </h3>
-              <dl class="list">
-                <dt>24시간 접수 불가능</dt>
-                <dd>고객센터 운영시간에 천천히
-                  <br>답변해드리겠습니다.</dd>
-              </dl>
-            </div>
-            <div class="mdl-mega-footer__drop-down-section">
-              <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-              <h1 class="mdl-mega-footer__heading"></h1>
-              <ul class="mdl-mega-footer__link-list">
-                <li>
-                  <a href="#"></a>
-                </li>
-                <li>
-                  <a href="#"></a>
-                </li>
-                <li>
-                  <a href="#"></a>
-                </li>
-              </ul>
-            </div>
+  <!-- footer design -->
+  <footer class="mdl-mega-footer" style="background-color: #fff; border-top: 1px solid rgb(230, 230, 230);">
+    <div class="mdl-mega-footer__middle-section" style="width: 1070px; margin: 0 auto;">
+      <div class="mdl-mega-footer__drop-down-section">
+        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
+        <h1 class="mdl-mega-footer__heading"></h1>
+        <ul class="mdl-mega-footer__link-list">
+          <div class="cc_view cc_qna">
+            <h3 class="my-3" style="font-size: 20px;">
+              <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')"
+                class="tit">고객행복센터</a>
+            </h3>
+            <dl class="list">
+              <dt>0000-0000</dt>
+              <dd>월~토요일 오전 7시 - 오후 6시</dd>
+            </dl>
           </div>
-          <div class="mdl-mega-footer__drop-down-section d-none">
+          <div class="cc_view cc_qna">
+            <h3 class="my-2 mt-5" style="font-size: 20px;">
+              <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')"
+                class="tit">카카오톡 문의</a>
+            </h3>
+            <dl class="list">
+              <dt>월~토요일 오전7시-오후6시</dt>
+              <dd>일/공휴일 오전7시-오후1시</dd>
+            </dl>
+          </div>
+          <div class="mdl-mega-footer__bottom-section">
+        </ul>
+      </div>
+      <div class="mdl-mega-footer__drop-down-section">
+        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
+        <h1 class="mdl-mega-footer__heading"></h1>
+        <ul class="mdl-mega-footer__link-list">
+          <!-- 1:1 문의 -->
+          <div class="cc_view cc_qna">
+            <h3 class="my-3" style="font-size: 20px;">
+              <a href="#none" onclick="KurlyTrackerLink('/mypage/inquiry/form', 'select_bottom_onebyone_button')"
+                class="tit">1:1 문의</a>
+            </h3>
+            <dl class="list">
+              <dt>24시간 접수 불가능</dt>
+              <dd>고객센터 운영시간에 천천히
+                <br>답변해드리겠습니다.
+              </dd>
+            </dl>
+          </div>
+          <div class="mdl-mega-footer__drop-down-section">
             <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
             <h1 class="mdl-mega-footer__heading"></h1>
             <ul class="mdl-mega-footer__link-list">
@@ -240,49 +233,28 @@
               <li>
                 <a href="#"></a>
               </li>
-              <li>
-                <a href="#"></a>
-              </li>
-              <li>
-                <a href="#"></a>
-              </li>
             </ul>
           </div>
-          <div class="mdl-mega-footer__drop-down-section" style="width: 500px;">
-            <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
-            <h1 class="mdl-mega-footer__heading"></h1>
-            <ul class="mdl-mega-footer__link-list">
-              <li>
-                <a href="#">주식회사 치킨컬리</a>
-              </li>
-              법인명 (상호) : 주식회사 치킨컬리
-              <span class="bar">I</span>
-              사업자등록번호 : 000-81-00000
-              <a href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=2618123567&amp;apv_perm_no=" target="_blank" class="link">사업자정보 확인</a>
-              <br>
-              통신판매업 : 제2016-서울강남-00호
-              <span class="bar">I</span>
-              개인정보보호책임자 : CHICKEN-KURLY
-              <br>
-              주소 : 서울특별시 강남구 언주로
-              <span class="bar">I</span>
-              대표이사 : CHICKEN-KURLY
-              <br>
-              입점문의 :
-              <a href="https://forms.gle/oKMAe1SaicqMX3SC9" target="_blank" class="link">입점문의하기</a>
-              <span class="bar">I</span>
-              제휴문의 :
-              <a href="mailto:business@kurlycorp.com" class="link">business@Chickenkurlycorp</a>
-              <br>
-              채용문의 :
-              <a href="mailto:recruit@kurlycorp.com" class="link">recruit@Chickenkurlycorp.com</a>
-              <br>
-              팩스: 070 - 0000 - 0000
-              <span class="bar">I</span>
-              이메일 :
-              <a href="mailto:help@kurlycorp.com" class="link">help@Chickenkurlycorp.com</a>
-              <em class="copy"><br>© CHICKEN KURLY CORP. ALL RIGHTS RESERVED</em>
-            </ul>
+      </div>
+      <div class="mdl-mega-footer__drop-down-section d-none">
+        <input class="mdl-mega-footer__heading-checkbox" type="checkbox" checked="checked">
+        <h1 class="mdl-mega-footer__heading"></h1>
+        <ul class="mdl-mega-footer__link-list">
+          <li>
+            <a href="#"></a>
+          </li>
+          <li>
+            <a href="#"></a>
+          </li>
+          <li>
+            <a href="#"></a>
+          </li>
+          <li>
+            <a href="#"></a>
+          </li>
+          <li>
+            <a href="#"></a>
+          </li>
         </ul>
       </div>
       <div class="mdl-mega-footer__drop-down-section d-none">
@@ -311,7 +283,7 @@
         <h1 class="mdl-mega-footer__heading"></h1>
         <ul class="mdl-mega-footer__link-list">
           <li>
-            <a href="#">주식회사 치킨컬리</a>
+            <a href="#" style="font-size: 20px;">주식회사 치킨컬리</a>
           </li>
           법인명 (상호) : 주식회사 치킨컬리
           <span class="bar">I</span>
@@ -340,27 +312,22 @@
           <span class="bar">I</span>
           이메일 :
           <a href="mailto:help@kurlycorp.com" class="link">help@Chickenkurlycorp.com</a>
-          <em class="copy"><br>© CHICKEN KURLY CORP. ALL RIGHTS RESERVED</em>
+          <div class="mt-3 mdl-mega-footer__link-list">
+            <p class="mdl-logo" style="color: rgb(151, 151, 151);">Chicken Kurly</p>
+            <p class="mdl-logo" style="color: rgb(151, 151, 151);">Help</p>
+            <p class="mdl-logo" style="color: rgb(151, 151, 151);">Privacy & Terms</p>
+          </div>
         </ul>
+
+        <em class="copy"><br>© CHICKEN KURLY CORP. ALL RIGHTS RESERVED</em>
       </div>
     </div>
-    <div class="mdl-mega-footer__bottom-section">
-      <div class="mdl-logo" style="color: rgb(151, 151, 151);">Chicken Kurly</div>
-      <ul class="mdl-mega-footer__link-list">
-        <li>
-          <a href="#">Help</a>
-        </li>
-        <li>
-          <a href="#">Privacy & Terms</a>
-        </li>
-      </ul>
     </div>
   </footer>
   <script>
     function getHide() {
       document.getElementById('makers').style.display = 'none';
     }
-    console.log(1)
   </script>
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -380,4 +347,5 @@
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-indigo.min.css" />
   {% block script %}{% endblock %}
 </body>
-  </html>
+
+</html>
