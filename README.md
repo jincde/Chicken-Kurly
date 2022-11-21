@@ -1,4 +1,4 @@
-## :chicken::purple_heart: 치킨컬리(Chicken-Kurly) 프로젝트
+## :chicken: 치킨컬리(Chicken-Kurly) 프로젝트 :purple_heart:
 
 **닭가슴살 러버들을 위한 건강한 식습관 공유 커뮤니티**
 <br>- 겉은 바삭하고 속은 촉촉하며 나트륨이 높지 않으면서도 맛있는 닭가슴살 제품을 판매하는 쇼핑몰 사이트 Chicken Kurly
@@ -7,8 +7,8 @@
 ![carousel2](README.assets/carousel2.jpg)
 
 ---
-## 목차
-* [치킨컬리Chicken-Kurly) 프로젝트](#chicken-purple_heart-치킨컬리chicken-kurly-프로젝트)
+## Table of Contents
+* [치킨컬리Chicken-Kurly) 프로젝트](#chicken-치킨컬리chicken-kurly-프로젝트-purple_heart)
   * [Contributors](#-contributors)
   * [목적](#trophy-목적)
   * [기간](#date-기간)
