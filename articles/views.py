@@ -123,6 +123,7 @@ def update(request, pk):
             article_form = ArticleForm(instance=article)
         context = {
             "article_form": article_form,
+            "article": article,
         }
         return render(request, "articles/update.html", context)
     return redirect("articles:index")

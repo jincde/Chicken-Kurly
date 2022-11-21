@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "article_base.html" %}
 {% load django_bootstrap5 %}
 {% load mathfilters %}
 {% load widget_tweaks %}
@@ -16,7 +16,7 @@
   <div>
     <div class="d-flex justify-content-between">
       <article class="left" style="width: 480px; height: 480px;">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="z-index: -1;">
           <div class="carousel-indicators">
             {% for image in product.image_set.all %}
             <!-- 사진 인덱싱 위해 mathfilters 설치해야 함 -->
@@ -475,7 +475,7 @@
                             <div class="mb-3">
                               <label class="form-label" for="id_title">제목</label>
                               <input type="text" name="title" maxlength="50" class="form-control" placeholder="제목"
-                                required id="id_title" value={{ inquiry.title }}>
+                                required id="id_title" value="{{ inquiry.title }}">
                             </div>
                             <div class="mb-3">
                               <label class="form-label" for="id_content">내용</label>
