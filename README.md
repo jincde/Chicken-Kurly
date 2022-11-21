@@ -7,6 +7,21 @@
 ![carousel2](README.assets/carousel2.jpg)
 
 ---
+## 목차
+* [치킨컬리 (Chicken-Kurly) 프로젝트](##치킨컬리 (Chicken-Kurly) 프로젝트)
+  * [Contributors](###Contributors)
+  * [목적](###목적)
+  * [기간](###기)
+  * [기술 스택](###기술 스택)
+* [팀원 소개 및 담당 역할](##팀원 소개 및 담당 역할)
+* [서비스 주제](##서비스 )
+* [주요 기능 소개](##주요 기능 소개)
+* [Chicken Kurly](##Chicken Kurly)
+* [서비스 시연](##서비스 시연)
+* [프로젝트 후 느낀점](##프로젝트 후 느낀점)
+
+
+---
 
 #### ✨ Contributors
 
@@ -51,9 +66,9 @@
 <details>
 <summary>장영진</summary>
 <div markdown="1">
-<h3>팀장</h3>
-    <ul>
+<h5>팀장</h5>
 <h5>풀스택 개발</h5>
+    <ul>
     <li><p>products, accounts, articles 디자인 및 백엔드 개발</p></li>
     <li><p>베이스 구현</p></li>
     </ul>
