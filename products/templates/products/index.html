@@ -299,10 +299,6 @@
   </div>
 </div>
 
-{% if request.user.is_superuser == 1 %}
-<a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
-{% endif %}
-
 <script src="https://cdn.jsdelivr.net/gh/stevenschobert/instafeed.js@2.0.0rc1/src/instafeed.min.js"></script>
 <script type="text/javascript">
   var userFeed = new Instafeed({
