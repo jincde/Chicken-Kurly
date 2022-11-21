@@ -9,8 +9,8 @@
 <div class="d-flex justify-content-between flex-wrap"
   style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0; overflow: hidden; overflow-x: scroll;">
   <div class="d-flex justify-content-between align-items-center" style="width: 1070px; margin-bottom: 16px;">
-    <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">상품 검색결과 <span
-        style="font-size: 26px;">📌</span></h3>
+    <h4 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61); margin: 0 0 10.5px;">상품 검색결과 <span
+        style="font-size: 26px;">📌</span></h4>
   </div>
 </div>
 {% if not products %}
@@ -26,7 +26,7 @@
         <!-- Slides -->
         {% for product in products %}
         <div class="productcard swiper-slide" style="border: 0px solid black; color: rgb(51, 51, 51);">
-          {% comment %} <a href="{% url 'products:detail' product.pk %}"> {% endcomment %}
+          <a class="non_a" href="{% url 'products:detail' product.pk %}">
             <div class="product-img" style="">
               <img src="{{ product.image_set.all.0.image.url }}" alt="" width="100%" height="329px"
                 style="object-fit: cover">
@@ -47,6 +47,7 @@
               <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}</p>
               <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ product.price|intcomma }} 원</p>
             </div>
+          </a>
         </div>
         {% endfor %}
       </div>
@@ -65,8 +66,9 @@
 <div class="d-flex justify-content-between flex-wrap"
   style="max-width: 1070px; margin: 0 auto; gap:40px; padding: 60px 0 0; overflow: hidden; overflow-x: scroll;">
   <div class="d-flex justify-content-between align-items-center" style="width: 1070px; margin-bottom: 16px;">
-    <h3 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61);">아티클 검색결과 <span
-        style="font-size: 26px;">📌</span></h3>
+    <h4 style="font-size: 20px; font-weight: 700; color: rgb(61, 61, 61); margin: 0 0 10.5px;">아티클 검색결과
+      <span style="font-size: 26px;">📌</span>
+    </h4>
   </div>
 </div>
 {% if not articles %}
