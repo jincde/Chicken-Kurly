@@ -8,7 +8,7 @@
 
 ---
 ## Table of Contents
-* [치킨컬리Chicken-Kurly) 프로젝트](#chicken-치킨컬리chicken-kurly-프로젝트-purple_heart)
+* [치킨컬리(Chicken-Kurly) 프로젝트](#chicken-치킨컬리chicken-kurly-프로젝트-purple_heart)
   * [Contributors](#-contributors)
   * [목적](#trophy-목적)
   * [기간](#date-기간)
