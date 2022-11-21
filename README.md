@@ -202,7 +202,7 @@
 
 ## :computer: 서비스 시연
 
-![서비스 시연](https://www.youtube.com/watch?v=9K4vOyYXk3g)
+![서비스 시연](http://chickenkurlybean-env.eba-jbwiaqp9.ap-northeast-1.elasticbeanstalk.com/products/)
 
 
 
