@@ -8,17 +8,17 @@
 
 ---
 ## 목차
-* [치킨컬리 (chicken-Kurly) 프로젝트](#-치킨컬리-chicken-kurly-프로젝트)
+* [치킨컬리 (chicken-Kurly) 프로젝트](#chickenpurple_heart-치킨컬리-chicken-kurly-프로젝트)
   * [Contributors](#-contributors)
   * [목적](#trophy-목적)
-  * [기간](#-기간)
-  * [기술 스택](#-기술-스택)
+  * [기간](#date-기간)
+  * [기술 스택](#hammer_and_wrench-기술-스택)
 * [팀원 소개 및 담당 역할](#technologist-팀원-소개-및-담당-역할)
-* [서비스 주제](#-서비스)
-* [주요 기능 소개](#-주요-기능-소개)
+* [서비스 주제](#bulb-서비스-)
+* [주요 기능 소개](#shopping_cart-주요-기능-소개)
 * [Chicken Kurly](#-chicken-kurly)
-* [서비스 시연](#-서비스-시연)
-* [프로젝트 후 느낀점](#-프로젝트-후-느낀점)
+* [서비스 시연](#computer-서비스-시연)
+* [프로젝트 후 느낀점](#purple_heart-프로젝트-후-느낀점)
 
 
 ---
