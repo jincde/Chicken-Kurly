@@ -53,7 +53,7 @@
 <div markdown="1">
 <h3>팀장</h3>
     <ul>
-    <h5>풀스택 개발</h5>
+<h5>풀스택 개발</h5>
     <li><p>products, accounts, articles 디자인 및 백엔드 개발</p></li>
     <li><p>베이스 구현</p></li>
     </ul>
@@ -176,7 +176,7 @@
 
 ## :computer:서비스 시연
 
-![chickurl_시연](https://user-images.githubusercontent.com/108647883/202907753-382a29ea-3a4b-4769-b8e8-9929dca50f92.png)
+![chickurl_시연]()
 
 
 
