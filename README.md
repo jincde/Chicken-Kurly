@@ -53,7 +53,7 @@
 <div markdown="1">
 <h3>팀장</h3>
     <ul>
-    <li><h5>풀스택 개발</h5></li>
+    <h5>풀스택 개발</h5>
     <li><p>products, accounts, articles 디자인 및 백엔드 개발</p></li>
     <li><p>베이스 구현</p></li>
     </ul>
