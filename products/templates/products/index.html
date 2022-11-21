@@ -53,14 +53,14 @@
         모두보기</button>
       {% for category in categories %}
       <button class="category-title mx-1" type="button" id="{{ category.category }}"
-        style="padding: 10px 20px; border-radius: 22px; height: 40px; border: none;">
+        style="padding: 10px 20px; border-radius: 22px; height: 40px; border: none;" onClick="test()">
         {{ category.category }}</button>
       {% endfor %}
     </div>
     <div class="swiper-box posts-collect" style="position: relative">
       <section class="swiper posts-main-container" id="test-slide">
         <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
+        <div class="swiper-wrapper" id="category-div">
           <!-- Slides -->
           {% for product in products_name %}
           <div class="productcard swiper-slide all {{ product.category }}"
@@ -299,6 +299,10 @@
   </div>
 </div>
 
+{% if request.user.is_superuser == 1 %}
+<a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
+{% endif %}
+
 <script src="https://cdn.jsdelivr.net/gh/stevenschobert/instafeed.js@2.0.0rc1/src/instafeed.min.js"></script>
 <script type="text/javascript">
   var userFeed = new Instafeed({
@@ -310,10 +314,6 @@
   });
   userFeed.run();
 </script>
-
-{% if request.user.is_superuser == 1 %}
-<a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
-{% endif %}
 <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <script>
@@ -370,8 +370,6 @@
       minutes = minutes.padStart(2, '0');
       seconds = seconds.padStart(2, '0');
 
-      console.log(hours)
-
       //document.getElementById(id).textContent = date.toLocaleString() + "까지 : ";
       document.getElementById(id).textContent = days + ':';
       document.getElementById(id).textContent += hours + ':';
@@ -386,5 +384,11 @@
   dateObj.setDate(dateObj.getDate() + 1);
 
   countDownTimer('sample01', '12/17/2022 00:00 AM'); // 2024년 4월 1일까지, 시간을 표시하려면 01:00 AM과 같은 형식을 사용한다.
+</script>
+<script>
+  function test() {
+    // document.getElementById('category-div').style.display = 'none';
+    document.getElementById('category-div').style.transform = 'translate3d(0px, 0px, 0px)';
+  }
 </script>
 {% endblock %}
