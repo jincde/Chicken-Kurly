@@ -13,7 +13,7 @@
       <div class="px-4 py-3" style="border-radius: 15px; ">
         <div class="d-flex justify-content-center pb-3">
           {% if person.image %}
-          <img src="{{ person.image.url }}" alt="">
+          <img src="{{ person.image.url }}" class="rounded-circle" alt="">
           {% else %}
           <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
           {% endif %}
@@ -275,9 +275,9 @@
                 <h1 class="modal-title fs-5" id="ddibtocartModal">Modal title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div> {% endcomment %}
-              <div class="modal-body item-cart-modals" data-item-id="{{ product.product.pk }}">
+              <div class="modal-body item-cart-modals" data-item-id="{{ product.product.pk }}" style='padding: 30px 30px;'>
                 {% comment %} modal 하나하나에 해당하는 item의 id를 가져와서 defaultItemPrice에 접근 {% endcomment %}
-                <div class='text-center mb-2'>
+                <div class='text-center mb-3'>
                   {{ product.product.product_name }}
                 </div>
                 <div class="row">
@@ -285,7 +285,7 @@
                   <div class="">
                     <form action="{% url 'accounts:tocart' product.product.pk %}" method="POST">
                       {% csrf_token %}
-                      <div class='d-flex justify-content-center'>
+                      <div class='d-flex justify-content-center mb-3'>
                         <input data-item-id="{{ product.product.pk }}" id="quantity-{{ product.product.pk }}"
                           style='width:80px; height:30px' class="form-control quantity-input me-2 text-center"
                           type="number" name="checkquantity" min="1" value="1">
