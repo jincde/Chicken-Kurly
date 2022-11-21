@@ -63,7 +63,15 @@ function requestPay() {
       .then(response => {
         const productBoxes = document.querySelectorAll('.product-boxes')
         productBoxes.forEach(productBox => {
-          productBox.remove()
+          const itemId = productBox.getAttribute('data-item-id')
+          const checkBox = document.querySelector(`#check-${itemId}`)
+          // console.log(checkBox)
+
+          if (checkBox.checked === true) {
+            const box = document.querySelector(`#product-${itemId}-box`)
+            // console.log(itemId)
+            box.remove()
+          }
         })
       })
     } else {

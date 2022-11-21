@@ -17,7 +17,7 @@
     <div class="row">
       <div class="col-12 col-md-9">
         {% for item in cart_items %}
-        <div class="product-boxes row" id="product-{{ item.pk }}-box">
+        <div class="product-boxes row" data-item-id="{{ item.pk }}" id="product-{{ item.pk }}-box">
           <div class="d-flex align-items-center form-check mb-4">
             <!-- 체크박스 -->
             <input data-item-id="{{ item.pk }}" class="item-checkboxes form-check-input me-3" type="checkbox"
