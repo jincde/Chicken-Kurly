@@ -148,12 +148,12 @@
               {% endif %}
 
               {% if request.user.is_staff %}
-                <a href="{% url 'products:update' product.pk %}">
-                  <button class="btn form-control"
+              <a href="{% url 'products:update' product.pk %}">
+                <button class="btn form-control"
                   style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white">수정하기</button>
-                </a>
+              </a>
               {% else %}
-                <button id="btn-payment" class="btn form-control"
+              <button id="btn-payment" class="btn form-control"
                 onclick="requestPay('{{ product.pk }}', '{{ product.product_name }}')"
                 style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white"
                 disabled>결제하기</button>
@@ -189,7 +189,7 @@
   <div class='product-review position-relative' style='padding: bottom 100px;'>
     <section class='review' style='padding:72px 0px;'>
       <header class='review-title d-flex align-items-center w-100'>
-        <h2 class='fw-bold' style='font-size: 18px;'>상품 후기 &nbsp
+        <h2 class='fw-bold m-0' style='font-size: 18px;'>상품 후기 &nbsp
           <span style="color:#5e0080; font-weight: 700;">{{ reviews.count }}</span>
         </h2>
         {% if request.user.is_authenticated %}
@@ -205,7 +205,7 @@
         </div>
         {% endif %}
       </header>
-      <div class='review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
+      <div class='m-0 review-list w-100 position-relative' style='margin-top:34px; border-top:1px solid black;'>
         {% for review in reviews %}
         <div class='review-detail d-flex'
           style='padding:30px 0px 19px 20px; border-bottom:1px solid rgb(244, 244, 244); font-size:14px; font-weight:400; line-height:19px;'>
@@ -218,8 +218,8 @@
           <article class='review-content' style='flex:1 1 0%;'>
             <div>
               <div>
-                <h3 class="mb-0" style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
-                  {{ review.product.product_name }}</h3>
+                <p class="my-0" style='font-size:14px; font-weight:400; color:rgb(153, 153, 153);'>
+                  {{ review.product.product_name }}</p>
               </div>
               <p class="mb-0" style='white-space:pre-line; font-weight: 600;'>
                 {{ review.title }}</p>
