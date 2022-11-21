@@ -166,7 +166,7 @@
 
 <!-- 얇은 광고 배너1 -->
 <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
-  <img style="object-fit: cover;" width="1070px" height="140px" src="{% static 'images/carousel1.jpg' %}">
+  <img style="object-fit: cover;" width="1070px" height="140px" src="{% static 'images/thin3.jpg' %}">
 </div>
 
 <!-- 많이 구매된 순 -->
@@ -260,7 +260,7 @@
 
 <!-- 얇은 광고 배너2 -->
 <div style="margin:auto; padding:40px 0; max-width:1070px; height: 220px">
-  <img style="object-fit: cover;" width="1070px" height="140px" src="{% static 'images/thin3.jpg' %}">
+  <img style="object-fit: cover;" width="1070px" height="140px" src="{% static 'images/carousel1.jpg' %}">
 </div>
 
 <!-- 인스타그램 크롤링 -->
@@ -279,6 +279,23 @@
     <p class="m-0" style="color:rgb(153, 153, 153); font-size: 16px; font-weight: 400;">#치킨컬리 해시태그를 사용해 후기를 공유해주세요</p>
     <p class="m-0" style="color:rgb(51, 51, 51); font-weight: 500;"><a class="non_a"
         href="https://www.instagram.com/chickenkurly_regram/">@chickenkurly_regram</a> #치킨컬리</p>
+  </div>
+</div>
+
+<!-- clock test -->
+<div class="" style="width: 1070px; margin: 0 auto;">
+  <div style="padding: 80px 0;">
+    <div class="aside-left">
+      <h4 class="mt-0" style="font-size: 28px; margin-bottom: 10px;">교육 종료까지!</h4>
+      <h5 class="mt-0" style="font-size: 16px; color: rgb(153, 153, 153); margin-bottom: 24px;">모두 고생하셨습니다</h5>
+      <div class="d-flex justify-content-start">
+        <div class="clock me-3" style="display: inline-block; width: 30px; height: 30px"></div>
+        <h4 class="m-0" id="sample01"
+          style="font-size: 32px; font-weight: 800;color:rgb(51, 51, 51); display: inline-block;">
+        </h4>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -323,5 +340,51 @@
     //   el: '.swiper-scrollbar',
     // },
   });
+</script>
+<script>
+  const countDownTimer = function (id, date) {
+    var _vDate = new Date(date); // 전달 받은 일자
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour = _minute * 60;
+    var _day = _hour * 24;
+    var timer;
+
+    function showRemaining() {
+      var now = new Date();
+      var distDt = _vDate - now;
+
+      if (distDt < 0) {
+        clearInterval(timer);
+        document.getElementById(id).textContent = '과정이 종료됐습니다';
+        return;
+      }
+
+      var days = String(Math.floor(distDt / _day));
+      var hours = String(Math.floor((distDt % _day) / _hour));
+      var minutes = String(Math.floor((distDt % _hour) / _minute));
+      var seconds = String(Math.floor((distDt % _minute) / _second));
+
+      days = days.padStart(2, '0');
+      hours = hours.padStart(2, '0');
+      minutes = minutes.padStart(2, '0');
+      seconds = seconds.padStart(2, '0');
+
+      console.log(hours)
+
+      //document.getElementById(id).textContent = date.toLocaleString() + "까지 : ";
+      document.getElementById(id).textContent = days + ':';
+      document.getElementById(id).textContent += hours + ':';
+      document.getElementById(id).textContent += minutes + ':';
+      document.getElementById(id).textContent += seconds;
+    }
+
+    timer = setInterval(showRemaining, 1000);
+  }
+
+  var dateObj = new Date();
+  dateObj.setDate(dateObj.getDate() + 1);
+
+  countDownTimer('sample01', '12/17/2022 00:00 AM'); // 2024년 4월 1일까지, 시간을 표시하려면 01:00 AM과 같은 형식을 사용한다.
 </script>
 {% endblock %}
