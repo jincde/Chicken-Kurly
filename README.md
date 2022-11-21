@@ -10,7 +10,7 @@
 ## 목차
 * [치킨컬리 (chicken-Kurly) 프로젝트](##:chicken::purple_heart: 치킨컬리-(chicken-Kurly)-프로젝트)
   * [Contributors](###✨-Contributors)
-  * [목적](###목적)
+  * [목적](###:trophy:-목적)
   * [기간](###기간)
   * [기술 스택](###기술 스택)
 * [팀원 소개 및 담당 역할](##팀원 소개 및 담당 역할)
