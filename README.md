@@ -202,8 +202,8 @@
 
 ## :computer: 서비스 시연
 
-[서비스 시연(youtube)](https://www.youtube.com/watch?v=9K4vOyYXk3g)
-[서비스 시연(chicken kurly)](http://chickenkurlybean-env.eba-jbwiaqp9.ap-northeast-1.elasticbeanstalk.com/products/)
+* [서비스 시연(youtube)](https://www.youtube.com/watch?v=9K4vOyYXk3g)
+* [서비스 시연(chicken kurly)](http://chickenkurlybean-env.eba-jbwiaqp9.ap-northeast-1.elasticbeanstalk.com/products/)
 
 
 
