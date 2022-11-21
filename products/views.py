@@ -301,9 +301,10 @@ def review_update(request, product_pk, review_pk):
         context = {
             'review_form': review_form,
             'review_image_form': review_image_form,
+            'review': review,
         }
 
-        return render(request, 'products/review.html', context)
+        return render(request, 'products/review_update.html', context)
     
     else:
         return redirect('products:detail', product_pk) 
