@@ -94,14 +94,8 @@
           <!-- Modal -->
           <div class="modal fade" id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                  <img
-                  class="rounded"
-                  src="{{ article.image.url }}"
-                  alt="photo"
-                  data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"
-                  style="width: 100%; height: 100%; object-fit:cover;"
-                />
+              <img class="rounded" src="{{ article.image.url }}" alt="photo" data-bs-toggle="modal"
+                data-bs-target="#exampleModal" style="width: 100%; height: 100%; object-fit:cover;" />
             </div>
           </div>
           {% else %}
@@ -350,15 +344,15 @@
     <div>
       <div class="rounded"
         style="background-color: white; border-top: 32px solid; border-top-color: #5e008078; position: sticky; top: 100px; border: 1px solid rgb(222, 222, 222);">
-        <div style="padding: 0 12px;">
+        <div style="padding: 0 12px; margin-top: 12px;">
           {% if article.user.image %}
           <img src="{{ article.user.image.url }}"
-            style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px;">
+            style="border-radius: 50px; width:48px; height: 48px; margin-top: -28px;">
           {% else %}
           <img src="{% static 'images/android-icon-72x72.png' %}"
-            style="border-radius: 50px; width:48px; height: 48px; margin-top: -16px; object-fit: cover;">
+            style="border-radius: 50px; width:48px; height: 48px; margin-top: -28px; object-fit: cover;">
           {% endif %}
-          <span style="color: rgb(64, 64, 64); font-weight: 700; font-size: 20px"><a class="non_a"
+          <span style="color: rgb(64, 64, 64); font-weight: 700; font-size: 20px;"><a class="non_a"
               href="{% url 'accounts:profile' article.user.pk %}">{{ article.user.username }}</a></span>
         </div>
         <div style="padding: 0 12px; margin-top: 1rem;">
@@ -366,7 +360,7 @@
           <p class="m-0 p-0" style="font-size: 16px; color: rgb(64, 64, 64)">
             {{ article.user.rating }}</p>
         </div>
-        <div style="padding: 0 12px; margin-top: 1rem;">
+        <div style="padding: 0 12px; margin-top: 1rem; margin-bottom: 1rem;">
           <p class="m-0 p-0" style="font-size: 12px; font-weight: 700; color: rgb(82, 82, 82);">가입일</p>
           <p class="m-0 p-0" style="font-size: 16px; color: rgb(64, 64, 64)">
             {{ article.user.date_joined|date:'Y년 m월 d일' }}</p>
