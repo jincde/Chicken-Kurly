@@ -2,6 +2,11 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
+<style>
+  body {
+    letter-spacing: -0.5px;
+  }
+</style>
 <div id="carouselExampleInterval" style="max-width:1900px; margin:0 auto 0;" class="carousel slide"
   data-bs-ride="carousel">
   <div class="carousel-inner">
@@ -44,7 +49,7 @@
 <div style="width: 1070px; margin: 0 auto;">
   <div class="d-flex align-items-center flex-column" style="margin: 40px; 0">
     <div class="d-flex flex-column justify-content-center">
-      <h3 class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">카테고리별 검색</h3>
+      <p class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">카테고리별 검색</p>
       <p class="text-muted" style="font-size: 16px; font-weight:400;">아래 키워드를 클릭해보세요 </p>
     </div>
     <div class="d-flex" style="margin-bottom: 27px;">
@@ -77,7 +82,8 @@
                 </div>
                 <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}
                 </p>
-                <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ product.price|intcomma }} 원</p>
+                <p class="m-0" style="font-weight: 600; font-size: 16px; letter-spacing: -0.5px;">
+                  {{ product.price|intcomma }} 원</p>
               </div>
             </a>
           </div>
@@ -124,7 +130,7 @@
 <!-- Slider main container -->
 <div style="padding: 40px 0">
   <div class="container d-flex justify-content-center" style="width: 1070px; margin-bottom: 27px;">
-    <h3 class="mb-2" style="color: rgb(51, 51, 51); font-weight: 700;">이 상품은 어떤가요?</h3>
+    <p class="mb-2" style="color: rgb(51, 51, 51); font-size: 28px; font-weight: 700;">이 상품은 어떤가요?</p>
   </div>
   <div class="swiper-box" style="position: relative">
     <section class="swiper" id="test-slide">
@@ -147,7 +153,8 @@
               </div>
               <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}
               </p>
-              <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ product.price|intcomma }} 원</p>
+              <p class="m-0" style="font-weight: 600; font-size: 16px; letter-spacing: -0.5px;">
+                {{ product.price|intcomma }} 원</p>
             </div>
           </a>
         </div>
@@ -173,7 +180,7 @@
 <!-- Slider main container -->
 <div style="padding: 40px 0;">
   <div class="container d-flex flex-column align-items-center" style="width: 1070px; margin-bottom: 27px;">
-    <h3 class="mb-2" style="color: rgb(51, 51, 51); font-weight: 700">지금 가장 핫한 상품</h3>
+    <p class="mb-2" style="color: rgb(51, 51, 51); font-weight: 700; font-size: 28px;">지금 가장 핫한 상품</p>
     <p class="text-muted" style="font-size: 16px; font-weight:400;">최근 많은 고객들이 구매했어요</p>
 
   </div>
@@ -197,7 +204,8 @@
               </div>
               <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ product.product_name }}
               </p>
-              <p class="m-0" style="font-weight: 600; font-size: 16px;">{{ product.price|intcomma}} 원</p>
+              <p class="m-0" style="font-weight: 600; font-size: 16px; letter-spacing: -0.5px;">
+                {{ product.price|intcomma}} 원</p>
             </div>
           </a>
         </div>
@@ -219,7 +227,7 @@
 <div style="padding: 40px 0">
   <div class="container d-flex flex-column align-items-center"
     style="width: 1070px; margin-top: 40px; margin-bottom: 27px;">
-    <h3 class="mb-2" style="color: rgb(51, 51, 51); font-weight: 700;">높은 조회수를 기록한 상품</h3>
+    <p class="mb-2" style="color: rgb(51, 51, 51); font-weight: 700; font-size: 28px;">높은 조회수를 기록한 상품</p>
     <p class="text-muted" style="font-size: 16px; font-weight:400;">최근 많은 고객들이 찾아봤어요</p>
   </div>
   <div class="swiper-box" style="position: relative">
@@ -241,7 +249,8 @@
                   {{ hit.category }}</span>
               </div>
               <p style="font-weight: 400; font-size: 16px; margin-bottom: 8px;">{{ hit.product_name }}</p>
-              <p class="m-0" style="font-weight: 800; font-size: 16px;">{{ hit.price|intcomma }} 원</p>
+              <p class="m-0" style="font-weight: 600; font-size: 16px; letter-spacing: -0.5px;">{{ hit.price|intcomma }}
+                원</p>
             </div>
           </a>
         </div>
@@ -266,7 +275,7 @@
 <!-- 인스타그램 크롤링 -->
 <div class="container d-flex flex-column justify-content-center align-items-center"
   style="max-width:1070px; height: 450px; font-weight: 600; padding: 60px 0 100px; margin-bottom: 60px;">
-  <h3 class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">인스타그램 고객 후기</h3>
+  <p class='mb-2' style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51)">인스타그램 고객 후기</p>
   <p class="text-muted" style="font-size: 16px; font-weight:400;">더 많은 고객 후기가 궁금하다면?</p>
   <div class="d-flex align-items-center" style="width: 1070px; margin: 0 auto;">
     <div class='d-flex row' style="margin: 0 auto; width: 1070px; height: 170px; overflow-x: scroll; overflow: hidden;">
@@ -286,13 +295,13 @@
 <div class="" style="width: 1070px; margin: 0 auto;">
   <div style="padding: 80px 0;">
     <div class="aside-left">
-      <h4 class="mt-0" style="font-size: 28px; margin-bottom: 10px;">교육 종료까지!</h4>
-      <h5 class="mt-0" style="font-size: 16px; color: rgb(153, 153, 153); margin-bottom: 24px;">모두 고생하셨습니다</h5>
+      <p class="mt-0" style="font-size: 28px; margin-bottom: 10px; font-weight: 500;">교육 종료까지!</p>
+      <p class="mt-0" style="font-size: 16px; color: rgb(153, 153, 153); margin-bottom: 24px;">모두 고생하셨습니다</p>
       <div class="d-flex justify-content-start">
         <div class="clock me-3" style="display: inline-block; width: 30px; height: 30px"></div>
-        <h4 class="m-0" id="sample01"
-          style="font-size: 32px; font-weight: 800;color:rgb(51, 51, 51); display: inline-block;">
-        </h4>
+        <p class="m-0" id="sample01"
+          style="font-size: 32px; font-weight: 700;color:rgb(51, 51, 51); display: inline-block;">
+        </p>
       </div>
     </div>
 
@@ -312,10 +321,10 @@
 </script>
 
 {% if request.user.is_superuser == 1 %}
-  <a href="{% url 'products:create' %}" class="btn text-start fixed-bottom mb-3 ms-3">
-    <button type="submit" class="btn"
+<a href="{% url 'products:create' %}" class="btn text-start fixed-bottom mb-3 ms-3">
+  <button type="submit" class="btn"
     style="border-radius:3px; height:50px; width:120px; background-color: #5e0080; color: white">상품등록</button>
-  </a>
+</a>
 {% endif %}
 
 <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>

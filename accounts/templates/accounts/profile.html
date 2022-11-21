@@ -13,20 +13,24 @@
       <div class="px-4 py-3" style="border-radius: 15px; ">
         <div class="d-flex justify-content-center pb-3">
           {% if person.image %}
-          <img src="{{ person.image.url }}" class="rounded-circle" alt="">
+          <img src="{{ person.image.url }}" style='width: 130px; height: 130px; object-fit: cover;'
+            class="rounded-circle" alt="">
           {% else %}
-          <img src="https://dummyimage.com/130x130/7a17d6/fff" class="rounded-circle" alt="프사대체용">
+          <img src="{% static 'images/ck-purple.jpg' %}" style='width: 130px; height: 130px; object-fit: cover;'
+            class="rounded-circle" alt="프사대체용">
           {% endif %}
         </div>
         <div>
-          <div class="d-flex justify-content-start">
-            <h3 style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
-              {{ person.username }}</h3>
+          <div class="d-flex justify-content-between">
+            <p style="font-size: 24px;font-weight: 800; color: black; margin:0 30px 8px;">
+              {{ person.username }}</p>
             <!-- button -->
             <!-- <button class="mdl-button mdl-js-button mdl-button-primary" style="font-size: 13px; margin: 5px;">
               {{ user.rating }}
             </button> -->
-            <h3 style="margin:0; font-size: 24px;">{{ person.rating }}</h3>
+            <p
+              style="padding: 0px 10px; border-radius: 22px; background-color: rgba(274, 243, 248, 1); color:#5e0080; font-weight: 500;margin-right: 30px;">
+              {{ person.rating }}</p>
           </div>
           <div class="row mb-3">
             <div class="col d-flex flex-column align-items-center" style="height: 45px;">
@@ -137,11 +141,11 @@
 <!-- 구매목록 -->
 <div class="container d-flex flex-column justify-content-center align-items-center"
   style="max-width:1070px; font-weight: 600; padding: 60px 0 0;">
-  <h3 style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">구매 목록</h3>
+  <p style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">구매 목록</p>
   <div class="d-flex align-items-center justify-content-center" style="width: 1070px; margin: 0 auto;">
     {% if not order_items %}
     <div class="d-flex justify-content-center">
-      <h4 style="color: rgb(204, 204, 204);">아직 구매목록이 없습니다. 💸</h4>
+      <p style="font-size: 24px; color: rgb(204, 204, 204);">아직 구매목록이 없습니다. 💸</p>
     </div>
     {% else %}
     <div class='d-flex row'
@@ -232,7 +236,7 @@
   <div class="d-flex align-items-center justify-content-center" style="width: 1070px; margin: 0 auto;">
     {% if not ddib_items %}
     <div class="d-flex justify-content-center">
-      <h4 style="color: rgb(204, 204, 204);">아직 위시리스트가 없습니다 🎁</h4>
+      <p style="color: rgb(204, 204, 204); font-size: 24px;">아직 위시리스트가 없습니다 🎁</p>
     </div>
     {% else %}
     <div class='d-flex row'
@@ -320,17 +324,17 @@
 <!-- 문의 내역 -->
 <div class='container' style="max-width: 1070px; padding: 60px 0;">
   <div style="padding: 0 40px;">
-    <h3 class="text-center" style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">문의
-      내역</h3>
+    <p class="text-center" style="font-weight: 700; font-size: 28px; color: rgb(51, 51, 51); margin-bottom: 27px;">문의
+      내역</p>
     {% if not inquiries %}
     <div class="d-flex justify-content-center">
-      <h4 style="color: rgb(204, 204, 204);">아직 문의내역이 없습니다 📝</h4>
+      <p style="font-size: 24px; color: rgb(204, 204, 204);">아직 문의내역이 없습니다 📝</p>
     </div>
     {% else %}
     <!-- 상품 문의 등록 버튼 & 모달 -->
     <div class="row">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold m-0" style='font-size: 18px;'>문의 내역</h2>
+        <p class="fw-bold m-0" style='font-size: 18px; font-weight: 700;'>문의 내역</p>
 
       </div>
     </div>

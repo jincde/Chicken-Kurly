@@ -1,5 +1,7 @@
-body {
-  font-family: 'Noto Sans KR', 'AppleSDGothicNeo', 'sans-serif';
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+* {
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 textarea:hover,
