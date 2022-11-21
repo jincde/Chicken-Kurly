@@ -122,7 +122,7 @@
 ---
 ## :dart: Chicken Kurly
 
-[](![chickenkurly](https://user-images.githubusercontent.com/108647883/203096828-c6d55650-5363-481c-ab8a-83f93cda4e93.gif)
+![chickenkurly](https://user-images.githubusercontent.com/108647883/203096828-c6d55650-5363-481c-ab8a-83f93cda4e93.gif)
 
 
 
