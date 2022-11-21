@@ -71,10 +71,10 @@
           <input class="btn" style="color: #5e0080; font-weight: 600;" type="submit" value="작성완료"></input>
         </div>
         <h2><input class="input-title form-control mb-3" style="border:0px; font-size: 1.5rem;" name="title"
-            placeholder="제목을 입력해주세요." value="{{ article.title }}"  maxlength="20"></h2>
+            placeholder="제목을 입력해주세요." value="{{ article.title }}"  maxlength="20" required></h2>
         <hr>
         <textarea rows="18" cols="10" class="form-control my-3" style="border:0px" name="content"
-          placeholder="ㆍ 작성하신 후기는 치킨컬리 이용자에게 공개됩니다.&#13;&#10;&#13;&#10;ㆍ후기 작성 시 1,000원의 적립금을 영업일 기준 2일 전후로 지급합니다.&#13;&#10;&#13;&#10;ㆍ후기 도용 시 적립금 2배 회수, 1년간 커뮤니티 이용 제한, 3개월간 후기 적립금 지급이 중단됩니다.">{{ article.content }}</textarea>
+          placeholder="ㆍ 작성하신 후기는 치킨컬리 이용자에게 공개됩니다.&#13;&#10;&#13;&#10;ㆍ후기 작성 시 1,000원의 적립금을 영업일 기준 2일 전후로 지급합니다.&#13;&#10;&#13;&#10;ㆍ후기 도용 시 적립금 2배 회수, 1년간 커뮤니티 이용 제한, 3개월간 후기 적립금 지급이 중단됩니다." required>{{ article.content }}</textarea>
         <!-- <input type="file" name="review_img" multiple="" accept="image/*" class="form-control" id="id_review_img"> -->
         <input type="file" name="image" accept="image/*" class="form-control" id="id_image">
     </form>
