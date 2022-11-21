@@ -394,6 +394,7 @@ def update_inquiry(request, product_pk, inquiry_pk):
     data = {
         'inquiryTitle': inquiry_title,
         'inquiryContent': inquiry_content,
+        'inquiry': inquiry,
     }
 
     # return redirect('products:detail', product_pk)
