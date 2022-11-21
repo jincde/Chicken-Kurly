@@ -6,13 +6,15 @@ IMP.init("imp74723253") // 가맹점 식별코드
 const btnPayment = document.querySelector('#btn-payment')
 // const quantityField = document.querySelector('#id_quantity')
 
-quantityField.addEventListener('input', event => {
-  if (event.target.value === '0') {
-    btnPayment.disabled = true
-  } else {
-    btnPayment.disabled = false
-  }
-})
+if (btnPayment) {
+  quantityField.addEventListener('input', event => {
+    if (event.target.value === '0') {
+      btnPayment.disabled = true
+    } else {
+      btnPayment.disabled = false
+    }
+  })
+}
 
 
 // 3. 카카오페이 결제창 띄우기
