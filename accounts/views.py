@@ -79,6 +79,7 @@ def profile_update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         password_form = PasswordChangeForm(request.user, request.POST)
+        address = request.POST.get('address')
 
         if form.is_valid():
             form.save()
@@ -86,6 +87,11 @@ def profile_update(request):
         if password_form.is_valid():
             password_form.save()
             update_session_auth_hash(request, password_form.user)
+
+        if address:
+            user=request.user
+            user.address = address
+            user.save()
 
         return redirect("accounts:profile", request.user.pk) 
 
@@ -150,7 +156,6 @@ def profile(request, user_pk):
         user.rating = 'GOLD'
         user.save()
     elif total_point >= 30000:
-        print('3###########asdfasdfasdfasdfasdfasdf')
         user.rating = 'SILVER'
         user.save()
     

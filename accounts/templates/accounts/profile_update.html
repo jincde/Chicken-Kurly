@@ -21,10 +21,22 @@
         {% bootstrap_form password_form %}
 
         <div class="">
+          <div style="display: none;">
+            <input type="text" id="sample6_postcode" placeholder="우편번호">
+            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+            <input type="text" id="sample6_address" placeholder="주소"><br>
+            <input type="text" id="sample6_detailAddress" placeholder="상세주소">
+            <input type="text" id="sample6_extraAddress" placeholder="참고항목">
+          </div>
           <h6 class="my-3 fw-bold" style="color: rgb(51, 51, 51); font-size:14px;">배송받을 주소</h6>
           <div class="my-3">
             <input type="text" name="address" style='width:535px' class="signup-input form-control"
-              placeholder="주소를 입력해주세요" id="sample6_address">
+              placeholder="주소를 입력해주세요" id="sample6_address2">
+          </div>
+          <div>
+            <input class="btn" type="button"
+              style="width: 120px; height: 46px; border: 1px solid #5e0080; color: #5e0080; margin-left: 8px; font-weight: 500;"
+              value="주소검색" onclick="sample6_execDaumPostcode()">
           </div>
       </div>
           {% bootstrap_form form %}
@@ -41,9 +53,7 @@
   <!-- </div> </div> </div> <form action="{% url "accounts:profile_update" %}" method="POST"> {% csrf_token %} {% bootstrap_form form %} <input type="submit" class="btn btn-outline-dark" value="수정"> <a href="{% url 'accounts:change_password' %}" class="btn btn-secondary">비밀번호 수정</a> <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a> <a href="" class="btn btn-secondary">돌아가기</a> </form>-->
 </section>
 
-
-
-{% comment %} <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+{% endblock content %}
 
 {% block script %}
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -102,12 +112,12 @@
         // 우편번호와 주소 정보를 해당 필드에 넣는다.
         document.getElementById('sample6_postcode').value = data.zonecode;
         document.getElementById("sample6_address").value = addr;
+        document.getElementById("sample6_address2").value = addr;
         // 커서를 상세주소 필드로 이동한다.
         document.getElementById("sample6_detailAddress").focus();
       }
     }).open();
   }
 
-</script> {% endcomment %}
-{% endblock content %}
-
+</script>
+{% endblock script %}
