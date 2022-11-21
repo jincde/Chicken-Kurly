@@ -66,9 +66,11 @@
             <div class="ms-2">배송지</div>
           </div>
           <div class="mb-3">{{ request.user.address }}</div>
-          <a href="{% url 'accounts:profile' request.user.pk %}" type="button" class="btn w-100"
-            style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">
-            배송지 변경
+          <a href="{% url 'accounts:profile' request.user.pk %}">
+            <button type="button" class="btn w-100"
+              style="border:solid 1px #5e0080; border-radius:3px; height:40px; background-color:white; color:#5e0080">
+              배송지 변경
+            </button>
           </a>
         </div>
 
