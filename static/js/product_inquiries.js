@@ -163,7 +163,7 @@ function create_reply(form, product_pk, inquiry_pk) {
     replyBox.classList.remove('d-none')
     replyBox.insertAdjacentHTML('afterbegin', `
       <div class="me-3">A.</div>
-      <div>${replyContent}</div>
+      <div class="text-break">${replyContent}</div>
     `)
 
     replyStatus.innerText = '답변완료'

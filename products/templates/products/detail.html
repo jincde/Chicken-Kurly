@@ -420,7 +420,7 @@
             <div>
               <div class="d-flex">
                 <div class="me-3">Q.</div>
-                <div id="inquiry-content-{{ inquiry.pk }}">{{ inquiry.content }}</div>
+                <div id="inquiry-content-{{ inquiry.pk }}" class="text-break">{{ inquiry.content }}</div>
               </div>
               <div>
                 <div id="reply-box-{{ inquiry.pk }}" class="d-none d-flex mt-3">
@@ -429,7 +429,7 @@
                 {% if inquiry.reply %}
                 <div id="reply-box-{{ inquiry.pk }}" class="d-flex mt-3">
                   <div class="me-3">A.</div>
-                  <div>{{ inquiry.reply.content }}</div>
+                  <div class="text-break">{{ inquiry.reply.content }}</div>
                 </div>
                 {% else %}
                 <!-- 답변이 달리지 않았으면, 문의글 수정 & 삭제 O -->
