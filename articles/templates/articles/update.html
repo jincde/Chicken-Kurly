@@ -71,10 +71,14 @@
         <div class=" d-flex justify-content-end">
           <input class="btn" style="color: #5e0080; font-weight: 600;" type="submit" value="수정하기">
         </div>
-      {% bootstrap_form article_form %}
-
+        <h2><input class="input-title form-control mb-3" style="border:0px; font-size: 1.5rem;" name="title"
+            placeholder="제목을 입력해주세요." value="{{ article.title }}" maxlength="20" required></h2>
+        <hr>
+        <textarea rows="18" cols="10" value="{{ article.content }}" class="form-control my-3" style="border:0px"
+          name="content" required>{{ article.content }}</textarea>
+        <input type="file" name="image" accept="image/*" class="form-control" id="id_image">
     </form>
   </div>
-</div>  
+</div>
 
 {% endblock content %}
