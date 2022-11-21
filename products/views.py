@@ -20,7 +20,7 @@ def index(request):
     review = Review.objects.order_by('-pk')
     hits = Product.objects.order_by('-hit')
     sold = Product.objects.order_by('-sold_count')
-    print(categories)
+    # print(categories)
 
     context = {
         'products': products,
