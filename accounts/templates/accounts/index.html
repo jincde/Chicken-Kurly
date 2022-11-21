@@ -24,9 +24,6 @@
     </div>
   </div>  
 
-  {% if request.user.is_superuser == 1 %}
-    <a href="{% url 'products:create' %}" class="btn btn-primary">글쓰기</a>
-  {% endif %}
   <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
   <script>
     const swiper = new Swiper('#test-slide', {

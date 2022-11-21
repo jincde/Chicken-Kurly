@@ -11,7 +11,7 @@
 <section class="container" style="width: 640px;height: 1315px; margin-top: 50px;">
   <form class='mx-5' action="{% url 'accounts:profile_update' %}" method="POST" style="border-top: 0px solid rgb(51, 51, 51); font-size:14px;" enctype="multipart/form-data">
     {% csrf_token %}
-    <h1 class="mb-5 text-center" style='color:#5e0080;' >개인정보 수정</h1>
+    <h1 class="mb-5 text-center" style='color:#5e0080;'>개인정보 수정</h1>
     <fieldset class="form-group">
       <legend class="border-bottom mb-4"></legend>
       <div>
@@ -22,11 +22,11 @@
 
         <div class="">
           <div style="display: none;">
-            <input type="text" id="sample6_postcode" placeholder="우편번호">
-            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-            <input type="text" id="sample6_address" placeholder="주소"><br>
-            <input type="text" id="sample6_detailAddress" placeholder="상세주소">
-            <input type="text" id="sample6_extraAddress" placeholder="참고항목">
+            <p type="text" id="sample6_postcode" placeholder="우편번호"></p>
+            <p type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br></p>
+            <p type="text" id="sample6_address" placeholder="주소"><br></p>
+            <p type="text" id="sample6_detailAddress" placeholder="상세주소"></p>
+            <p type="text" id="sample6_extraAddress" placeholder="참고항목"></p>
           </div>
           <h6 class="my-3 fw-bold" style="color: rgb(51, 51, 51); font-size:14px;">배송받을 주소</h6>
           <div class="my-3 d-flex">
@@ -61,9 +61,9 @@
   const newPW1 = document.querySelector('#id_new_password1')
   const newPW2 = document.querySelector('#id_new_password2')
 
-  console.log(oldPW)
-  console.log(newPW1)
-  console.log(newPW2)
+  // console.log(oldPW)
+  // console.log(newPW1)
+  // console.log(newPW2)
   oldPW.removeAttribute('required')
   newPW1.removeAttribute('required')
   newPW2.removeAttribute('required')
@@ -101,10 +101,10 @@
             extraAddr = ' (' + extraAddr + ')';
           }
           // 조합된 참고항목을 해당 필드에 넣는다.
-          document.getElementById("sample6_extraAddress").value = extraAddr;
+          document.getElementById("sample6_extraAddress").innerText = extraAddr;
 
         } else {
-          document.getElementById("sample6_extraAddress").value = '';
+          document.getElementById("sample6_extraAddress").innerText = '';
         }
 
         // 우편번호와 주소 정보를 해당 필드에 넣는다.
