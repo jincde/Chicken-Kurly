@@ -121,8 +121,8 @@
 
 ---
 ## :dart: Chicken Kurly
-![]()
-[]()![products](https://user-images.githubusercontent.com/108647883/202868016-5284776c-082e-49d0-93d3-e5e2228bc15b.gif)
+
+[](![chickenkurly](https://user-images.githubusercontent.com/108647883/203096828-c6d55650-5363-481c-ab8a-83f93cda4e93.gif)
 
 
 
