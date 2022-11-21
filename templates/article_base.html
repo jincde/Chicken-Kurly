@@ -51,6 +51,11 @@
         style="font-size: 1rem;"></ion-icon>
     </div>
   </div>
+  <div>
+    <ion-icon type="button" onclick="getHide()" style="background-color: none; font-weight: 200;" name="close-outline"
+      style="font-size: 1rem;"></ion-icon>
+  </div>
+  </div>
   <div style="background-color: white;">
     <section class="d-flex container align-items-center justify-content-end navbar-line"
       style="max-width: 1050px; height: 35px; font-size: 12px;">
@@ -81,7 +86,8 @@
         <div style="width: 30%;">
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link non_a" aria-current="page" href="{% url 'products:index' %}" style="font-size:18px;">치킨컬리</a>
+              <a class="nav-link non_a" aria-current="page" href="{% url 'products:index' %}"
+                style="font-size:18px;">치킨컬리</a>
             </li>
             <li class="navb-item">
               <a class="nav-link non_a" href="{% url 'articles:index' %}" style="font-size:18px;">헬짱피드</a>
