@@ -1,5 +1,5 @@
-* {
-  font-family: 'Spoqa Han Sans Neo', 'Spoqa Han Sans JP', sans-serif;
+body {
+  font-family: 'Noto Sans KR', 'AppleSDGothicNeo', 'sans-serif';
 }
 
 textarea:hover,
