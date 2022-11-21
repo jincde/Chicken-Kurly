@@ -9,7 +9,7 @@
 ---
 ## Table of Contents
 * [치킨컬리(Chicken-Kurly) 프로젝트](#chicken-치킨컬리chicken-kurly-프로젝트-purple_heart)
-  * [Contributors](#-contributors)
+  * [Contributors](#star2-contributors)
   * [목적](#trophy-목적)
   * [기간](#date-기간)
   * [기술 스택](#hammer_and_wrench-기술-스택)
@@ -23,7 +23,7 @@
 
 ---
 
-#### ✨ Contributors
+### :star2: Contributors
 
 <a href="https://github.com/jincde/chicken-kurly/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jincde/chicken-kurly" />
