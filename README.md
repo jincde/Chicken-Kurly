@@ -8,7 +8,7 @@
 
 ---
 ## 목차
-* [치킨컬리 (chicken-Kurly) 프로젝트](#chickenpurple_heart-치킨컬리-chicken-kurly-프로젝트)
+* [치킨컬리 (chicken-Kurly) 프로젝트](#chicken-purple_heart-치킨컬리-chicken-kurly-프로젝트)
   * [Contributors](#-contributors)
   * [목적](#trophy-목적)
   * [기간](#date-기간)
@@ -16,7 +16,7 @@
 * [팀원 소개 및 담당 역할](#technologist-팀원-소개-및-담당-역할)
 * [서비스 주제](#bulb-서비스-)
 * [주요 기능 소개](#shopping_cart-주요-기능-소개)
-* [Chicken Kurly](#-chicken-kurly)
+* [Chicken Kurly](#dart-chicken-kurly)
 * [서비스 시연](#computer-서비스-시연)
 * [프로젝트 후 느낀점](#purple_heart-프로젝트-후-느낀점)
 
@@ -128,7 +128,7 @@
 
 ---
 
-## :shopping_cart:주요 기능 소개
+## :shopping_cart: 주요 기능 소개
 
 * 프론트엔드
   * 상품페이지 [Products]
@@ -189,7 +189,7 @@
 
 ---
 
-## :computer:서비스 시연
+## :computer: 서비스 시연
 
 ![chickurl_시연]()
 
@@ -199,7 +199,7 @@
 
 ---
 
-## :purple_heart:프로젝트 후 느낀점
+## :purple_heart: 프로젝트 후 느낀점
 |팀원|느낀점|
 |---|---|
 |장영진|살짝 아쉽지만, 여태했던 프로젝트들과 비교해서 완성도 높은 프로젝트를 완성할 수 있었다. 자바스크립트를 얼른 숙련시켜 더 많이 활용하고 싶다. 아직 못한 부분이 있어 아쉽다. 생각보다 시간이 더 짧았다. 계획을 더 세세하게 나눠서 진행해야겠다.|
