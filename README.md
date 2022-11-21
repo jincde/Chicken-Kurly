@@ -8,7 +8,7 @@
 
 ---
 ## 목차
-* [치킨컬리 (chicken-Kurly) 프로젝트](#:chicken::purple_heart: 치킨컬리-(chicken-Kurly)-프로젝트)
+* [치킨컬리 (chicken-Kurly) 프로젝트](#:chicken::purple_heart:-치킨컬리-(chicken-urly)-프로젝트)
   * [Contributors](#✨-Contributors)
   * [목적](#목적)
   * [기간](#기간)
