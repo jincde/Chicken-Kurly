@@ -149,10 +149,17 @@
               </div>
               {% endif %}
 
-              <button id="btn-payment" class="btn form-control"
+              {% if request.user.is_staff %}
+                <a href="{% url 'products:update' product.pk %}">
+                  <button class="btn form-control"
+                  style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white">수정하기</button>
+                </a>
+              {% else %}
+                <button id="btn-payment" class="btn form-control"
                 onclick="requestPay('{{ product.pk }}', '{{ product.product_name }}')"
                 style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white"
                 disabled>결제하기</button>
+              {% endif %}
             </div>
           </div>
         </div>
