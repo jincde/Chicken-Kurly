@@ -96,74 +96,76 @@
                       <div>{{ product_buy_form.quantity|add_class:"form-control"|attr:"min:0" }}</div>
                     </div>
                     <button type='submit' style='background-color:transparent; border:none;' id="btn-cart"
-                      class="bi bi-cart2 fs-1" name="cart" data-bs-toggle="modal" data-bs-target="#cart" disabled>
+                      class="bi bi-cart2 fs-5" name="cart" data-bs-toggle="modal" data-bs-target="#cart" disabled>
                     </button>
                   </div>
                 </form>
 
                 <!-- 찜 버튼 -->
+                <div class="d-flex align-items-center"></div>
                 <form data-product-id='{{ product.pk }}' id='ddib-btn' class="ddib-heart ms-2">
                   {% csrf_token %}
-                  <button style='background-color:transparent; border:none;' class='product-detail-ddib-btn'
+                  <button style='background-color:transparent; border:none;' class='product-detail-ddib-btn pt-1'
                     type='submit'>
                     {% if request.user in product.ddib_users.all %}
-                    <i style='color:#5e0080;' class="bi bi-heart-fill fs-1"></i>
+                    <i style='color:#5e0080;' class="bi bi-heart-fill fs-5"></i>
                     {% else %}
-                    <i style='color:#5e0080;' class="bi bi-heart fs-1"></i>
+                    <i style='color:#5e0080;' class="bi bi-heart fs-5"></i>
                     {% endif %}
                   </button>
                 </form>
               </div>
-
-
-              <div class="modal fade" id="isValidModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true" style="margin: 0;">
-                <div class="modal-dialog container" style="width:360px; margin: 200px auto;">
-                  <div class="modal-content mx-0" style="width:360px; height:180px;">
-                    <div class="modal-body text-center" id="modal-body"
-                      style="padding: 40px 30px;font-size: 1rem; font-weight: 500;">
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center py-2">
-                      <button class="btn" type="button" data-bs-dismiss="modal"
-                        style="color: #5e0080; border: 0px; font-weight: 500;">확인</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- 장바구니 Modal (수정 필요) -->
-              <div class="modal fade" id="cart" tabindex="-1" aria-hidden="true"
-                style="border: 0px solid black; margin: 0;">
-                <div class="modal-dialog container" style="width:360px; margin:200px auto;">
-                  <div class="modal-content mx-0" style="width:360px; height: 180px;">
-                    <div class="modal-body text-center" style="padding: 40px 30px; font-size: 1rem; font-weight: 500;">
-                      장바구니에 상품을 담았습니다. <span id="product-existing"></span>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center py-2" style="border: 0px solid black">
-                      <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
-                      <button type="submit" class="btn" data-bs-dismiss="modal" style="border: 0px;">확인</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {% endif %}
-
-              {% if request.user.is_staff %}
-              <a href="{% url 'products:update' product.pk %}">
-                <button class="btn form-control"
-                  style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white">수정하기</button>
-              </a>
-              {% else %}
-              <button id="btn-payment" class="btn form-control"
-                onclick="requestPay('{{ product.pk }}', '{{ product.product_name }}')"
-                style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white"
-                disabled>결제하기</button>
-              {% endif %}
             </div>
+
+
+            <div class="modal fade" id="isValidModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true" style="margin: 0;">
+              <div class="modal-dialog container" style="width:360px; margin: 200px auto;">
+                <div class="modal-content mx-0" style="width:360px; height:180px;">
+                  <div class="modal-body text-center" id="modal-body"
+                    style="padding: 40px 30px;font-size: 1rem; font-weight: 500;">
+                  </div>
+                  <div class="modal-footer d-flex justify-content-center py-2">
+                    <button class="btn" type="button" data-bs-dismiss="modal"
+                      style="color: #5e0080; border: 0px; font-weight: 500;">확인</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 장바구니 Modal (수정 필요) -->
+            <div class="modal fade" id="cart" tabindex="-1" aria-hidden="true"
+              style="border: 0px solid black; margin: 0;">
+              <div class="modal-dialog container" style="width:360px; margin:200px auto;">
+                <div class="modal-content mx-0" style="width:360px; height: 180px;">
+                  <div class="modal-body text-center" style="padding: 40px 30px; font-size: 1rem; font-weight: 500;">
+                    장바구니에 상품을 담았습니다. <span id="product-existing"></span>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-center py-2" style="border: 0px solid black">
+                    <!-- 장바구니로 이동하는 버튼도 추가(예정) -->
+                    <button type="submit" class="btn" data-bs-dismiss="modal" style="border: 0px;">확인</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if request.user.is_staff %}
+            <a href="{% url 'products:update' product.pk %}">
+              <button class="btn form-control"
+                style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white">수정하기</button>
+            </a>
+            {% else %}
+            <button id="btn-payment" class="btn form-control"
+              onclick="requestPay('{{ product.pk }}', '{{ product.product_name }}')"
+              style="font-size: 18px; font-weight: 400;margin-top: 18px; height:58px; background-color: #5e0080; color:white"
+              disabled>결제하기</button>
+            {% endif %}
           </div>
         </div>
-      </article>
     </div>
+    </article>
   </div>
+</div>
 </div>
 
 <div class="container my-5" style="width: 1070px; padding-bottom: 100px;">
@@ -186,7 +188,7 @@
 
 
   <!-- 상품 후기 -->
-  <div class='product-review position-relative' style='padding: bottom 100px;'>
+  <div class='product-review position-relative' style='padding: bottom 100px; z-index: -1;'>
     <section class='review' style='padding:72px 0px;'>
       <header class='review-title d-flex align-items-center w-100'>
         <h2 class='fw-bold m-0' style='font-size: 18px;'>상품 후기 &nbsp
@@ -527,13 +529,13 @@
   <ul class="pagination justify-content-center">
     <!-- 이전 페이지 -->
     {% if inquiries.has_previous %}
-    <li class="page-item">
+    <li class="page-item" style="z-index: -1;">
       <a class="page-link" href="?inquiry_page={{ inquiries.previous_page_number }}" aria-label="Previous">
         <i class="bi bi-chevron-double-left"></i>
       </a>
     </li>
     {% else %}
-    <li class="page-item disabled">
+    <li class="page-item disabled" style="z-index: -1;">
       <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
         <i class="bi bi-chevron-double-left"></i>
       </a>
@@ -543,12 +545,12 @@
     <!-- 페이지 리스트 -->
     {% for page_number in inquiries.paginator.page_range %}
     {% if page_number == inquiries.number %}
-    <li class="page-item active" aria-current="page">
+    <li class="page-item active" aria-current="page" style="z-index: -1;">
       <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;'
         href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
     </li>
     {% else %}
-    <li class="page-item">
+    <li class="page-item" style="z-index: -1;">
       <a class="page-link" style='background-color:#5e0080; border-color:#dee2e6;'
         href="?inquiry_page={{ page_number }}">{{ page_number }}</a>
     </li>
@@ -557,13 +559,13 @@
 
     <!-- 다음페이지 -->
     {% if inquiries.has_next %}
-    <li class="page-item">
+    <li class="page-item" style="z-index: -1;">
       <a class="page-link" href="?inquiry_page={{ inquiries.next_page_number }}">
         <i class="bi bi-chevron-double-right"></i>
       </a>
     </li>
     {% else %}
-    <li class="page-item disabled">
+    <li class="page-item disabled" style="z-index: -1;">
       <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
         <i class="bi bi-chevron-double-right"></i>
       </a>
