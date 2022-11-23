@@ -18,6 +18,7 @@
 * [주요 기능 소개](#shopping_cart-주요-기능-소개)
 * [Chicken Kurly](#dart-chicken-kurly)
 * [서비스 시연](#computer-서비스-시연)
+* [문제 해결](#world_map-문제-해결)
 * [프로젝트 후 느낀점](#purple_heart-프로젝트-후-느낀점)
 
 
@@ -110,6 +111,8 @@
     </ul>
 </div>
 </details>
+
+
 
 ---
 
@@ -205,6 +208,147 @@
 * [서비스 시연(youtube)](https://www.youtube.com/watch?v=9K4vOyYXk3g)
 * [서비스 시연(chicken kurly)](http://chickenkurlybean-env.eba-jbwiaqp9.ap-northeast-1.elasticbeanstalk.com/products/)
 
+
+
+
+
+---
+## :world_map: 문제 해결
+```
+1. 장바구니 상품 선택 및 금액 계산의 어려움
+- 원인
+
+각 상품의 수량 * 금액의 값을 담은 것을 `itemPriceField`라고 했을 때, 모든 상품에 대한 total을 구해야 하니까, `totalPrice`에`itemPriceField`의 값을 += 해줌.
+
+
+- 해결 방법
+
+const checkBoxes = document.querySelectorAll('.item-checkboxes')
+let itemPriceDict = {}  // item-id : price
+let totalPrice = 0
+const productsPriceField = document.querySelector('#products-price')  // 모든 상품 가격을 합친 금액
+const totalPriceField = document.querySelector('#total-price') // = productsPriceField
+
+checkBoxes.forEach(checkBox => {
+  const itemId = checkBox.getAttribute('data-item-id')
+  const quantityField = document.querySelector(`#quantity-${itemId}`)
+  console.log(`${checkBox.checked} ${itemId}`)
+  
+  const defaultItemPrice = document.querySelector(`#price-${itemId}`).innerText // 각 상품의 기본 가격 (1개 가격)
+  const itemPriceField = document.querySelector(`#price-${itemId}-field`)  // 각 상품 가격 * 수량 표시 필드
+  
+  itemPriceField.innerText = defaultItemPrice * quantityField.value
+  
+  // 체크박스 클릭 이벤트
+  checkBox.addEventListener('click', event => {
+    // 체크됐을 때만 수량 변경 O
+    if (checkBox.checked === true) {
+      quantityField.disabled = false
+      itemPriceField.setAttribute('data-is-disabled', 'false')
+      
+      if (itemPriceField.getAttribute('data-is-disabled') === 'false') {
+        itemPriceField.innerText = defaultItemPrice * quantityField.value
+        itemPriceDict[itemId] = Number(itemPriceField.innerText)
+        
+        let tmp = 0
+        for (let key of Object.keys(itemPriceDict)) {
+          tmp += itemPriceDict[key]
+        }
+        totalPrice = tmp
+        productsPriceField.innerText = totalPrice + '원'
+        totalPriceField.innerText = totalPrice + '원'
+      }
+
+      // 수량 입력 이벤트
+      quantityField.addEventListener('input', event => {
+        // event.stopPropagation() // 버블링 방지
+        if (itemPriceField.getAttribute('data-is-disabled') === 'false') {
+          itemPriceField.innerText = defaultItemPrice * event.target.value
+          itemPriceDict[itemId] = Number(itemPriceField.innerText)
+          
+          let tmp = 0
+          for (let key of Object.keys(itemPriceDict)) {
+            tmp += itemPriceDict[key]
+          }
+          totalPrice = tmp
+          productsPriceField.innerText = totalPrice + '원'
+          totalPriceField.innerText = totalPrice + '원'
+        }
+      })
+    } else {
+      quantityField.disabled = true
+      itemPriceField.setAttribute('data-is-disabled', 'true')
+
+      if (itemPriceField.getAttribute('data-is-disabled') === 'true') {
+        itemPriceField.innerText = defaultItemPrice * quantityField.value
+        // 선택되지 않은 상품의 가격을 0으로
+        itemPriceDict[itemId] = 0
+
+        let tmp = 0
+        for (let key of Object.keys(itemPriceDict)) {
+            tmp += itemPriceDict[key]
+        }
+        totalPrice = tmp
+        productsPriceField.innerText = totalPrice + '원'
+        totalPriceField.innerText = totalPrice + '원'
+      }
+    }
+  })
+})
+
+- 해결 방법
+- 체크 해제된 상품을 골라내기 위해, `data-` 를 이용하여 속성을 커스텀함.
+    - `data-is-disabled`가 false면 체크된 상품, true면 체크 해제된 상품
+- 그래서 `data-is-disabled`가 false인 상품만 `totalPrice`에 포함시킴.
+- 이때 딕셔너리 `itemPriceDict`를 통해 `key`(상품 id)와 `value`(수량 * 금액)의 값을 저장하여, 임시 변수 `tmp`에 딕셔너리 value들의 합을 담음.
+- `totalPrice`에 `tmp`를 담고, 그걸 innerText로 출력하는 식으로 체크박스를 클릭해서 1. 체크될 때와 2. 해제될 때, 3. 체크 후 수량을 변경할 때 금액이 바뀌도록함.
+
+
+2. MinLengthValidator
+- 원인
+
+ming_length 속성이 없음
+
+- 해결 방법
+
+from django.core.validators import MinLengthValidator
+
+username = models.CharField(validators=[MinLengthValidator(5)], max_length=16, unique=True)
+
+
+3. 문의 수정 시 기존 instance가 보이지 않음
+- 원인
+
+# detail 함수의 일부
+def detail(request, product_pk):
+    product = Product.objects.get(pk=product_pk)
+    inquiry_form = InquiryForm()
+    # ...
+
+@login_required
+def update_inquiry(request, product_pk, inquiry_pk):
+    product = get_object_or_404(Product, pk=product_pk)
+    inquiry = get_object_or_404(Inquiry, pk=inquiry_pk)
+
+    if request.method == 'POST':
+        inquiry_form = InquiryForm(request.POST, instance=inquiry)    # POST 아닌 건 detail에
+        if inquiry_form.is_valid():
+            inquiry = inquiry_form.save(commit=False)
+            inquiry.user = request.user
+            inquiry.product = product
+            inquiry.save()
+
+    inquiry_form = InquiryForm(instance=inquiry)
+
+    return redirect('products:detail', product_pk)- 
+
+
+- InquiryForm을 update.html이 아니라 detail.html에서 렌더하기 때문에, views.py의 detail 함수에서 각 문의에 대한 inquiry 인스턴스를 생성할 수 없는 것이 원인. 즉, 위의 update_inquiry 함수의 inquiry_form을 detail의 context로 넘겨줄 수 없는 것이 원인.
+
+
+- 해결 방법
+1. (정석) 모달을 for문에서 여러 개 만들지 말고, 하나만 해서 JS로 선택한 다음 필드 안의 값 바꾸기
+2. 현재 모달이 문의의 개수만큼 만들어지는 상황. modelForm말고 그냥 input으로 값 받기
 
 
 
