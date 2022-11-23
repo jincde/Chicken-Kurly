@@ -55,7 +55,8 @@ else:
 
 ALLOWED_HOSTS = [
     "Chickenkurlybean-env.eba-jbwiaqp9.ap-northeast-1.elasticbeanstalk.com",
-    "kurly.shop", # 예시입니다. 본인 URL로 해주세요.
+    "kurly.shop",
+    "spjt2.shop", # 예시입니다. 본인 URL로 해주세요.
     "127.0.0.1",
     "localhost",
     ]
