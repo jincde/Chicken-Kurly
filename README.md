@@ -13,7 +13,9 @@
   * [목적](#trophy-목적)
   * [기간](#date-기간)
   * [기술 스택](#hammer_and_wrench-기술-스택)
+  * [결과] (#crown-결과)
 * [팀원 소개 및 담당 역할](#technologist-팀원-소개-및-담당-역할)
+
 * [서비스 주제](#bulb-서비스-주제)
 * [주요 기능 소개](#shopping_cart-주요-기능-소개)
 * [Chicken Kurly](#dart-chicken-kurly)
@@ -60,6 +62,7 @@
   <img src="https://img.shields.io/badge/GITHUB-black?style=flat&logo=Django&logoColor=181717"/>
 </div>
 
+### :crown: 결과
 ---
 
 ## :technologist: 팀원 소개 및 담당 역할
